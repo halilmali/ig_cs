@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topic 9: Databases — Cambridge IGCSE Computer Science</title>
+<link rel="stylesheet" href="css/topic-common.css">
+<style>
+/* ===== Topic-specific CSS ===== */
+
+
+  
+  .db-strip {
+    position: fixed;
+    top: 0; right: 0; bottom: 0;
+    width: 200px;
+    font-family: 'JetBrains Mono', 'Cascadia Code', monospace;
+    font-size: 12px;
+    line-height: 1.9;
+    color: rgba(59, 130, 246, 0.13);
+    padding: 24px 16px;
+    white-space: pre;
+    pointer-events: none;
+    z-index: 0;
+    user-select: none;
+    text-align: left;
+  }
+
+
+  .bg-glow-2 {
+    position: fixed; bottom: -20%; right: -10%; width: 55%; height: 55%;
+    background: radial-gradient(circle, rgba(37, 99, 235, 0.11) 0%, transparent 70%);
+    z-index: 0; pointer-events: none;
+    animation: glowFloat 18s ease-in-out infinite alternate-reverse;
+  }
+
+
+  .code-block {
+    font-family: 'JetBrains Mono', 'Cascadia Code', Consolas, monospace;
+    background: #0e0c22; border: 1px solid #46408a; border-radius: 8px;
+    padding: 12px 16px; margin: 8px 0; font-size: 0.86rem; line-height: 1.65;
+    color: #b7b3d9; overflow-x: auto; box-shadow: inset 0 0 24px rgba(99, 102, 241, 0.04); white-space: pre-wrap;
+  }
+
+
+  .code-block .hl { color: #818cf8; font-weight: 700; }
+
+
+  .code-block .op { color: #a5b4fc; }
+
+
+  .code-block .comment { color: #6b6796; font-style: italic; }
+
+
+  .code-block .str { color: #fbbf24; }
+
+
+  .code-block .prompt { color: #8b5cf6; user-select: none; }
+
+
+  td.mono, th.mono { font-family: 'JetBrains Mono', Consolas, monospace; }
+
+
+  td.ok { color: #86efac; font-weight: 600; }
+
+
+  td.no { color: #fda4af; font-weight: 600; }
+
+
+
+  
+  .db-table th { text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; }
+
+
+  .db-table td { text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; }
+
+
+  .db-table td.pk, .db-table th.pk { color: #fbbf24; font-weight: 700; background: rgba(251, 191, 36, 0.08); }
+
+
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+
+  .section-badge.sec-92 { background: linear-gradient(135deg, #5b21b6, #7c3aed); border-color: #a5b4fc; }
+
+
+  .section-badge.sec-93 { background: linear-gradient(135deg, #4338ca, #6366f1); border-color: #a5b4fc; }
+
+
+  .section-badge.sec-94 { background: linear-gradient(135deg, #3730a3, #4f46e5); border-color: #a5b4fc; }
+
+
+  .section-badge.quiz { background: linear-gradient(135deg, #1e1b4b, #312e81); border-color: #818cf8; color: #c7d2fe; }
+
+
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+
+
+    .db-strip { display: none; }
+</style>
+</head>
+<body>
+
+<div class="db-strip">    ┌──────────────────────┐
+    │   Members            │
+    ├──────────┬───────────┤
+    │ MemberID │ LastName  │
+    ├──────────┼───────────┤
+    │ M001     │ Khan      │
+    │ M002     │ Patel     │
+    └──────────┴───────────┘
+
+<span class="hl">SELECT</span> LastName
+<span class="hl">FROM</span> Members
+<span class="hl">WHERE</span> FeePaid = TRUE
+<span class="hl">ORDER BY</span> LastName
+
+<span class="hl">SELECT</span> <span class="hl">COUNT</span>(*)
+<span class="hl">FROM</span> Members
+
+<span class="hl">SELECT</span> <span class="hl">SUM</span>(Age)
+<span class="hl">FROM</span> Members
+
+<span class="hl">AND</span>  <span class="hl">OR</span>
+
+   ╭───────╮
+   │ M001  │  🔑 PK
+   ╰───────╯
+
+<span class="hl">SELECT</span> *
+<span class="hl">FROM</span> Members
+<span class="prompt">; </span>
+    ▍</div>
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+<div class="bg-glow-2"></div>
+
+<div class="presentation">
+
+  <!-- ============ SLIDE 1 – TITLE ============ -->
+  <div class="slide active" data-slide="1">
+    <div style="flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
+      <div class="section-badge">Cambridge IGCSE · 0478 / 0984 / 0418</div>
+      <h1 style="font-size:3rem; margin-top:10px;">Topic 9: Databases</h1>
+      <p style="color:#918cb8; font-size:1.05rem; margin-top:8px;">Storing data in tables, primary keys &amp; querying with SQL</p>
+      <div class="grid-3" style="max-width:680px; margin-top:34px; width:100%;">
+        <div class="icon-tile"><span class="ico"><svg viewBox="0 0 44 30" style="width:38px; height:26px;"><ellipse cx="22" cy="8" rx="16" ry="5" fill="#4f46e5" opacity="0.35"/><path d="M 6 8 L 6 22 a 16 5 0 0 0 32 0 L 38 8 a 16 5 0 0 0 -32 0 z" fill="none" stroke="#a5b4fc" stroke-width="1.6"/><line x1="6" y1="8" x2="6" y2="22" stroke="#a5b4fc" stroke-width="1.6"/><line x1="38" y1="8" x2="38" y2="22" stroke="#a5b4fc" stroke-width="1.6"/><ellipse cx="22" cy="22" rx="16" ry="5" fill="none" stroke="#a5b4fc" stroke-width="1.6"/></svg></span><span class="ico-label">Database</span><span class="ico-sub">structured tables</span></div>
+        <div class="icon-tile"><span class="ico">🔑</span><span class="ico-label">Primary Key</span><span class="ico-sub">unique ID</span></div>
+        <div class="icon-tile"><span class="ico"><svg viewBox="0 0 44 30" style="width:38px; height:26px;"><rect x="4" y="5" width="36" height="20" rx="3" fill="none" stroke="#a5b4fc" stroke-width="1.6"/><line x1="4" y1="12" x2="40" y2="12" stroke="#a5b4fc" stroke-width="1.6"/><line x1="15" y1="5" x2="15" y2="25" stroke="#a5b4fc" stroke-width="1.2"/><line x1="27" y1="5" x2="27" y2="25" stroke="#a5b4fc" stroke-width="1.2"/><rect x="7" y="15" width="6" height="6" rx="1" fill="#818cf8"/><rect x="18" y="15" width="6" height="6" rx="1" fill="#4f46e5" opacity="0.7"/><rect x="30" y="15" width="6" height="6" rx="1" fill="#4f46e5" opacity="0.7"/></svg></span><span class="ico-label">Data Table</span><span class="ico-sub">fields &amp; records</span></div>
+      </div>
+      <p style="color:#646091; font-size:0.85rem; margin-top:32px;">9.1 Single-Table Databases · 9.2 Data Types · 9.3 Primary Keys · 9.4 SQL</p>
+      <p style="color:#646091; font-size:0.8rem;">Press <span class="inline-code">→</span> or click the navigation to begin</p>
+    </div>
+    <div class="slide-footer"><span class="section-label">Topic 9 · Overview</span><span class="slide-number">1 / 20</span></div>
+  </div>
+
+  <!-- ============ SLIDE 2 – OBJECTIVES 9.1 & 9.2 ============ -->
+  <div class="slide" data-slide="2">
+    <span class="section-badge">9.1</span>
+    <h2>Learning Objectives — 9.1 &amp; 9.2</h2>
+    <p class="text-small" style="margin-bottom:12px;">By the end of these sections you should be able to:</p>
+    <ul class="objectives-list">
+      <li><strong>Define a single-table database</strong> from given data storage requirements</li>
+      <li><strong>Understand the components of a database:</strong> fields, records, and validation</li>
+      <li><strong>Suggest suitable basic data types</strong> for database fields</li>
+    </ul>
+    <div class="callout info" style="margin-top:12px;"><strong>Big idea:</strong> a database lets you store, organise, and search data far more efficiently than separate lists — and SQL lets you ask it questions.</div>
+    <div class="slide-footer"><span class="section-label">9.1 · Single-Table Databases</span><span class="slide-number">2 / 20</span></div>
+  </div>
+
+  <!-- ============ SLIDE 3 – WHAT IS A DATABASE ============ -->
+  <div class="slide" data-slide="3">
+    <span class="section-badge">9.1</span>
+    <h2>What is a Database?</h2>
+    <p>A <strong>database</strong> is a structured collection of data that can be <strong>easily accessed, managed, and updated</strong>.</p>
+    <div class="grid-2" style="margin-top:8px;">
+      <div class="card"><h4>🗄️ Single-table (flat-file) database</h4><p class="text-small">All the data is stored in a <strong>single table</strong> of rows and columns — the simplest form of database, and the only form required at IGCSE.</p></div>
+      <div class="card"><h4>📋 What makes it "structured"?</h4><p class="text-small">Data is organised into <strong>tables → records (rows) → fields (columns)</strong>, so it can be searched and sorted quickly.</p></div>
+    </div>
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 120" role="img" aria-label="A single flat-file table of members data">
+        <text x="30" y="28" fill="#c7d2fe" font-size="12" font-weight="bold" font-family="monospace">Members (single table)</text>
+        <rect x="30" y="38" width="650" height="64" rx="8" fill="#15122e" stroke="#818cf8" stroke-width="1.5"/>
+        <rect x="30" y="38" width="130" height="26" rx="4" fill="#2a2458"/>
+        <text x="95" y="55" fill="#c7d2fe" font-size="10" text-anchor="middle" font-family="monospace">MemberID</text>
+        <rect x="160" y="38" width="130" height="26" rx="4" fill="#2a2458"/>
+        <text x="225" y="55" fill="#c7d2fe" font-size="10" text-anchor="middle" font-family="monospace">LastName</text>
+        <rect x="290" y="38" width="130" height="26" rx="4" fill="#2a2458"/>
+        <text x="355" y="55" fill="#c7d2fe" font-size="10" text-anchor="middle" font-family="monospace">Age</text>
+        <rect x="420" y="38" width="130" height="26" rx="4" fill="#2a2458"/>
+        <text x="485" y="55" fill="#c7d2fe" font-size="10" text-anchor="middle" font-family="monospace">FeePaid</text>
+        <rect x="550" y="38" width="130" height="26" rx="4" fill="#2a2458"/>
+        <text x="615" y="55" fill="#c7d2fe" font-size="10" text-anchor="middle" font-family="monospace">JoinDate</text>
+        <text x="95" y="90" fill="#b7b3d9" font-size="10" text-anchor="middle" font-family="monospace">M001</text>
+        <text x="225" y="90" fill="#b7b3d9" font-size="10" text-anchor="middle" font-family="monospace">Khan</text>
+        <text x="355" y="90" fill="#b7b3d9" font-size="10" text-anchor="middle" font-family="monospace">14</text>
+        <text x="485" y="90" fill="#b7b3d9" font-size="10" text-anchor="middle" font-family="monospace">TRUE</text>
+        <text x="615" y="90" fill="#b7b3d9" font-size="10" text-anchor="middle" font-family="monospace">12/01/2025</text>
+      </svg>
+      <div class="diagram-caption">One table, many records (rows), each record made of fields (columns)</div>
+    </div>
+    <div class="callout info"><strong>Example uses:</strong> school student records, a shop's product catalogue, a sports club's member list.</div>
+    <div class="slide-footer"><span class="section-label">9.1 · Single-Table Databases</span><span class="slide-number">3 / 20</span></div>
+  </div>
+
+  <!-- ============ SLIDE 4 – FIELDS AND RECORDS ============ -->
+  <div class="slide" data-slide="4">
+    <span class="section-badge">9.1</span>
+    <h2>Fields and Records</h2>
+    <div class="grid-3" style="margin-top:6px;">
+      <div class="card"><h4>🗂️ Field</h4><p class="text-small">A single <strong>column</strong> that stores a specific attribute of an entity — e.g. <span class="inline-code">FirstName</span> or <span class="inline-code">DateOfBirth</span>.</p></div>
+      <div class="card"><h4>📄 Record</h4><p class="text-small">A single <strong>row</strong> containing all the fields for one specific entity — e.g. one student or one product.</p></div>
+      <div class="card"><h4>📋 Table</h4><p class="text-small">A <strong>collection of related records</strong> — the whole grid of rows and columns.</p></div>
+    </div>
+    <div class="diagram-box" style="margin-top:10px;">
+      <svg viewBox="0 0 720 150" role="img" aria-label="Table showing fields as columns and a highlighted record as a row">
+        <text x="30" y="25" fill="#c7d2fe" font-size="11" font-family="monospace">FIELDS are the columns:</text>
+        <rect x="30" y="35" width="110" height="24" rx="4" fill="#2a2458"/>
+        <text x="85" y="51" fill="#c7d2fe" font-size="10" text-anchor="middle" font-family="monospace">StudentID</text>
+        <rect x="140" y="35" width="110" height="24" rx="4" fill="#2a2458"/>
+        <text x="195" y="51" fill="#c7d2fe" font-size="10" text-anchor="middle" font-family="monospace">FirstName</text>
+        <rect x="250" y="35" width="110" height="24" rx="4" fill="#2a2458"/>
+        <text x="305" y="51" fill="#c7d2fe" font-size="10" text-anchor="middle" font-family="monospace">LastName</text>
+        <rect x="360" y="35" width="110" height="24" rx="4" fill="#2a2458"/>
+        <text x="415" y="51" fill="#c7d2fe" font-size="10" text-anchor="middle" font-family="monospace">Class</text>
+        <rect x="470" y="35" width="110" height="24" rx="4" fill="#2a2458"/>
+        <text x="525" y="51" fill="#c7d2fe" font-size="10" text-anchor="middle" font-family="monospace">Age</text>
+        <rect x="30" y="59" width="550" height="24" rx="4" fill="#1c183e" stroke="#39336f" stroke-width="1"/>
+        <text x="85" y="75" fill="#b7b3d9" font-size="10" text-anchor="middle" font-family="monospace">S101</text>
+        <text x="195" y="75" fill="#b7b3d9" font-size="10" text-anchor="middle" font-family="monospace">Aisha</text>
+        <text x="305" y="75" fill="#b7b3d9" font-size="10" text-anchor="middle" font-family="monospace">Khan</text>
+        <text x="415" y="75" fill="#b7b3d9" font-size="10" text-anchor="middle" font-family="monospace">9A</text>
+        <text x="525" y="75" fill="#b7b3d9" font-size="10" text-anchor="middle" font-family="monospace">14</text>
+        <rect x="30" y="83" width="550" height="24" rx="4" fill="#191539" stroke="#39336f" stroke-width="1"/>
+        <text x="85" y="99" fill="#b7b3d9" font-size="10" text-anchor="middle" font-family="monospace">S102</text>
+        <text x="195" y="99" fill="#b7b3d9" font-size="10" text-anchor="middle" font-family="monospace">Ben</text>
+        <text x="305" y="99" fill="#b7b3d9" font-size="10" text-anchor="middle" font-family="monospace">Smith</text>
+        <text x="415" y="99" fill="#b7b3d9" font-size="10" text-anchor="middle" font-family="monospace">9B</text>
+        <text x="525" y="99" fill="#b7b3d9" font-size="10" text-anchor="middle" font-family="monospace">15</text>
+        <rect x="30" y="107" width="550" height="26" rx="4" fill="rgba(139,92,246,0.16)" stroke="#a5b4fc" stroke-width="1.4"/>
+        <text x="85" y="123" fill="#e0e7ff" font-size="10" text-anchor="middle" font-family="monospace">S103</text>
+        <text x="195" y="123" fill="#e0e7ff" font-size="10" text-anchor="middle" font-family="monospace">Chen</text>
+        <text x="305" y="123" fill="#e0e7ff" font-size="10" text-anchor="middle" font-family="monospace">Li</text>
+        <text x="415" y="123" fill="#e0e7ff" font-size="10" text-anchor="middle" font-family="monospace">9A</text>
+        <text x="525" y="123" fill="#e0e7ff" font-size="10" text-anchor="middle" font-family="monospace">14</text>
+        <text x="590" y="80" fill="#a5b4fc" font-size="11" font-family="monospace">RECORD = one row</text>
+        <line x1="588" y1="88" x2="588" y2="106" stroke="#a5b4fc" stroke-width="1.5"/>
+      </svg>
+      <div class="diagram-caption">One highlighted record (row) = S103 Chen Li, 9A, age 14</div>
+    </div>
+    <div class="slide-footer"><span class="section-label">9.1 · Single-Table Databases</span><span class="slide-number">4 / 20</span></div>
+  </div>
+
+  <!-- ============ SLIDE 5 – DATABASE VALIDATION ============ -->
+  <div class="slide" data-slide="5">
+    <span class="section-badge">9.1</span>
+    <h2>Database Validation</h2>
+    <p><strong>Validation</strong> ensures that data entered into fields is <strong>sensible, reasonable, and complete</strong> before it is accepted. It links back to the validation checks from <strong>Topic 7</strong>:</p>
+    <table>
+      <tr><th style="width:22%;">Check</th><th>What it does</th><th>Database example</th></tr>
+      <tr><td><strong>Range check</strong></td><td>Value must be within set limits</td><td>Age field: 0–120</td></tr>
+      <tr><td><strong>Presence check</strong></td><td>Field must not be left blank</td><td>Mandatory LastName field</td></tr>
+      <tr><td><strong>Format check</strong></td><td>Data must match a pattern</td><td>Postcode must be e.g. <span class="inline-code">CB2 1AA</span></td></tr>
+      <tr><td><strong>Type check</strong></td><td>Data must be the correct data type</td><td>Age must be numeric, not text</td></tr>
+      <tr><td><strong>Length check</strong></td><td>Data must be a set number of characters</td><td>MemberID must be 4 characters</td></tr>
+    </table>
+    <div class="callout warn"><strong>Remember:</strong> validation cannot check that data is actually <em>correct</em> — only that it is <em>reasonable</em>.</div>
+    <div class="slide-footer"><span class="section-label">9.1 · Single-Table Databases</span><span class="slide-number">5 / 20</span></div>
+  </div>
+
+  <!-- ============ SLIDE 6 – DATABASE DATA TYPES ============ -->
+  <div class="slide" data-slide="6">
+    <span class="section-badge sec-92">9.2</span>
+    <h2>Database Data Types</h2>
+    <table>
+      <tr><th style="width:24%;">Data type</th><th>Stores</th><th>Examples</th></tr>
+      <tr><td><strong>Text / Alphanumeric</strong></td><td>Letters, numbers and symbols</td><td>Names, addresses, telephone numbers</td></tr>
+      <tr><td><strong>Character</strong></td><td>A single letter or symbol</td><td>Gender: <span class="inline-code">'M'</span> or <span class="inline-code">'F'</span></td></tr>
+      <tr><td><strong>Boolean</strong></td><td>A logical value with only two states</td><td><span class="inline-code">Paid</span>: TRUE or FALSE</td></tr>
+      <tr><td><strong>Integer</strong></td><td>Whole numbers</td><td>Quantities, stock levels</td></tr>
+      <tr><td><strong>Real</strong></td><td>Numbers with decimal places</td><td>Prices, weights</td></tr>
+      <tr><td><strong>Date / Time</strong></td><td>Dates and times</td><td><span class="inline-code">DateOfBirth</span> as DD/MM/YYYY</td></tr>
+    </table>
+    <div class="worked-example">
+      <span class="we-label">Quick check</span>
+      <h4>Which type for each field?</h4>
+      <p class="text-small"><span class="inline-code">Price</span> → <strong>Real</strong> &nbsp;·&nbsp; <span class="inline-code">Quantity</span> → <strong>Integer</strong> &nbsp;·&nbsp; <span class="inline-code">PhoneNo</span> → <strong>Text</strong> (not Integer — it isn't used in calculations!)</p>
+    </div>
+    <div class="slide-footer"><span class="section-label">9.2 · Basic Data Types</span><span class="slide-number">6 / 20</span></div>
+  </div>
+
+  <!-- ============ SLIDE 7 – WORKED TABLE STRUCTURE ============ -->
+  <div class="slide" data-slide="7">
+    <span class="section-badge sec-92">9.2</span>
+    <h2>Worked Example: Defining a Table Structure</h2>
+    <p class="text-small" style="margin-bottom:6px;"><strong>Scenario:</strong> a sports club needs to store member details. Define the fields, suitable data types, and validation checks:</p>
+    <table class="db-table">
+      <tr><th>Field</th><th>Data type</th><th>Validation check</th></tr>
+      <tr><td class="pk">MemberID</td><td>Text</td><td>Format check (e.g. <span class="inline-code">M001</span>)</td></tr>
+      <tr><td>LastName</td><td>Text</td><td>Presence check (must not be blank)</td></tr>
+      <tr><td>JoinDate</td><td>Date / Time</td><td>Range check (must be a valid date)</td></tr>
+      <tr><td>FeePaid</td><td>Boolean</td><td>None (only TRUE / FALSE)</td></tr>
+      <tr><td>Age</td><td>Integer</td><td>Range check (e.g. 0–120)</td></tr>
+    </table>
+    <div class="worked-example" style="margin-top:8px;">
+      <span class="we-label">Why these choices?</span>
+      <ul class="text-small" style="padding-left:16px; margin-top:4px;">
+        <li><strong>MemberID → Text</strong> — codes like <span class="inline-code">M001</span> keep leading zeros, so store as text.</li>
+        <li><strong>Age → Integer</strong> — whole numbers only; no decimal ages.</li>
+        <li><strong>JoinDate → Date/Time</strong> — proper dates can be compared and sorted.</li>
+        <li><strong>FeePaid → Boolean</strong> — only two states: TRUE or FALSE.</li>
+      </ul>
+    </div>
+    <div class="slide-footer"><span class="section-label">9.2 · Basic Data Types</span><span class="slide-number">7 / 20</span></div>
+  </div>
+
+  <!-- ============ SLIDE 8 – QUIZ 9.1 & 9.2 ============ -->
+  <div class="slide" data-slide="8">
+    <span class="section-badge quiz">9.1–9.2 · Recap</span>
+    <h2>Quick Check — Databases, Fields &amp; Data Types</h2>
+    <div class="reveal-container">
+      <p><strong>Q1.</strong> Explain the difference between a field and a record.</p>
+      <button class="reveal-btn" data-target="q1">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q1"><strong>Answer:</strong> A <strong>field</strong> is a single column that stores one attribute (e.g. <span class="inline-code">FirstName</span>); a <strong>record</strong> is a single row containing all the fields for one entity (e.g. one student).</div>
+    </div>
+    <div class="reveal-container">
+      <p><strong>Q2.</strong> State the most suitable data type for a product price such as £4.99.</p>
+      <button class="reveal-btn" data-target="q2">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q2"><strong>Answer:</strong> <span class="inline-code">Real</span> — prices have decimal places and need to be stored as numbers.</div>
+    </div>
+    <div class="reveal-container">
+      <p><strong>Q3.</strong> Suggest a validation check for a field storing a month number (1–12).</p>
+      <button class="reveal-btn" data-target="q3">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q3"><strong>Answer:</strong> A <strong>range check</strong> — the value must be between 1 and 12 inclusive (and a <strong>type check</strong> to ensure it is an integer).</div>
+    </div>
+    <div class="slide-footer"><span class="section-label">9.1 &amp; 9.2 · Recap</span><span class="slide-number">8 / 20</span></div>
+  </div>
+
+  <!-- ============ SLIDE 9 – OBJECTIVES 9.3 & 9.4 ============ -->
+  <div class="slide" data-slide="9">
+    <span class="section-badge sec-93">9.3</span>
+    <h2>Learning Objectives — 9.3 &amp; 9.4</h2>
+    <p class="text-small" style="margin-bottom:12px;">By the end of these sections you should be able to:</p>
+    <ul class="objectives-list">
+      <li><strong>Understand the purpose of a primary key</strong></li>
+      <li><strong>Identify a suitable primary key</strong> for a given database table</li>
+      <li><strong>Read, understand, and complete SQL scripts</strong> to query data in a single table</li>
+    </ul>
+    <div class="slide-footer"><span class="section-label">9.3 · Primary Keys</span><span class="slide-number">9 / 20</span></div>
+  </div>
+
+  <!-- ============ SLIDE 10 – PRIMARY KEY ============ -->
+  <div class="slide" data-slide="10">
+    <span class="section-badge sec-93">9.3</span>
+    <h2>The Primary Key</h2>
+    <p>A <strong>primary key</strong> is a field (or combination of fields) that <strong>uniquely identifies each record</strong> in a database table.</p>
+    <div class="grid-2" style="margin-top:8px;">
+      <div class="card"><h4>🔑 UNIQUE</h4><p class="text-small">No two records can have the <strong>same</strong> primary key value.</p></div>
+      <div class="card"><h4>🚫 NOT NULL</h4><p class="text-small">A primary key field <strong>cannot be left blank</strong> — it must contain a value for every record.</p></div>
+    </div>
+    <table class="db-table" style="margin-top:12px;">
+      <tr><th class="pk">StudentID 🔑</th><th>FirstName</th><th>LastName</th><th>Class</th></tr>
+      <tr><td class="pk">S101</td><td>Aisha</td><td>Khan</td><td>9A</td></tr>
+      <tr><td class="pk">S102</td><td>Ben</td><td>Smith</td><td>9B</td></tr>
+      <tr><td class="pk">S103</td><td>Chen</td><td>Li</td><td>9A</td></tr>
+      <tr><td class="pk">S104</td><td>Diya</td><td>Patel</td><td>9B</td></tr>
+    </table>
+    <div class="callout info"><strong>Why it matters:</strong> the primary key lets the database find, update, and remove one specific record without affecting any others.</div>
+    <div class="slide-footer"><span class="section-label">9.3 · Primary Keys</span><span class="slide-number">10 / 20</span></div>
+  </div>
+
+  <!-- ============ SLIDE 11 – IDENTIFYING A PRIMARY KEY ============ -->
+  <div class="slide" data-slide="11">
+    <span class="section-badge sec-93">9.3</span>
+    <h2>Identifying a Suitable Primary Key</h2>
+    <p class="text-small" style="margin-bottom:6px;"><strong>Worked example:</strong> which field should be the primary key for this student table?</p>
+    <table class="db-table">
+      <tr><th>StudentID</th><th>FirstName</th><th>LastName</th><th>DateOfBirth</th><th>Class</th></tr>
+      <tr><td class="pk">S101</td><td>Aisha</td><td>Khan</td><td>12/03/2009</td><td>9A</td></tr>
+      <tr><td class="pk">S102</td><td>Ben</td><td>Smith</td><td>25/07/2008</td><td>9B</td></tr>
+      <tr><td class="pk">S103</td><td>Aisha</td><td>Khan</td><td>12/03/2009</td><td>9A</td></tr>
+      <tr><td class="pk">S104</td><td>Diya</td><td>Patel</td><td>19/01/2008</td><td>9B</td></tr>
+    </table>
+    <div class="worked-example" style="margin-top:8px;">
+      <span class="we-label">Why StudentID and not the others?</span>
+      <ul class="text-small" style="padding-left:16px; margin-top:4px;">
+        <li><strong>FirstName / LastName:</strong> two students can share a name — not unique.</li>
+        <li><strong>DateOfBirth:</strong> twins could share a birthday — not unique.</li>
+        <li><strong>Class:</strong> many students are in the same class — definitely not unique.</li>
+        <li><strong>StudentID:</strong> every student is given a different ID — <strong>unique for every record</strong> ✓</li>
+      </ul>
+    </div>
+    <div class="exam-tip"><span class="tip-icon">💡</span><span class="tip-text"><strong>Exam Tip:</strong> if an exam question asks you to choose a primary key, look for a field that is <strong>guaranteed to be unique for every single record</strong>, such as an ID number or code.</span></div>
+    <div class="slide-footer"><span class="section-label">9.3 · Primary Keys</span><span class="slide-number">11 / 20</span></div>
+  </div>
+
+  <!-- ============ SLIDE 12 – INTRODUCTION TO SQL ============ -->
+  <div class="slide" data-slide="12">
+    <span class="section-badge sec-94">9.4</span>
+    <h2>Introduction to SQL</h2>
+    <p><strong>Structured Query Language (SQL)</strong> is the standard programming language used to <strong>manage and query data</strong> in relational databases.</p>
+    <div class="grid-2" style="margin-top:8px;">
+      <div class="card"><h4>🗣️ What SQL does</h4><p class="text-small">Retrieves specific data from tables, filters it, sorts it, and performs calculations (totals and counts).</p></div>
+      <div class="card"><h4>📏 IGCSE scope</h4><p class="text-small">At IGCSE, SQL is limited to <strong>querying data from a single table</strong> — no multi-table joins.</p></div>
+    </div>
+    <div class="worked-example">
+      <span class="we-label">Worked example — the very first query</span>
+      <div class="code-block"><span class="comment">-- Show every field of every record in the Students table</span>
+<span class="hl">SELECT</span> *
+<span class="hl">FROM</span> Students;</div>
+      <p class="text-small" style="margin-top:6px;"><span class="inline-code">*</span> means <strong>"all fields"</strong>. The semicolon <span class="inline-code">;</span> marks the end of the query.</p>
+    </div>
+    <div class="callout info"><strong>Convention:</strong> SQL keywords are written in <strong>UPPERCASE</strong> — <span class="inline-code">SELECT</span>, <span class="inline-code">FROM</span>, <span class="inline-code">WHERE</span>…</div>
+    <div class="slide-footer"><span class="section-label">9.4 · Structured Query Language</span><span class="slide-number">12 / 20</span></div>
+  </div>
+
+  <!-- ============ SLIDE 13 – SELECT AND FROM ============ -->
+  <div class="slide" data-slide="13">
+    <span class="section-badge sec-94">9.4</span>
+    <h2>SQL Syntax: SELECT and FROM</h2>
+    <div class="grid-2" style="margin-top:6px;">
+      <div class="card"><h4>🔍 SELECT</h4><p class="text-small">Specifies the <strong>fields (columns)</strong> to display in the output. Use <span class="inline-code">*</span> to select all fields.</p></div>
+      <div class="card"><h4>📦 FROM</h4><p class="text-small">Specifies the <strong>table</strong> to query.</p></div>
+    </div>
+    <div class="worked-example">
+      <span class="we-label">Worked examples</span>
+      <div class="code-block"><span class="comment">-- Show FirstName and LastName for every student</span>
+<span class="hl">SELECT</span> FirstName, LastName
+<span class="hl">FROM</span> Students;</div>
+      <div class="code-block"><span class="comment">-- Show ALL fields for every student</span>
+<span class="hl">SELECT</span> *
+<span class="hl">FROM</span> Students;</div>
+    </div>
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 80" role="img" aria-label="SELECT and FROM structure">
+        <rect x="40" y="15" width="300" height="50" rx="9" fill="#1c183e" stroke="#a5b4fc" stroke-width="1.5"/>
+        <text x="190" y="36" fill="#c7d2fe" font-size="12" text-anchor="middle" font-family="monospace">SELECT FirstName, LastName</text>
+        <text x="190" y="54" fill="#918cb8" font-size="10" text-anchor="middle" font-family="monospace">which columns?</text>
+        <rect x="390" y="15" width="290" height="50" rx="9" fill="#1c183e" stroke="#a5b4fc" stroke-width="1.5"/>
+        <text x="535" y="36" fill="#c7d2fe" font-size="12" text-anchor="middle" font-family="monospace">FROM Students</text>
+        <text x="535" y="54" fill="#918cb8" font-size="10" text-anchor="middle" font-family="monospace">which table?</text>
+        <line x1="340" y1="40" x2="386" y2="40" stroke="#a5b4fc" stroke-width="2.5"/>
+      </svg>
+      <div class="diagram-caption">SELECT picks the columns, FROM names the table</div>
+    </div>
+    <div class="slide-footer"><span class="section-label">9.4 · Structured Query Language</span><span class="slide-number">13 / 20</span></div>
+  </div>
+
+  <!-- ============ SLIDE 14 – WHERE ============ -->
+  <div class="slide" data-slide="14">
+    <span class="section-badge sec-94">9.4</span>
+    <h2>SQL Syntax: WHERE</h2>
+    <p><span class="inline-code">WHERE</span> filters rows — only records that match the <strong>condition</strong> are shown.</p>
+    <div class="worked-example">
+      <span class="we-label">Worked examples on the Students table</span>
+      <div class="code-block"><span class="comment">-- Students in class 9A only</span>
+<span class="hl">SELECT</span> FirstName, LastName
+<span class="hl">FROM</span> Students
+<span class="hl">WHERE</span> Class = <span class="str">'9A'</span>;</div>
+      <div class="code-block"><span class="comment">-- Students aged 14 or over</span>
+<span class="hl">SELECT</span> *
+<span class="hl">FROM</span> Students
+<span class="hl">WHERE</span> Age &gt;= 14;</div>
+    </div>
+    <table>
+      <tr><th style="width:24%;">Operator</th><th>Meaning</th><th style="width:30%;">Example</th></tr>
+      <tr><td class="mono">=</td><td>Equal to</td><td class="mono">Class = '9A'</td></tr>
+      <tr><td class="mono">&lt;&gt;</td><td>Not equal to</td><td class="mono">Class &lt;&gt; '9B'</td></tr>
+      <tr><td class="mono">&lt; &gt; &lt;= &gt;=</td><td>Less than / greater than / or equal</td><td class="mono">Age &gt;= 14</td></tr>
+    </table>
+    <div class="callout info"><strong>Note:</strong> text values in conditions are written inside <strong>single quotes</strong> — <span class="inline-code">'9A'</span>. Numbers are written without quotes.</div>
+    <div class="slide-footer"><span class="section-label">9.4 · Structured Query Language</span><span class="slide-number">14 / 20</span></div>
+  </div>
+
+  <!-- ============ SLIDE 15 – ORDER BY ============ -->
+  <div class="slide" data-slide="15">
+    <span class="section-badge sec-94">9.4</span>
+    <h2>SQL Syntax: ORDER BY</h2>
+    <p><span class="inline-code">ORDER BY</span> sorts the output by a field — ascending (<span class="inline-code">ASC</span>, A→Z / low→high, the default) or descending (<span class="inline-code">DESC</span>, Z→A / high→low).</p>
+    <div class="worked-example">
+      <span class="we-label">Worked examples</span>
+      <div class="code-block"><span class="comment">-- All students sorted by surname, A to Z</span>
+<span class="hl">SELECT</span> FirstName, LastName
+<span class="hl">FROM</span> Students
+<span class="hl">ORDER BY</span> LastName <span class="hl">ASC</span>;</div>
+      <div class="code-block"><span class="comment">-- All students sorted by age, oldest first</span>
+<span class="hl">SELECT</span> *
+<span class="hl">FROM</span> Students
+<span class="hl">ORDER BY</span> Age <span class="hl">DESC</span>;</div>
+    </div>
+    <div class="callout warn"><strong>Exam Tip:</strong> <span class="inline-code">ORDER BY</span> is written <em>after</em> <span class="inline-code">WHERE</span> (if both are used): <span class="inline-code">SELECT ... FROM ... WHERE ... ORDER BY ...</span></div>
+    <div class="slide-footer"><span class="section-label">9.4 · Structured Query Language</span><span class="slide-number">15 / 20</span></div>
+  </div>
+
+  <!-- ============ SLIDE 16 – SUM AND COUNT ============ -->
+  <div class="slide" data-slide="16">
+    <span class="section-badge sec-94">9.4</span>
+    <h2>SQL Calculations: SUM and COUNT</h2>
+    <div class="grid-2" style="margin-top:6px;">
+      <div class="card"><h4>➕ SUM(field)</h4><p class="text-small">Adds up all the values in a numeric field.</p></div>
+      <div class="card"><h4>🔢 COUNT(*)</h4><p class="text-small">Counts how many records (rows) match.</p></div>
+    </div>
+    <div class="worked-example">
+      <span class="we-label">Worked examples</span>
+      <div class="code-block"><span class="comment">-- Total age of all students</span>
+<span class="hl">SELECT</span> <span class="hl">SUM</span>(Age)
+<span class="hl">FROM</span> Students;</div>
+      <div class="code-block"><span class="comment">-- How many students are in the table?</span>
+<span class="hl">SELECT</span> <span class="hl">COUNT</span>(*)
+<span class="hl">FROM</span> Students;</div>
+      <div class="code-block"><span class="comment">-- How many students are aged 14 or over?</span>
+<span class="hl">SELECT</span> <span class="hl">COUNT</span>(*)
+<span class="hl">FROM</span> Students
+<span class="hl">WHERE</span> Age &gt;= 14;</div>
+    </div>
+    <div class="callout info"><strong>COUNT(*) counts rows;</strong> SUM works on one numeric field at a time and returns a single number.</div>
+    <div class="slide-footer"><span class="section-label">9.4 · Structured Query Language</span><span class="slide-number">16 / 20</span></div>
+  </div>
+
+  <!-- ============ SLIDE 17 – AND AND OR ============ -->
+  <div class="slide" data-slide="17">
+    <span class="section-badge sec-94">9.4</span>
+    <h2>SQL Logic: AND and OR</h2>
+    <div class="grid-2" style="margin-top:6px;">
+      <div class="card"><h4>✅ AND</h4><p class="text-small"><strong>Both</strong> conditions must be true.</p></div>
+      <div class="card"><h4>🔀 OR</h4><p class="text-small"><strong>At least one</strong> condition must be true.</p></div>
+    </div>
+    <div class="worked-example">
+      <span class="we-label">Worked examples</span>
+      <div class="code-block"><span class="comment">-- Students who are BOTH in 9A AND aged 14 or over</span>
+<span class="hl">SELECT</span> FirstName, LastName
+<span class="hl">FROM</span> Students
+<span class="hl">WHERE</span> Class = <span class="str">'9A'</span> <span class="hl">AND</span> Age &gt;= 14;</div>
+      <div class="code-block"><span class="comment">-- Students who are in 9A OR in 9B (i.e. everyone in both classes)</span>
+<span class="hl">SELECT</span> *
+<span class="hl">FROM</span> Students
+<span class="hl">WHERE</span> Class = <span class="str">'9A'</span> <span class="hl">OR</span> Class = <span class="str">'9B'</span>;</div>
+    </div>
+    <table>
+      <tr><th style="width:30%;">Condition</th><th>Class = '9A'</th><th>Age &gt;= 14</th><th>Result</th></tr>
+      <tr><td class="mono">… AND …</td><td>TRUE</td><td class="no">FALSE</td><td class="no">FALSE — row not shown</td></tr>
+      <tr><td class="mono">… OR …</td><td>TRUE</td><td class="no">FALSE</td><td class="ok">TRUE — row shown</td></tr>
+    </table>
+    <div class="slide-footer"><span class="section-label">9.4 · Structured Query Language</span><span class="slide-number">17 / 20</span></div>
+  </div>
+
+  <!-- ============ SLIDE 18 – WORKED COMPLETE QUERY ============ -->
+  <div class="slide" data-slide="18">
+    <span class="section-badge sec-94">9.4</span>
+    <h2>Worked Example: A Complete SQL Query</h2>
+    <p class="text-small" style="margin-bottom:6px;">Combining SELECT, WHERE, ORDER BY and COUNT on the <strong>Students</strong> table:</p>
+    <table class="db-table" style="margin-bottom:10px;">
+      <tr><th class="pk">StudentID</th><th>FirstName</th><th>LastName</th><th>Class</th><th>Age</th></tr>
+      <tr><td class="pk">S101</td><td>Aisha</td><td>Khan</td><td>9A</td><td>14</td></tr>
+      <tr><td class="pk">S102</td><td>Ben</td><td>Smith</td><td>9B</td><td>15</td></tr>
+      <tr><td class="pk">S103</td><td>Chen</td><td>Li</td><td>9A</td><td>14</td></tr>
+      <tr><td class="pk">S104</td><td>Diya</td><td>Patel</td><td>9B</td><td>15</td></tr>
+      <tr><td class="pk">S105</td><td>Elena</td><td>Ruiz</td><td>9A</td><td>13</td></tr>
+    </table>
+    <div class="worked-example">
+      <span class="we-label">Query 1 — names of 9A students sorted by surname</span>
+      <div class="code-block"><span class="hl">SELECT</span> FirstName, LastName
+<span class="hl">FROM</span> Students
+<span class="hl">WHERE</span> Class = <span class="str">'9A'</span>
+<span class="hl">ORDER BY</span> LastName <span class="hl">ASC</span>;</div>
+      <p class="text-small"><strong>Result:</strong> <span class="inline-code">Aisha Khan · Chen Li · Elena Ruiz</span> (sorted by surname)</p>
+    </div>
+    <div class="worked-example">
+      <span class="we-label">Query 2 — how many students are aged 14 or over?</span>
+      <div class="code-block"><span class="hl">SELECT</span> <span class="hl">COUNT</span>(*)
+<span class="hl">FROM</span> Students
+<span class="hl">WHERE</span> Age &gt;= 14;</div>
+      <p class="text-small"><strong>Result:</strong> <span class="inline-code">4</span> (Khan, Smith, Li, Patel)</p>
+    </div>
+    <div class="slide-footer"><span class="section-label">9.4 · Structured Query Language</span><span class="slide-number">18 / 20</span></div>
+  </div>
+
+  <!-- ============ SLIDE 19 – QUIZ 9.4 ============ -->
+  <div class="slide" data-slide="19">
+    <span class="section-badge quiz">9.4 · Recap</span>
+    <h2>Quick Check — SQL</h2>
+    <div class="reveal-container">
+      <p><strong>Q4.</strong> Write an SQL query to show the <span class="inline-code">FirstName</span> and <span class="inline-code">LastName</span> of all students in the <span class="inline-code">Students</span> table.</p>
+      <button class="reveal-btn" data-target="q4">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q4"><strong>Answer:</strong> <div class="code-block" style="margin-top:4px;"><span class="hl">SELECT</span> FirstName, LastName
+<span class="hl">FROM</span> Students;</div></div>
+    </div>
+    <div class="reveal-container">
+      <p><strong>Q5.</strong> Write an SQL query to show all fields of students in class <span class="inline-code">'9B'</span>, sorted by <span class="inline-code">Age</span> from highest to lowest.</p>
+      <button class="reveal-btn" data-target="q5">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q5"><strong>Answer:</strong> <div class="code-block" style="margin-top:4px;"><span class="hl">SELECT</span> *
+<span class="hl">FROM</span> Students
+<span class="hl">WHERE</span> Class = <span class="str">'9B'</span>
+<span class="hl">ORDER BY</span> Age <span class="hl">DESC</span>;</div></div>
+    </div>
+    <div class="reveal-container">
+      <p><strong>Q6.</strong> What does this query return? <div class="code-block" style="margin-top:4px;"><span class="hl">SELECT</span> <span class="hl">COUNT</span>(*)
+<span class="hl">FROM</span> Students;</div></p>
+      <button class="reveal-btn" data-target="q6">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q6"><strong>Answer:</strong> A single number: the <strong>total number of records (rows)</strong> in the Students table.</div>
+    </div>
+    <div class="slide-footer"><span class="section-label">9.4 · Structured Query Language</span><span class="slide-number">19 / 20</span></div>
+  </div>
+
+  <!-- ============ SLIDE 20 – SUMMARY ============ -->
+  <div class="slide" data-slide="20">
+    <span class="section-badge">Topic 9</span>
+    <h2>Topic 9 Summary — Databases</h2>
+    <div class="diagram-box">
+      <svg viewBox="0 0 760 300" role="img" aria-label="Topic 9 mind-map summary">
+        <rect x="255" y="14" width="250" height="44" rx="10" fill="#4f46e5" stroke="#a5b4fc" stroke-width="1.8"/>
+        <text x="380" y="41" fill="#f4f1ff" font-size="15" font-weight="bold" text-anchor="middle" font-family="monospace">TOPIC 9</text>
+        <rect x="30" y="100" width="220" height="72" rx="9" fill="#1c183e" stroke="#a5b4fc" stroke-width="1.5"/>
+        <text x="140" y="122" fill="#c7d2fe" font-size="12" font-weight="bold" text-anchor="middle" font-family="monospace">9.1/9.2 TABLES</text>
+        <text x="140" y="139" fill="#918cb8" font-size="10" text-anchor="middle" font-family="monospace">fields (columns) · records (rows)</text>
+        <text x="140" y="153" fill="#918cb8" font-size="10" text-anchor="middle" font-family="monospace">data types · validation</text>
+        <text x="140" y="167" fill="#918cb8" font-size="10" text-anchor="middle" font-family="monospace">Text/Char/Boolean/Int/Real/Date</text>
+        <rect x="270" y="100" width="220" height="72" rx="9" fill="#1c183e" stroke="#a5b4fc" stroke-width="1.5"/>
+        <text x="380" y="122" fill="#c7d2fe" font-size="12" font-weight="bold" text-anchor="middle" font-family="monospace">9.3 PRIMARY KEY</text>
+        <text x="380" y="139" fill="#918cb8" font-size="10" text-anchor="middle" font-family="monospace">uniquely identifies each record</text>
+        <text x="380" y="153" fill="#918cb8" font-size="10" text-anchor="middle" font-family="monospace">UNIQUE + NOT NULL</text>
+        <text x="380" y="167" fill="#918cb8" font-size="10" text-anchor="middle" font-family="monospace">e.g. StudentID</text>
+        <rect x="510" y="100" width="220" height="72" rx="9" fill="#1c183e" stroke="#a5b4fc" stroke-width="1.5"/>
+        <text x="620" y="122" fill="#c7d2fe" font-size="12" font-weight="bold" text-anchor="middle" font-family="monospace">9.4 SQL</text>
+        <text x="620" y="139" fill="#918cb8" font-size="10" text-anchor="middle" font-family="monospace">SELECT · FROM · WHERE</text>
+        <text x="620" y="153" fill="#918cb8" font-size="10" text-anchor="middle" font-family="monospace">ORDER BY · SUM · COUNT</text>
+        <text x="620" y="167" fill="#918cb8" font-size="10" text-anchor="middle" font-family="monospace">AND · OR</text>
+        <line x1="380" y1="58" x2="140" y2="96" stroke="#a5b4fc" stroke-width="1.5"/>
+        <line x1="380" y1="58" x2="380" y2="96" stroke="#a5b4fc" stroke-width="1.5"/>
+        <line x1="380" y1="58" x2="620" y2="96" stroke="#a5b4fc" stroke-width="1.5"/>
+        <rect x="180" y="215" width="400" height="44" rx="9" fill="#191539" stroke="#a5b4fc" stroke-width="1.5"/>
+        <text x="380" y="233" fill="#c7d2fe" font-size="11" font-weight="bold" text-anchor="middle" font-family="monospace">SQL QUERY ORDER</text>
+        <text x="380" y="250" fill="#918cb8" font-size="10" text-anchor="middle" font-family="monospace">SELECT → FROM → WHERE → ORDER BY · keywords in UPPERCASE</text>
+      </svg>
+      <div class="diagram-caption">Tables &amp; data types → primary key → querying with SQL</div>
+    </div>
+    <div class="callout info" style="margin-top:8px;"><strong>Exam-ready:</strong> be able to define table structures, choose a primary key, and write SELECT/FROM/WHERE/ORDER BY/SUM/COUNT queries using uppercase SQL keywords.</div>
+    <div class="slide-footer"><span class="section-label">Topic 9 · Summary</span><span class="slide-number">20 / 20</span></div>
+  </div>
+
+</div>
+
+<!-- ===== NAV BAR ===== -->
+<div class="nav-bar">
+  <button id="prevBtn" aria-label="Previous slide" onclick="changeSlide(-1)">← Prev</button>
+  <div class="progress-dots" id="progressDots"></div>
+  <span class="slide-counter" id="slideCounter">1 / 20</span>
+  <button id="nextBtn" aria-label="Next slide" onclick="changeSlide(1)">Next →</button>
+</div>
+<div class="kbd-hint">← → arrows · Home / End to jump</div>
+
+<script>
+  (function() {
+    const TOTAL = 20;
+    let current = 0;
+    function renderDots() {
+      const container = document.getElementById('progressDots');
+      container.innerHTML = '';
+      for (let i = 0; i < TOTAL; i++) {
+        const dot = document.createElement('button');
+        dot.className = 'dot' + (i === current ? ' active' : '');
+        dot.setAttribute('aria-label', 'Go to slide ' + (i+1));
+        dot.onclick = function() { goToSlide(i); };
+        container.appendChild(dot);
+      }
+    }
+    function goToSlide(idx) {
+      document.querySelectorAll('.slide').forEach((s, i) => s.classList.toggle('active', i === idx));
+      current = idx;
+      updateUI();
+      const active = document.querySelector('.slide.active');
+      if (active) active.scrollTop = 0;
+    }
+    function changeSlide(delta) {
+      const next = current + delta;
+      if (next < 0 || next >= TOTAL) return;
+      goToSlide(next);
+    }
+    function updateUI() {
+      document.getElementById('prevBtn').disabled = (current === 0);
+      document.getElementById('nextBtn').disabled = (current === TOTAL - 1);
+      document.getElementById('slideCounter').textContent = (current + 1) + ' / ' + TOTAL;
+      document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
+    }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown') { changeSlide(1); e.preventDefault(); }
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') { changeSlide(-1); e.preventDefault(); }
+      else if (e.key === 'Home') { goToSlide(0); e.preventDefault(); }
+      else if (e.key === 'End') { goToSlide(TOTAL - 1); e.preventDefault(); }
+    });
+    renderDots();
+    updateUI();
+    window.changeSlide = changeSlide;
+    window.goToSlide = goToSlide;
+    document.querySelectorAll('.reveal-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const el = document.getElementById(this.getAttribute('data-target'));
+        if (el) {
+          el.classList.toggle('visible');
+          this.textContent = el.classList.contains('visible') ? '🙈 Hide Answer' : '📌 Reveal Answer';
+        }
+      });
+    });
+  })();
+</script>
+</body>
+</html>

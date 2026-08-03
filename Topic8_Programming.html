@@ -1,0 +1,1758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topic 8: Programming — Cambridge IGCSE Computer Science</title>
+<link rel="stylesheet" href="css/topic-common.css">
+<style>
+/* ===== Topic-specific CSS ===== */
+
+
+  
+  .term-strip {
+    position: fixed;
+    top: 0; right: 0; bottom: 0;
+    width: 200px;
+    font-family: 'JetBrains Mono', 'Cascadia Code', monospace;
+    font-size: 12px;
+    line-height: 1.9;
+    color: rgba(59, 130, 246, 0.13);
+    padding: 24px 16px;
+    white-space: pre;
+    pointer-events: none;
+    z-index: 0;
+    user-select: none;
+    text-align: left;
+  }
+
+
+  .bg-glow-2 {
+    position: fixed; bottom: -20%; right: -10%; width: 55%; height: 55%;
+    background: radial-gradient(circle, rgba(37, 99, 235, 0.11) 0%, transparent 70%);
+    z-index: 0; pointer-events: none;
+    animation: glowFloat 18s ease-in-out infinite alternate-reverse;
+  }
+
+
+  .code-block {
+    font-family: 'JetBrains Mono', 'Cascadia Code', Consolas, monospace;
+    background: #0b120e; border: 1px solid #2d5c3d; border-radius: 8px;
+    padding: 12px 16px; margin: 8px 0; font-size: 0.86rem; line-height: 1.65;
+    color: #a7d4b8; overflow-x: auto; box-shadow: inset 0 0 24px rgba(34, 197, 94, 0.04); white-space: pre-wrap;
+  }
+
+
+  .code-block .hl { color: #4ade80; font-weight: 600; }
+
+
+  .code-block .op { color: #86efac; }
+
+
+  .code-block .comment { color: #5c7a69; font-style: italic; }
+
+
+  .code-block .str { color: #fdba74; }
+
+
+  .code-block .prompt { color: #22c55e; user-select: none; }
+
+
+  td.mono, th.mono { font-family: 'JetBrains Mono', Consolas, monospace; }
+
+
+  td.ok { color: #86efac; font-weight: 600; }
+
+
+  td.no { color: #fda4af; font-weight: 600; }
+
+
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+
+  .section-badge.sec-82 { background: linear-gradient(135deg, #166534, #16a34a); border-color: #4ade80; }
+
+
+  .section-badge.sec-83 { background: linear-gradient(135deg, #14532d, #15803d); border-color: #22c55e; }
+
+
+  .section-badge.quiz { background: linear-gradient(135deg, #1e3a2f, #2f5c46); border-color: #34d399; color: #a7f3d0; }
+
+
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+
+
+    .term-strip { display: none; }
+</style>
+</head>
+<body>
+
+<div class="term-strip"><span class="prompt">$</span> python main.py
+<span class="prompt">$</span> _ ▍
+
+<span class="hl">DECLARE</span> x : INTEGER
+<span class="hl">INPUT</span> x
+
+<span class="hl">IF</span> x &gt; 5 <span class="hl">THEN</span>
+    <span class="hl">OUTPUT</span> "big"
+<span class="hl">ELSE</span>
+    <span class="hl">OUTPUT</span> "small"
+<span class="hl">ENDIF</span>
+
+<span class="hl">FOR</span> i <span class="op">←</span> 1 <span class="hl">TO</span> 10
+    <span class="hl">NEXT</span> i
+
+<span class="hl">WHILE</span> n &lt;&gt; 0 <span class="hl">DO</span>
+<span class="hl">ENDWHILE</span>
+
+<span class="hl">REPEAT</span> <span class="hl">UNTIL</span> done
+
+<span class="hl">FUNCTION</span> f() <span class="hl">RETURNS</span> INT
+<span class="hl">RETURN</span> r
+<span class="hl">ENDFUNCTION</span>
+
+<span class="hl">PROCEDURE</span> p()
+<span class="hl">ENDPROCEDURE</span>
+
+s[i] <span class="op">←</span> "data"
+<span class="op">//</span> comment line
+<span class="prompt">$</span> ▍</div>
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+<div class="bg-glow-2"></div>
+
+<div class="presentation">
+
+  <!-- ============ SLIDE 1 – TITLE ============ -->
+  <div class="slide active" data-slide="1">
+    <div style="flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
+      <div class="section-badge">Cambridge IGCSE · 0478 / 0984 / 0418</div>
+      <h1 style="font-size:3rem; margin-top:10px;">Topic 8: Programming</h1>
+      <p style="color:#8fb39e; font-size:1.05rem; margin-top:8px;">Pseudocode, data types, control flow, procedures, arrays &amp; file handling</p>
+      <div class="grid-3" style="max-width:680px; margin-top:34px; width:100%;">
+        <div class="icon-tile"><span class="ico">💻</span><span class="ico-label">Code Editor</span><span class="ico-sub">write &amp; edit</span></div>
+        <div class="icon-tile"><span class="ico"><svg viewBox="0 0 40 30" style="width:34px; height:26px;"><rect x="2" y="4" width="36" height="22" rx="4" fill="none" stroke="#4ade80" stroke-width="1.6"/><text x="8" y="20" fill="#86efac" font-size="12" font-family="monospace">&gt;_</text></svg></span><span class="ico-label">Terminal</span><span class="ico-sub">run &amp; test</span></div>
+        <div class="icon-tile"><span class="ico">📁</span><span class="ico-label">Arrays &amp; Files</span><span class="ico-sub">store data</span></div>
+      </div>
+      <p style="color:#5d7d6b; font-size:0.85rem; margin-top:32px;">8.1 Programming Concepts · 8.2 Arrays · 8.3 File Handling</p>
+      <p style="color:#5d7d6b; font-size:0.8rem;">Press <span class="inline-code">→</span> or click the navigation to begin</p>
+    </div>
+    <div class="slide-footer"><span class="section-label">Topic 8 · Overview</span><span class="slide-number">1 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 2 – OBJECTIVES 8.1 PART 1 ============ -->
+  <div class="slide" data-slide="2">
+    <span class="section-badge">8.1.1</span>
+    <h2>Learning Objectives — 8.1 Programming Concepts (Part 1)</h2>
+    <p class="text-small" style="margin-bottom:12px;">By the end of this part you should be able to:</p>
+    <ul class="objectives-list">
+      <li><strong>Declare and use variables and constants</strong> in pseudocode</li>
+      <li><strong>Understand and use the basic data types:</strong> Integer, Real, Char, String, Boolean</li>
+      <li><strong>Understand and use input and output</strong> statements (<span class="inline-code">INPUT</span> / <span class="inline-code">OUTPUT</span>)</li>
+    </ul>
+    <div class="callout info" style="margin-top:12px;"><strong>Note:</strong> all pseudocode in this topic follows the <strong>Cambridge IGCSE pseudocode conventions</strong> — the exact style examiners expect.</div>
+    <div class="slide-footer"><span class="section-label">8.1.1 · Variables &amp; Constants</span><span class="slide-number">2 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 3 – VARIABLES VS CONSTANTS ============ -->
+  <div class="slide" data-slide="3">
+    <span class="section-badge">8.1.1</span>
+    <h2>Variables vs. Constants</h2>
+    <table>
+      <tr><th style="width:24%;"></th><th>Variable</th><th>Constant</th></tr>
+      <tr><td><strong>What is it?</strong></td><td>A named location in memory that stores a value which can <strong>change</strong> while the program runs.</td><td>A named location in memory that stores a <strong>fixed value</strong> which cannot change while the program runs.</td></tr>
+      <tr><td><strong>Declaration</strong></td><td class="mono">DECLARE score : INTEGER</td><td class="mono">CONSTANT MaxScore = 100</td></tr>
+      <tr><td><strong>Example</strong></td><td>Player's current score (changes as the game is played)</td><td>The maximum score possible, or VAT rate</td></tr>
+    </table>
+    <div class="worked-example">
+      <span class="we-label">Worked example</span>
+      <h4>Score can change; the maximum cannot</h4>
+      <div class="code-block"><span class="hl">DECLARE</span> Score : INTEGER
+<span class="hl">CONSTANT</span> MaxScore = 100
+
+Score <span class="op">←</span> 45
+Score <span class="op">←</span> 78      <span class="comment">// allowed — value can change</span>
+<span class="comment">// MaxScore ← 99  would be an ERROR — constants cannot change</span>
+<span class="hl">OUTPUT</span> Score &amp; " out of " &amp; MaxScore</div>
+    </div>
+    <div class="exam-tip"><span class="tip-icon">💡</span><span class="tip-text"><strong>Exam Tip:</strong> always use <strong>meaningful identifiers</strong> — <span class="inline-code">Score</span> is better than <span class="inline-code">x</span>.</span></div>
+    <div class="slide-footer"><span class="section-label">8.1.1 · Variables &amp; Constants</span><span class="slide-number">3 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 4 – DECLARING VARIABLES ============ -->
+  <div class="slide" data-slide="4">
+    <span class="section-badge">8.1.1</span>
+    <h2>Declaring Variables in Pseudocode</h2>
+    <p>Standard syntax: <span class="inline-code">DECLARE &lt;identifier&gt; : &lt;data type&gt;</span></p>
+    <div class="worked-example">
+      <span class="we-label">Worked examples — one for each data type</span>
+      <div class="code-block"><span class="hl">DECLARE</span> Age : INTEGER      <span class="comment">// whole number</span>
+<span class="hl">DECLARE</span> Price : REAL        <span class="comment">// number with a decimal point</span>
+<span class="hl">DECLARE</span> Initial : CHAR     <span class="comment">// a single character</span>
+<span class="hl">DECLARE</span> Name : STRING      <span class="comment">// a sequence of characters</span>
+<span class="hl">DECLARE</span> Passed : BOOLEAN   <span class="comment">// TRUE or FALSE</span>
+<span class="hl">DECLARE</span> Scores : ARRAY[1:10] OF INTEGER  <span class="comment">// a list (see 8.2)</span></div>
+    </div>
+    <div class="grid-2" style="margin-top:8px;">
+      <div class="card"><h4>📝 Rule 1</h4><p class="text-small">Always declare a variable <strong>before</strong> using it.</p></div>
+      <div class="card"><h4>📝 Rule 2</h4><p class="text-small">The identifier name must be <strong>meaningful</strong> and match its data type.</p></div>
+    </div>
+    <div class="slide-footer"><span class="section-label">8.1.1 · Variables &amp; Constants</span><span class="slide-number">4 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 5 – BASIC DATA TYPES ============ -->
+  <div class="slide" data-slide="5">
+    <span class="section-badge">8.1.2</span>
+    <h2>The Five Basic Data Types</h2>
+    <table>
+      <tr><th style="width:18%;">Data type</th><th>Definition</th><th>Example</th></tr>
+      <tr><td><strong>Integer</strong></td><td>A whole number, positive or negative (no decimal point)</td><td class="mono">25 &nbsp;·&nbsp; -3 &nbsp;·&nbsp; 0</td></tr>
+      <tr><td><strong>Real</strong></td><td>A number with a decimal point</td><td class="mono">3.14 &nbsp;·&nbsp; -0.5</td></tr>
+      <tr><td><strong>Char</strong></td><td>A single character</td><td class="mono">'A' &nbsp;·&nbsp; '7' &nbsp;·&nbsp; '$'</td></tr>
+      <tr><td><strong>String</strong></td><td>A sequence of zero or more characters</td><td class="mono">"Hello World"</td></tr>
+      <tr><td><strong>Boolean</strong></td><td>A logical value that can only be <strong>TRUE</strong> or <strong>FALSE</strong></td><td class="mono">TRUE &nbsp;·&nbsp; FALSE</td></tr>
+    </table>
+    <div class="callout warn" style="margin-top:8px;"><strong>Watch out:</strong> <span class="inline-code">'7'</span> (Char) and <span class="inline-code">7</span> (Integer) are different — one is text, the other is a number you can calculate with.</div>
+    <div class="slide-footer"><span class="section-label">8.1.2 · Basic Data Types</span><span class="slide-number">5 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 6 – CHOOSING DATA TYPE ============ -->
+  <div class="slide" data-slide="6">
+    <span class="section-badge">8.1.2</span>
+    <h2>Choosing the Correct Data Type</h2>
+    <p class="text-small" style="margin-bottom:8px;">Match each real-world value to the most suitable data type:</p>
+    <table>
+      <tr><th style="width:40%;">Real-world value</th><th style="width:20%;">Data type</th><th>Why</th></tr>
+      <tr><td>A student's name (e.g., "Aisha")</td><td class="mono">STRING</td><td>A sequence of characters</td></tr>
+      <tr><td>An exam mark (e.g., 78)</td><td class="mono">INTEGER</td><td>A whole number</td></tr>
+      <tr><td>Pass / fail status</td><td class="mono">BOOLEAN</td><td>Only two possible states</td></tr>
+      <tr><td>Average grade (e.g., 7.5)</td><td class="mono">REAL</td><td>Has a decimal point</td></tr>
+      <tr><td>First initial (e.g., 'A')</td><td class="mono">CHAR</td><td>A single character</td></tr>
+    </table>
+    <div class="callout info"><strong>Rule of thumb:</strong> can you do arithmetic with it? → numeric. Is it a single symbol? → Char. Is it a word/sentence? → String. Only two answers? → Boolean.</div>
+    <div class="slide-footer"><span class="section-label">8.1.2 · Basic Data Types</span><span class="slide-number">6 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 7 – INPUT AND OUTPUT ============ -->
+  <div class="slide" data-slide="7">
+    <span class="section-badge">8.1.3</span>
+    <h2>Input and Output Statements</h2>
+    <table>
+      <tr><th style="width:34%;">Statement</th><th>Purpose</th></tr>
+      <tr><td class="mono">INPUT &lt;identifier&gt;</td><td>Accepts data entered by the user and stores it in the named variable.</td></tr>
+      <tr><td class="mono">OUTPUT &lt;value / identifier&gt;</td><td>Displays a value, or the value of a variable, on the screen.</td></tr>
+    </table>
+    <div class="worked-example">
+      <span class="we-label">Worked example</span>
+      <h4>Reading data in, writing data out</h4>
+      <div class="code-block"><span class="hl">DECLARE</span> Age : INTEGER
+<span class="hl">DECLARE</span> Name : STRING
+
+<span class="hl">OUTPUT</span> <span class="str">"What is your name?"</span>
+<span class="hl">INPUT</span> Name
+<span class="hl">OUTPUT</span> <span class="str">"How old are you?"</span>
+<span class="hl">INPUT</span> Age
+
+<span class="hl">OUTPUT</span> Name &amp; <span class="str">" is "</span> &amp; Age &amp; <span class="str">" years old."</span>   <span class="comment">// &amp; joins (concatenates) values</span></div>
+    </div>
+    <div class="callout info"><strong>Note:</strong> in Cambridge pseudocode, <span class="inline-code">&amp;</span> is the string <strong>concatenation</strong> operator.</div>
+    <div class="slide-footer"><span class="section-label">8.1.3 · Input &amp; Output</span><span class="slide-number">7 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 8 – WORKED I/O PROGRAM ============ -->
+  <div class="slide" data-slide="8">
+    <span class="section-badge">8.1.3</span>
+    <h2>Worked Example: Simple I/O Program</h2>
+    <p class="text-small" style="margin-bottom:6px;">A complete program that inputs a name and age, then outputs a greeting — combining <span class="inline-code">DECLARE</span>, <span class="inline-code">INPUT</span> and <span class="inline-code">OUTPUT</span>:</p>
+    <div class="worked-example">
+      <div class="code-block"><span class="comment">// Program: Greeting</span>
+<span class="hl">DECLARE</span> Name : STRING
+<span class="hl">DECLARE</span> Age : INTEGER
+
+<span class="hl">OUTPUT</span> <span class="str">"Please enter your name"</span>
+<span class="hl">INPUT</span> Name
+<span class="hl">OUTPUT</span> <span class="str">"Please enter your age"</span>
+<span class="hl">INPUT</span> Age
+
+<span class="hl">OUTPUT</span> <span class="str">"Hello "</span> &amp; Name &amp; <span class="str">", you are "</span> &amp; Age &amp; <span class="str">" years old."</span></div>
+    </div>
+    <div class="grid-2" style="margin-top:8px;">
+      <div class="card"><h4>▶ Example run</h4><p class="text-small"><span class="inline-code">Please enter your name</span><br><span class="inline-code">Tom</span><br><span class="inline-code">Please enter your age</span><br><span class="inline-code">14</span></p></div>
+      <div class="card"><h4>🖥 Output</h4><p class="text-small"><span class="inline-code">Hello Tom, you are 14 years old.</span></p></div>
+    </div>
+    <div class="slide-footer"><span class="section-label">8.1.3 · Input &amp; Output</span><span class="slide-number">8 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 9 – QUIZ 8.1.1-8.1.3 ============ -->
+  <div class="slide" data-slide="9">
+    <span class="section-badge quiz">8.1.1–8.1.3 · Recap</span>
+    <h2>Quick Check — Variables, Data Types, I/O</h2>
+    <div class="reveal-container">
+      <p><strong>Q1.</strong> State the data type most suitable for storing a telephone number such as <span class="inline-code">07123 456789</span>.</p>
+      <button class="reveal-btn" data-target="q1">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q1"><strong>Answer:</strong> <span class="inline-code">STRING</span> — telephone numbers can start with a 0 and may contain spaces; they are not used in calculations, so they should be stored as text.</div>
+    </div>
+    <div class="reveal-container">
+      <p><strong>Q2.</strong> Write pseudocode to declare a constant for a VAT rate of 0.2.</p>
+      <button class="reveal-btn" data-target="q2">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q2"><strong>Answer:</strong> <div class="code-block" style="margin-top:4px;"><span class="hl">CONSTANT</span> VAT = 0.2</div></div>
+    </div>
+    <div class="reveal-container">
+      <p><strong>Q3.</strong> Write pseudocode to input and output a user's favourite colour.</p>
+      <button class="reveal-btn" data-target="q3">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q3"><strong>Answer:</strong> <div class="code-block" style="margin-top:4px;"><span class="hl">DECLARE</span> FavouriteColour : STRING
+<span class="hl">INPUT</span> FavouriteColour
+<span class="hl">OUTPUT</span> FavouriteColour</div></div>
+    </div>
+    <div class="slide-footer"><span class="section-label">8.1.3 · Input &amp; Output</span><span class="slide-number">9 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 10 – OBJECTIVES 8.1 PART 2 ============ -->
+  <div class="slide" data-slide="10">
+    <span class="section-badge">8.1.4</span>
+    <h2>Learning Objectives — 8.1 Programming Concepts (Part 2)</h2>
+    <p class="text-small" style="margin-bottom:12px;">By the end of this part you should be able to:</p>
+    <ul class="objectives-list">
+      <li><strong>Understand and use sequence, selection, and iteration</strong></li>
+      <li><strong>Understand and use the concepts of totalling and counting</strong></li>
+      <li><strong>Understand and use the concept of string handling</strong> (<span class="inline-code">LENGTH</span>, <span class="inline-code">SUBSTRING</span>, <span class="inline-code">UCASE</span>, <span class="inline-code">LCASE</span>)</li>
+    </ul>
+    <div class="slide-footer"><span class="section-label">8.1.4 · Sequence, Selection &amp; Iteration</span><span class="slide-number">10 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 11 – SEQUENCE ============ -->
+  <div class="slide" data-slide="11">
+    <span class="section-badge">8.1.4</span>
+    <h2>Sequence</h2>
+    <p><strong>Sequence</strong> means instructions are executed in the <strong>exact order they are written</strong> — one after another, top to bottom. Every program is made of sequences.</p>
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 120" role="img" aria-label="Sequence: instructions run top to bottom">
+        <rect x="260" y="10" width="200" height="30" rx="7" fill="#13241a" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="360" y="30" fill="#86efac" font-size="12" font-family="monospace" text-anchor="middle">Number1 ← 5</text>
+        <line x1="360" y1="40" x2="360" y2="48" stroke="#4ade80" stroke-width="2" marker-end="url(#arr8)"/>
+        <rect x="260" y="50" width="200" height="30" rx="7" fill="#13241a" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="360" y="70" fill="#86efac" font-size="12" font-family="monospace" text-anchor="middle">Number2 ← 7</text>
+        <line x1="360" y1="80" x2="360" y2="88" stroke="#4ade80" stroke-width="2" marker-end="url(#arr8)"/>
+        <rect x="260" y="90" width="200" height="30" rx="7" fill="#13241a" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="360" y="110" fill="#86efac" font-size="12" font-family="monospace" text-anchor="middle">Total ← Number1 + Number2</text>
+        <defs><marker id="arr8" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#4ade80"/></marker></defs>
+      </svg>
+      <div class="diagram-caption">Each statement runs after the previous one completes — top to bottom</div>
+    </div>
+    <div class="worked-example">
+      <span class="we-label">Worked example</span>
+      <div class="code-block"><span class="hl">DECLARE</span> Number1 : INTEGER
+<span class="hl">DECLARE</span> Number2 : INTEGER
+<span class="hl">DECLARE</span> Total : INTEGER
+
+Number1 <span class="op">←</span> 5
+Number2 <span class="op">←</span> 7
+Total <span class="op">←</span> Number1 + Number2
+<span class="hl">OUTPUT</span> Total        <span class="comment">// prints 12</span></div>
+    </div>
+    <div class="slide-footer"><span class="section-label">8.1.4 · Sequence, Selection &amp; Iteration</span><span class="slide-number">11 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 12 – SELECTION IF ============ -->
+  <div class="slide" data-slide="12">
+    <span class="section-badge">8.1.4</span>
+    <h2>Selection: IF Statements</h2>
+    <p>Syntax: <span class="inline-code">IF &lt;condition&gt; THEN ... ELSE ... ENDIF</span> — the program chooses between different paths based on a <strong>condition</strong> (which is TRUE or FALSE).</p>
+    <div class="worked-example">
+      <span class="we-label">Worked example — pass or fail?</span>
+      <div class="code-block"><span class="hl">DECLARE</span> Mark : INTEGER
+<span class="hl">INPUT</span> Mark
+
+<span class="hl">IF</span> Mark &gt;= 50 <span class="hl">THEN</span>
+    <span class="hl">OUTPUT</span> <span class="str">"Pass"</span>
+<span class="hl">ELSE</span>
+    <span class="hl">OUTPUT</span> <span class="str">"Fail"</span>
+<span class="hl">ENDIF</span></div>
+    </div>
+    <div class="grid-2" style="margin-top:8px;">
+      <div class="card"><h4>▶ Mark = 65</h4><p class="text-small">Condition <span class="inline-code">65 &gt;= 50</span> is TRUE → outputs <span class="inline-code">Pass</span></p></div>
+      <div class="card"><h4>▶ Mark = 42</h4><p class="text-small">Condition <span class="inline-code">42 &gt;= 50</span> is FALSE → outputs <span class="inline-code">Fail</span></p></div>
+    </div>
+    <div class="callout info"><strong>Remember:</strong> the <span class="inline-code">ELSE</span> branch is optional — <span class="inline-code">IF ... THEN ... ENDIF</span> is valid on its own.</div>
+    <div class="slide-footer"><span class="section-label">8.1.4 · Sequence, Selection &amp; Iteration</span><span class="slide-number">12 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 13 – SELECTION CASE ============ -->
+  <div class="slide" data-slide="13">
+    <span class="section-badge">8.1.4</span>
+    <h2>Selection: CASE Statements</h2>
+    <p>Syntax: <span class="inline-code">CASE OF &lt;identifier&gt; ... OTHERWISE ... ENDCASE</span> — the program chooses between <strong>multiple paths</strong> based on the value of a single variable.</p>
+    <div class="worked-example">
+      <span class="we-label">Worked example — grade letter to description</span>
+      <div class="code-block"><span class="hl">DECLARE</span> Grade : CHAR
+<span class="hl">INPUT</span> Grade
+
+<span class="hl">CASE</span> OF Grade
+    <span class="str">'A'</span> : <span class="hl">OUTPUT</span> <span class="str">"Excellent"</span>
+    <span class="str">'B'</span> : <span class="hl">OUTPUT</span> <span class="str">"Good"</span>
+    <span class="str">'C'</span> : <span class="hl">OUTPUT</span> <span class="str">"Satisfactory"</span>
+    <span class="hl">OTHERWISE</span> : <span class="hl">OUTPUT</span> <span class="str">"Try again"</span>
+<span class="hl">ENDCASE</span></div>
+    </div>
+    <div class="exam-tip"><span class="tip-icon">💡</span><span class="tip-text"><strong>Exam Tip:</strong> use <span class="inline-code">CASE</span> instead of multiple nested IFs when checking <strong>one variable against many discrete values</strong> — it's clearer and often gains more marks for structure.</span></div>
+    <div class="slide-footer"><span class="section-label">8.1.4 · Sequence, Selection &amp; Iteration</span><span class="slide-number">13 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 14 – FOR LOOPS ============ -->
+  <div class="slide" data-slide="14">
+    <span class="section-badge">8.1.4</span>
+    <h2>Iteration: Count-Controlled Loops (FOR)</h2>
+    <p>Syntax: <span class="inline-code">FOR &lt;identifier&gt; = &lt;start&gt; TO &lt;end&gt; ... NEXT &lt;identifier&gt;</span> — repeats a <strong>set number of times</strong>, known before the loop starts.</p>
+    <div class="worked-example">
+      <span class="we-label">Worked example — output numbers 1 to 10</span>
+      <div class="code-block"><span class="hl">FOR</span> Counter = 1 <span class="hl">TO</span> 10
+    <span class="hl">OUTPUT</span> Counter
+<span class="hl">NEXT</span> Counter</div>
+      <p class="text-small" style="margin-top:6px;">Output: <span class="inline-code">1 2 3 4 5 6 7 8 9 10</span> — the loop runs exactly 10 times.</p>
+    </div>
+    <div class="grid-2" style="margin-top:8px;">
+      <div class="card"><h4>📌 Key facts</h4><p class="text-small">The counter is automatically incremented by 1 each pass. The number of repeats is <strong>fixed</strong> at the start.</p></div>
+      <div class="card"><h4>🔄 When to use</h4><p class="text-small">Use FOR when you know <strong>how many times</strong> the loop must run (e.g., process 10 items).</p></div>
+    </div>
+    <div class="slide-footer"><span class="section-label">8.1.4 · Sequence, Selection &amp; Iteration</span><span class="slide-number">14 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 15 – WHILE LOOPS ============ -->
+  <div class="slide" data-slide="15">
+    <span class="section-badge">8.1.4</span>
+    <h2>Iteration: Pre-Condition Loops (WHILE)</h2>
+    <p>Syntax: <span class="inline-code">WHILE &lt;condition&gt; DO ... ENDWHILE</span> — checks the condition <strong>before each iteration</strong>; the loop body may <strong>never execute</strong> if the condition is false from the start.</p>
+    <div class="worked-example">
+      <span class="we-label">Worked example — count up from 1 to 5</span>
+      <div class="code-block"><span class="hl">DECLARE</span> Number : INTEGER
+Number <span class="op">←</span> 1
+
+<span class="hl">WHILE</span> Number &lt;= 5 <span class="hl">DO</span>
+    <span class="hl">OUTPUT</span> Number
+    Number <span class="op">←</span> Number + 1
+<span class="hl">ENDWHILE</span></div>
+      <p class="text-small" style="margin-top:6px;">Output: <span class="inline-code">1 2 3 4 5</span>. The condition <span class="inline-code">Number &lt;= 5</span> is tested <em>before</em> each pass.</p>
+    </div>
+    <div class="callout warn"><strong>Careful:</strong> the loop variable must change inside the loop — otherwise you create an <strong>infinite loop</strong> (the condition never becomes false).</div>
+    <div class="slide-footer"><span class="section-label">8.1.4 · Sequence, Selection &amp; Iteration</span><span class="slide-number">15 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 16 – REPEAT UNTIL ============ -->
+  <div class="slide" data-slide="16">
+    <span class="section-badge">8.1.4</span>
+    <h2>Iteration: Post-Condition Loops (REPEAT…UNTIL)</h2>
+    <p>Syntax: <span class="inline-code">REPEAT ... UNTIL &lt;condition&gt;</span> — checks the condition <strong>after each iteration</strong>; the loop body <strong>always executes at least once</strong>.</p>
+    <div class="worked-example">
+      <span class="we-label">Worked example — keep asking until Y or N</span>
+      <div class="code-block"><span class="hl">DECLARE</span> Choice : STRING
+
+<span class="hl">REPEAT</span>
+    <span class="hl">OUTPUT</span> <span class="str">"Enter Y or N:"</span>
+    <span class="hl">INPUT</span> Choice
+<span class="hl">UNTIL</span> Choice = <span class="str">"Y"</span> <span class="hl">OR</span> Choice = <span class="str">"N"</span></div>
+      <p class="text-small" style="margin-top:6px;">The user is always asked <em>at least once</em> — the condition is only checked after the input.</p>
+    </div>
+    <div class="exam-tip"><span class="tip-icon">💡</span><span class="tip-text"><strong>Exam Tip:</strong> compare WHILE and REPEAT carefully — <strong>REPEAT always runs at least once</strong>, <strong>WHILE might not run at all</strong>.</span></div>
+    <div class="slide-footer"><span class="section-label">8.1.4 · Sequence, Selection &amp; Iteration</span><span class="slide-number">16 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 17 – LOOP COMPARISON ============ -->
+  <div class="slide" data-slide="17">
+    <span class="section-badge">8.1.4</span>
+    <h2>Comparing the Three Loop Types</h2>
+    <table>
+      <tr><th style="width:20%;">Loop</th><th>Type</th><th>When the condition is checked</th><th>Body guaranteed to run?</th><th>Use when…</th></tr>
+      <tr><td class="mono">FOR…NEXT</td><td>Count-controlled</td><td>— (count is fixed)</td><td class="ok">Yes (if range is valid)</td><td>You know the exact number of repeats</td></tr>
+      <tr><td class="mono">WHILE…DO…ENDWHILE</td><td>Pre-condition</td><td>Before each iteration</td><td class="no">No — may run 0 times</td><td>You don't know how many repeats; may be none</td></tr>
+      <tr><td class="mono">REPEAT…UNTIL</td><td>Post-condition</td><td>After each iteration</td><td class="ok">Yes — always at least once</td><td>The body must run at least once (e.g., menu)</td></tr>
+    </table>
+    <div class="diagram-box" style="margin-top:8px;">
+      <svg viewBox="0 0 720 90" role="img" aria-label="Three loop types compared">
+        <rect x="20" y="20" width="210" height="50" rx="9" fill="#13241a" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="125" y="41" fill="#86efac" font-size="12" font-weight="bold" text-anchor="middle" font-family="monospace">FOR … NEXT</text>
+        <text x="125" y="59" fill="#8fb39e" font-size="10" text-anchor="middle" font-family="monospace">fixed count</text>
+        <rect x="255" y="20" width="210" height="50" rx="9" fill="#13241a" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="360" y="41" fill="#86efac" font-size="12" font-weight="bold" text-anchor="middle" font-family="monospace">WHILE … DO</text>
+        <text x="360" y="59" fill="#8fb39e" font-size="10" text-anchor="middle" font-family="monospace">0 or more times</text>
+        <rect x="490" y="20" width="210" height="50" rx="9" fill="#13241a" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="595" y="41" fill="#86efac" font-size="12" font-weight="bold" text-anchor="middle" font-family="monospace">REPEAT … UNTIL</text>
+        <text x="595" y="59" fill="#8fb39e" font-size="10" text-anchor="middle" font-family="monospace">1 or more times</text>
+      </svg>
+      <div class="diagram-caption">FOR = fixed count · WHILE = 0+ times · REPEAT = 1+ times</div>
+    </div>
+    <div class="slide-footer"><span class="section-label">8.1.4 · Sequence, Selection &amp; Iteration</span><span class="slide-number">17 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 18 – TOTALLING ============ -->
+  <div class="slide" data-slide="18">
+    <span class="section-badge">8.1.4</span>
+    <h2>Totalling</h2>
+    <p><strong>Totalling</strong> uses a variable (a <em>running total</em>, initialised to <strong>0</strong>) that has a value <strong>added to it during each pass</strong> of a loop, building up a sum.</p>
+    <div class="worked-example">
+      <span class="we-label">Worked example — total 5 numbers entered by the user</span>
+      <div class="code-block"><span class="hl">DECLARE</span> Total : INTEGER
+<span class="hl">DECLARE</span> Number : INTEGER
+Total <span class="op">←</span> 0                <span class="comment">// running total starts at 0</span>
+
+<span class="hl">FOR</span> Count = 1 <span class="hl">TO</span> 5
+    <span class="hl">INPUT</span> Number
+    Total <span class="op">←</span> Total + Number    <span class="comment">// add each value to the total</span>
+<span class="hl">NEXT</span> Count
+
+<span class="hl">OUTPUT</span> <span class="str">"Total is "</span> &amp; Total</div>
+      <p class="text-small" style="margin-top:6px;">If the user enters <span class="inline-code">10, 20, 30, 40, 50</span> → <span class="inline-code">Total = 150</span>.</p>
+    </div>
+    <div class="callout warn"><strong>Exam Tip:</strong> never forget to <strong>initialise the total to 0</strong> before the loop — a classic lost mark!</div>
+    <div class="slide-footer"><span class="section-label">8.1.4 · Sequence, Selection &amp; Iteration</span><span class="slide-number">18 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 19 – COUNTING ============ -->
+  <div class="slide" data-slide="19">
+    <span class="section-badge">8.1.4</span>
+    <h2>Counting</h2>
+    <p><strong>Counting</strong> uses a variable (a <em>counter</em>, initialised to <strong>0</strong>) that is <strong>increased by 1 during each pass</strong> of a loop, to count occurrences.</p>
+    <div class="worked-example">
+      <span class="we-label">Worked example — count how many entered numbers are greater than 50</span>
+      <div class="code-block"><span class="hl">DECLARE</span> Count : INTEGER
+<span class="hl">DECLARE</span> Number : INTEGER
+Count <span class="op">←</span> 0                 <span class="comment">// counter starts at 0</span>
+
+<span class="hl">FOR</span> i = 1 <span class="hl">TO</span> 5
+    <span class="hl">INPUT</span> Number
+    <span class="hl">IF</span> Number &gt; 50 <span class="hl">THEN</span>
+        Count <span class="op">←</span> Count + 1    <span class="comment">// increase by 1 each time</span>
+    <span class="hl">ENDIF</span>
+<span class="hl">NEXT</span> i
+
+<span class="hl">OUTPUT</span> Count</div>
+      <p class="text-small" style="margin-top:6px;">If the user enters <span class="inline-code">60, 20, 90, 5, 55</span> → <span class="inline-code">Count = 3</span>.</p>
+    </div>
+    <div class="callout info"><strong>Totalling vs. counting:</strong> totalling adds a <em>value</em> each pass; counting adds <em>1</em> each time a condition is met.</div>
+    <div class="slide-footer"><span class="section-label">8.1.4 · Sequence, Selection &amp; Iteration</span><span class="slide-number">19 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 20 – STRING HANDLING 1 ============ -->
+  <div class="slide" data-slide="20">
+    <span class="section-badge">8.1.4</span>
+    <h2>String Handling Functions (Part 1)</h2>
+    <table>
+      <tr><th style="width:34%;">Function</th><th>Purpose</th><th>Example</th></tr>
+      <tr><td class="mono">LENGTH(string)</td><td>Returns the number of characters in a string</td><td class="mono">LENGTH("Cambridge") → 9</td></tr>
+      <tr><td class="mono">SUBSTRING(string, start, length)</td><td>Returns a section of a string, starting at a given position for a given length</td><td class="mono">SUBSTRING("Computer", 1, 3) → "Com"</td></tr>
+    </table>
+    <div class="worked-example">
+      <span class="we-label">Worked example</span>
+      <div class="code-block"><span class="hl">DECLARE</span> Word : STRING
+Word <span class="op">←</span> <span class="str">"Computer"</span>
+<span class="hl">OUTPUT</span> LENGTH(Word)                      <span class="comment">// 8</span>
+<span class="hl">OUTPUT</span> SUBSTRING(Word, 1, 3)               <span class="comment">// "Com"</span>
+<span class="hl">OUTPUT</span> SUBSTRING(Word, 4, 4)               <span class="comment">// "pute"</span></div>
+    </div>
+    <div class="callout warn"><strong>Note:</strong> the first character of a string can be treated as <strong>position zero</strong> or <strong>position one</strong>, depending on the convention specified in the question. Always read the question!</div>
+    <div class="slide-footer"><span class="section-label">8.1.4 · Sequence, Selection &amp; Iteration</span><span class="slide-number">20 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 21 – STRING HANDLING 2 ============ -->
+  <div class="slide" data-slide="21">
+    <span class="section-badge">8.1.4</span>
+    <h2>String Handling Functions (Part 2)</h2>
+    <table>
+      <tr><th style="width:34%;">Function</th><th>Purpose</th><th>Example</th></tr>
+      <tr><td class="mono">UCASE(string)</td><td>Converts a string to UPPER CASE</td><td class="mono">UCASE("hello") → "HELLO"</td></tr>
+      <tr><td class="mono">LCASE(string)</td><td>Converts a string to lower case</td><td class="mono">LCASE("HELLO") → "hello"</td></tr>
+    </table>
+    <div class="worked-example">
+      <span class="we-label">Worked example — a common use: case-insensitive input</span>
+      <div class="code-block"><span class="hl">DECLARE</span> Answer : STRING
+<span class="hl">INPUT</span> Answer
+
+<span class="hl">IF</span> UCASE(Answer) = <span class="str">"YES"</span> <span class="hl">THEN</span>   <span class="comment">// works for yes, YES, Yes, yES…</span>
+    <span class="hl">OUTPUT</span> <span class="str">"Confirmed"</span>
+<span class="hl">ENDIF</span></div>
+    </div>
+    <div class="callout info"><strong>Why useful?</strong> Converting input to one case before comparing makes programs <strong>more robust</strong> — users type "yes", "YES" and "Yes" all differently.</div>
+    <div class="slide-footer"><span class="section-label">8.1.4 · Sequence, Selection &amp; Iteration</span><span class="slide-number">21 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 22 – WORKED STRING PROGRAM ============ -->
+  <div class="slide" data-slide="22">
+    <span class="section-badge">8.1.4</span>
+    <h2>Worked Example: String Handling Program</h2>
+    <p class="text-small" style="margin-bottom:6px;">Input a full name, then output its length, its uppercase version, and its first three characters:</p>
+    <div class="worked-example">
+      <div class="code-block"><span class="comment">// Program: Name analysis</span>
+<span class="hl">DECLARE</span> FullName : STRING
+
+<span class="hl">OUTPUT</span> <span class="str">"Enter your full name"</span>
+<span class="hl">INPUT</span> FullName
+
+<span class="hl">OUTPUT</span> <span class="str">"Length: "</span> &amp; LENGTH(FullName)
+<span class="hl">OUTPUT</span> <span class="str">"Uppercase: "</span> &amp; UCASE(FullName)
+<span class="hl">OUTPUT</span> <span class="str">"First three: "</span> &amp; SUBSTRING(FullName, 1, 3)</div>
+    </div>
+    <div class="grid-2" style="margin-top:8px;">
+      <div class="card"><h4>▶ Input</h4><p class="text-small"><span class="inline-code">Alex Morgan</span></p></div>
+      <div class="card"><h4>🖥 Output</h4><p class="text-small"><span class="inline-code">Length: 11</span><br><span class="inline-code">Uppercase: ALEX MORGAN</span><br><span class="inline-code">First three: Ale</span></p></div>
+    </div>
+    <div class="slide-footer"><span class="section-label">8.1.4 · Sequence, Selection &amp; Iteration</span><span class="slide-number">22 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 23 – QUIZ 8.1.4 ============ -->
+  <div class="slide" data-slide="23">
+    <span class="section-badge quiz">8.1.4 · Recap</span>
+    <h2>Quick Check — Sequence, Selection, Iteration, Strings</h2>
+    <div class="reveal-container">
+      <p><strong>Q4.</strong> Write pseudocode using a <span class="inline-code">FOR</span> loop to output the 5-times table (from 1 × 5 to 12 × 5).</p>
+      <button class="reveal-btn" data-target="q4">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q4"><strong>Answer:</strong> <div class="code-block" style="margin-top:4px;"><span class="hl">FOR</span> i = 1 <span class="hl">TO</span> 12
+    <span class="hl">OUTPUT</span> i &amp; <span class="str">" x 5 = "</span> &amp; i * 5
+<span class="hl">NEXT</span> i</div></div>
+    </div>
+    <div class="reveal-container">
+      <p><strong>Q5.</strong> Explain the difference between a <span class="inline-code">WHILE</span> loop and a <span class="inline-code">REPEAT…UNTIL</span> loop.</p>
+      <button class="reveal-btn" data-target="q5">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q5"><strong>Answer:</strong> A <span class="inline-code">WHILE</span> loop checks its condition <strong>before</strong> each iteration, so it may run 0 times. A <span class="inline-code">REPEAT…UNTIL</span> loop checks its condition <strong>after</strong> each iteration, so its body always runs at least once.</div>
+    </div>
+    <div class="reveal-container">
+      <p><strong>Q6.</strong> State the result of <span class="inline-code">SUBSTRING("Pseudocode", 1, 6)</span>.</p>
+      <button class="reveal-btn" data-target="q6">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q6"><strong>Answer:</strong> <span class="inline-code">"Pseudo"</span> — the 6 characters starting at position 1.</div>
+    </div>
+    <div class="slide-footer"><span class="section-label">8.1.4 · Sequence, Selection &amp; Iteration</span><span class="slide-number">23 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 24 – OBJECTIVES 8.1 PART 3 ============ -->
+  <div class="slide" data-slide="24">
+    <span class="section-badge">8.1.5</span>
+    <h2>Learning Objectives — 8.1 Programming Concepts (Part 3)</h2>
+    <p class="text-small" style="margin-bottom:12px;">By the end of this part you should be able to:</p>
+    <ul class="objectives-list">
+      <li><strong>Understand and use arithmetic, relational, and logical operators</strong></li>
+      <li><strong>Understand and use nested statements</strong> (selection and iteration)</li>
+    </ul>
+    <div class="slide-footer"><span class="section-label">8.1.5 · Operators</span><span class="slide-number">24 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 25 – ARITHMETIC OPERATORS ============ -->
+  <div class="slide" data-slide="25">
+    <span class="section-badge">8.1.5</span>
+    <h2>Arithmetic Operators</h2>
+    <table>
+      <tr><th style="width:14%;">Operator</th><th>Meaning</th><th>Example</th></tr>
+      <tr><td class="mono">+</td><td>Add</td><td class="mono">7 + 3 → 10</td></tr>
+      <tr><td class="mono">-</td><td>Subtract</td><td class="mono">7 - 3 → 4</td></tr>
+      <tr><td class="mono">/</td><td>Divide</td><td class="mono">7 / 2 → 3.5</td></tr>
+      <tr><td class="mono">*</td><td>Multiply</td><td class="mono">7 * 3 → 21</td></tr>
+      <tr><td class="mono">^</td><td>Raised to the power of</td><td class="mono">2 ^ 3 → 8</td></tr>
+      <tr><td class="mono">MOD</td><td>Remainder after division</td><td class="mono">17 MOD 5 → 2</td></tr>
+      <tr><td class="mono">DIV</td><td>Whole-number (integer) division</td><td class="mono">17 DIV 5 → 3</td></tr>
+    </table>
+    <div class="worked-example">
+      <span class="we-label">Worked example</span>
+      <div class="code-block"><span class="hl">OUTPUT</span> 17 <span class="hl">MOD</span> 5      <span class="comment">// 17 ÷ 5 = 3 remainder 2  →  2</span>
+<span class="hl">OUTPUT</span> 17 <span class="hl">DIV</span> 5      <span class="comment">// 17 ÷ 5 = 3.4, whole part → 3</span>
+<span class="hl">OUTPUT</span> 2 <span class="op">^</span> 3        <span class="comment">// 2 × 2 × 2                → 8</span></div>
+    </div>
+    <div class="callout info"><strong>MOD is great for:</strong> checking if a number is even (<span class="inline-code">N MOD 2 = 0</span>) or extracting digits.</div>
+    <div class="slide-footer"><span class="section-label">8.1.5 · Operators</span><span class="slide-number">25 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 26 – RELATIONAL OPERATORS ============ -->
+  <div class="slide" data-slide="26">
+    <span class="section-badge">8.1.5</span>
+    <h2>Relational Operators</h2>
+    <p class="text-small" style="margin-bottom:6px;">Used in conditions to <strong>compare two values</strong> — the result is always Boolean (TRUE or FALSE):</p>
+    <table>
+      <tr><th style="width:18%;">Operator</th><th>Meaning</th><th>Example (x = 5)</th></tr>
+      <tr><td class="mono">=</td><td>Equal to</td><td class="mono">x = 5 → TRUE</td></tr>
+      <tr><td class="mono">&lt;</td><td>Less than</td><td class="mono">x &lt; 3 → FALSE</td></tr>
+      <tr><td class="mono">&lt;=</td><td>Less than or equal to</td><td class="mono">x &lt;= 5 → TRUE</td></tr>
+      <tr><td class="mono">&gt;</td><td>Greater than</td><td class="mono">x &gt; 3 → TRUE</td></tr>
+      <tr><td class="mono">&gt;=</td><td>Greater than or equal to</td><td class="mono">x &gt;= 6 → FALSE</td></tr>
+      <tr><td class="mono">&lt;&gt;</td><td>Not equal to</td><td class="mono">x &lt;&gt; 5 → FALSE</td></tr>
+    </table>
+    <div class="worked-example">
+      <span class="we-label">Worked example</span>
+      <div class="code-block"><span class="hl">IF</span> Mark &gt;= 50 <span class="hl">THEN</span>          <span class="comment">// &gt;= used in a condition</span>
+    <span class="hl">OUTPUT</span> <span class="str">"Pass"</span>
+<span class="hl">ENDIF</span></div>
+    </div>
+    <div class="exam-tip"><span class="tip-icon">💡</span><span class="tip-text"><strong>Exam Tip:</strong> precision is required when writing algorithms — <span class="inline-code">x &gt; y</span> is acceptable, but writing <em>"x is greater than y"</em> in words is <strong>not</strong>.</span></div>
+    <div class="slide-footer"><span class="section-label">8.1.5 · Operators</span><span class="slide-number">26 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 27 – LOGICAL OPERATORS ============ -->
+  <div class="slide" data-slide="27">
+    <span class="section-badge">8.1.5</span>
+    <h2>Logical Operators</h2>
+    <table>
+      <tr><th style="width:16%;">Operator</th><th>Meaning</th><th>Truth behaviour</th></tr>
+      <tr><td class="mono">AND</td><td>TRUE only if <strong>both</strong> conditions are TRUE</td><td class="mono">TRUE AND FALSE → FALSE</td></tr>
+      <tr><td class="mono">OR</td><td>TRUE if <strong>at least one</strong> condition is TRUE</td><td class="mono">TRUE OR FALSE → TRUE</td></tr>
+      <tr><td class="mono">NOT</td><td><strong>Reverses</strong> a Boolean value</td><td class="mono">NOT FALSE → TRUE</td></tr>
+    </table>
+    <div class="worked-example">
+      <span class="we-label">Worked example — relational + logical combined</span>
+      <div class="code-block"><span class="hl">DECLARE</span> Age : INTEGER
+<span class="hl">DECLARE</span> HasID : BOOLEAN
+<span class="hl">INPUT</span> Age
+<span class="hl">INPUT</span> HasID
+
+<span class="hl">IF</span> Age &gt;= 18 <span class="hl">AND</span> HasID = TRUE <span class="hl">THEN</span>
+    <span class="hl">OUTPUT</span> <span class="str">"Allowed in"</span>
+<span class="hl">ELSE</span>
+    <span class="hl">OUTPUT</span> <span class="str">"Not allowed"</span>
+<span class="hl">ENDIF</span></div>
+    </div>
+    <div class="callout info"><strong>Example:</strong> Age 19 and HasID = TRUE → <span class="inline-code">TRUE AND TRUE = TRUE</span> → "Allowed in". Age 16 and HasID = TRUE → <span class="inline-code">FALSE AND TRUE = FALSE</span> → "Not allowed".</div>
+    <div class="slide-footer"><span class="section-label">8.1.5 · Operators</span><span class="slide-number">27 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 28 – NESTED STATEMENTS ============ -->
+  <div class="slide" data-slide="28">
+    <span class="section-badge">8.1.5</span>
+    <h2>Nested Statements</h2>
+    <p><strong>Nested statements</strong> occur when one selection or iteration structure is placed <strong>entirely inside another</strong>.</p>
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 120" role="img" aria-label="Nested structure: outer block containing inner block">
+        <rect x="180" y="15" width="360" height="90" rx="10" fill="none" stroke="#4ade80" stroke-width="1.8" stroke-dasharray="5 3"/>
+        <text x="195" y="32" fill="#86efac" font-size="11" font-family="monospace">OUTER structure (e.g. IF / FOR)</text>
+        <rect x="230" y="45" width="260" height="45" rx="8" fill="#13241a" stroke="#22c55e" stroke-width="1.5"/>
+        <text x="245" y="62" fill="#4ade80" font-size="11" font-family="monospace">INNER structure</text>
+        <text x="245" y="78" fill="#8fb39e" font-size="10" font-family="monospace">fully nested inside the outer one</text>
+      </svg>
+      <div class="diagram-caption">The inner block is completely contained within the outer block</div>
+    </div>
+    <div class="callout warn"><strong>Syllabus note:</strong> candidates will <strong>not be required to write more than three levels</strong> of nested statements.</div>
+    <div class="slide-footer"><span class="section-label">8.1.5 · Operators</span><span class="slide-number">28 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 29 – NESTED SELECTION ============ -->
+  <div class="slide" data-slide="29">
+    <span class="section-badge">8.1.5</span>
+    <h2>Worked Example: Nested Selection</h2>
+    <p class="text-small" style="margin-bottom:6px;">An <span class="inline-code">IF</span> statement nested inside another <span class="inline-code">IF</span> — checking a mark, then within the pass branch checking for a distinction grade:</p>
+    <div class="worked-example">
+      <div class="code-block"><span class="hl">DECLARE</span> Mark : INTEGER
+<span class="hl">INPUT</span> Mark
+
+<span class="hl">IF</span> Mark &gt;= 50 <span class="hl">THEN</span>
+    <span class="hl">IF</span> Mark &gt;= 70 <span class="hl">THEN</span>
+        <span class="hl">OUTPUT</span> <span class="str">"Distinction"</span>     <span class="comment">// 70+</span>
+    <span class="hl">ELSE</span>
+        <span class="hl">OUTPUT</span> <span class="str">"Pass"</span>              <span class="comment">// 50–69</span>
+    <span class="hl">ENDIF</span>
+<span class="hl">ELSE</span>
+    <span class="hl">OUTPUT</span> <span class="str">"Fail"</span>
+<span class="hl">ENDIF</span></div>
+    </div>
+    <div class="grid-3" style="margin-top:8px;">
+      <div class="card"><h4>▶ Mark 82</h4><p class="text-small">Outer: pass → Inner: 82 ≥ 70 → <span class="inline-code">Distinction</span></p></div>
+      <div class="card"><h4>▶ Mark 63</h4><p class="text-small">Outer: pass → Inner: 63 &lt; 70 → <span class="inline-code">Pass</span></p></div>
+      <div class="card"><h4>▶ Mark 40</h4><p class="text-small">Outer: fail → inner never runs → <span class="inline-code">Fail</span></p></div>
+    </div>
+    <div class="slide-footer"><span class="section-label">8.1.5 · Operators</span><span class="slide-number">29 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 30 – NESTED ITERATION ============ -->
+  <div class="slide" data-slide="30">
+    <span class="section-badge">8.1.5</span>
+    <h2>Worked Example: Nested Iteration</h2>
+    <p class="text-small" style="margin-bottom:6px;">A <span class="inline-code">FOR</span> loop nested inside another <span class="inline-code">FOR</span> loop — printing a small multiplication grid. The <strong>inner loop completes fully for each single pass of the outer loop</strong>:</p>
+    <div class="worked-example">
+      <div class="code-block"><span class="hl">FOR</span> Row = 1 <span class="hl">TO</span> 3
+    <span class="hl">FOR</span> Column = 1 <span class="hl">TO</span> 3
+        <span class="hl">OUTPUT</span> Row * Column
+    <span class="hl">NEXT</span> Column
+<span class="hl">NEXT</span> Row</div>
+      <p class="text-small" style="margin-top:6px;">Output: <span class="inline-code">1 2 3 2 4 6 3 6 9</span> — for Row 1 the inner loop runs 3 times (1, 2, 3), then for Row 2 it runs again (2, 4, 6), and so on.</p>
+    </div>
+    <div class="diagram-box" style="margin-top:8px;">
+      <svg viewBox="0 0 720 80" role="img" aria-label="Outer loop iteration with inner loop completing each time">
+        <rect x="20" y="15" width="200" height="48" rx="8" fill="#13241a" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="120" y="35" fill="#86efac" font-size="11" text-anchor="middle" font-family="monospace">Row = 1</text>
+        <text x="120" y="52" fill="#8fb39e" font-size="10" text-anchor="middle" font-family="monospace">inner: 1×1 1×2 1×3</text>
+        <rect x="260" y="15" width="200" height="48" rx="8" fill="#13241a" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="360" y="35" fill="#86efac" font-size="11" text-anchor="middle" font-family="monospace">Row = 2</text>
+        <text x="360" y="52" fill="#8fb39e" font-size="10" text-anchor="middle" font-family="monospace">inner: 2×1 2×2 2×3</text>
+        <rect x="500" y="15" width="200" height="48" rx="8" fill="#13241a" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="600" y="35" fill="#86efac" font-size="11" text-anchor="middle" font-family="monospace">Row = 3</text>
+        <text x="600" y="52" fill="#8fb39e" font-size="10" text-anchor="middle" font-family="monospace">inner: 3×1 3×2 3×3</text>
+        <line x1="220" y1="39" x2="256" y2="39" stroke="#4ade80" stroke-width="2"/>
+        <line x1="460" y1="39" x2="496" y2="39" stroke="#4ade80" stroke-width="2"/>
+      </svg>
+      <div class="diagram-caption">Inner loop finishes all its passes before the outer loop moves on</div>
+    </div>
+    <div class="slide-footer"><span class="section-label">8.1.5 · Operators</span><span class="slide-number">30 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 31 – QUIZ 8.1.5 ============ -->
+  <div class="slide" data-slide="31">
+    <span class="section-badge quiz">8.1.5 · Recap</span>
+    <h2>Quick Check — Operators and Nested Statements</h2>
+    <div class="reveal-container">
+      <p><strong>Q7.</strong> State the result of <span class="inline-code">23 MOD 4</span>.</p>
+      <button class="reveal-btn" data-target="q7">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q7"><strong>Answer:</strong> <span class="inline-code">3</span> — 23 ÷ 4 = 5 remainder 3, so the remainder (MOD) is 3.</div>
+    </div>
+    <div class="reveal-container">
+      <p><strong>Q8.</strong> Write a condition using <span class="inline-code">AND</span> to check if a number is between 1 and 10 inclusive.</p>
+      <button class="reveal-btn" data-target="q8">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q8"><strong>Answer:</strong> <div class="code-block" style="margin-top:4px;">Number &gt;= 1 <span class="hl">AND</span> Number &lt;= 10</div></div>
+    </div>
+    <div class="reveal-container">
+      <p><strong>Q9.</strong> Write pseudocode with a nested IF to categorise a score into three bands (70+ = "Distinction", 50–69 = "Pass", below 50 = "Fail").</p>
+      <button class="reveal-btn" data-target="q9">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q9"><strong>Answer:</strong> <div class="code-block" style="margin-top:4px;"><span class="hl">IF</span> Score &gt;= 50 <span class="hl">THEN</span>
+    <span class="hl">IF</span> Score &gt;= 70 <span class="hl">THEN</span>
+        <span class="hl">OUTPUT</span> <span class="str">"Distinction"</span>
+    <span class="hl">ELSE</span>
+        <span class="hl">OUTPUT</span> <span class="str">"Pass"</span>
+    <span class="hl">ENDIF</span>
+<span class="hl">ELSE</span>
+    <span class="hl">OUTPUT</span> <span class="str">"Fail"</span>
+<span class="hl">ENDIF</span></div></div>
+    </div>
+    <div class="slide-footer"><span class="section-label">8.1.5 · Operators</span><span class="slide-number">31 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 32 – OBJECTIVES 8.1 PART 4 ============ -->
+  <div class="slide" data-slide="32">
+    <span class="section-badge">8.1.6</span>
+    <h2>Learning Objectives — 8.1 Programming Concepts (Part 4)</h2>
+    <p class="text-small" style="margin-bottom:12px;">By the end of this part you should be able to:</p>
+    <ul class="objectives-list">
+      <li><strong>Understand procedures, functions, and parameters</strong></li>
+      <li><strong>Define and use procedures and functions</strong>, with or without parameters</li>
+      <li><strong>Understand and use local and global variables</strong></li>
+      <li><strong>Understand and use library routines</strong> (<span class="inline-code">MOD</span>, <span class="inline-code">DIV</span>, <span class="inline-code">ROUND</span>, <span class="inline-code">RANDOM</span>)</li>
+    </ul>
+    <div class="slide-footer"><span class="section-label">8.1.6 · Procedures, Functions &amp; Scope</span><span class="slide-number">32 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 33 – PROCEDURES VS FUNCTIONS ============ -->
+  <div class="slide" data-slide="33">
+    <span class="section-badge">8.1.6</span>
+    <h2>Procedures vs. Functions</h2>
+    <table>
+      <tr><th style="width:20%;"></th><th>Procedure</th><th>Function</th></tr>
+      <tr><td><strong>What is it?</strong></td><td>A named, reusable block of code that performs a specific task.</td><td>A named, reusable block of code that performs a specific task <strong>AND returns a single value</strong>.</td></tr>
+      <tr><td><strong>Returns a value?</strong></td><td class="no">No</td><td class="ok">Yes — exactly one</td></tr>
+      <tr><td><strong>How it's used</strong></td><td class="mono">CALL MyProcedure()</td><td class="mono">x ← MyFunction()</td></tr>
+      <tr><td><strong>Example</strong></td><td>Printing a menu or a welcome message</td><td>Calculating an average or square root</td></tr>
+    </table>
+    <div class="worked-example">
+      <span class="we-label">Worked example — the two shapes side by side</span>
+      <div class="code-block"><span class="hl">PROCEDURE</span> ShowMenu()
+    <span class="hl">OUTPUT</span> <span class="str">"1. Play 2. Quit"</span>
+<span class="hl">ENDPROCEDURE</span>
+
+<span class="hl">FUNCTION</span> Double(Value : INTEGER) <span class="hl">RETURNS</span> INTEGER
+    <span class="hl">RETURN</span> Value * 2
+<span class="hl">ENDFUNCTION</span></div>
+    </div>
+    <div class="callout info"><strong>Memory hook:</strong> a <strong>function</strong> gives something back; a <strong>procedure</strong> just does something.</div>
+    <div class="slide-footer"><span class="section-label">8.1.6 · Procedures, Functions &amp; Scope</span><span class="slide-number">33 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 34 – PARAMETERS ============ -->
+  <div class="slide" data-slide="34">
+    <span class="section-badge">8.1.6</span>
+    <h2>What is a Parameter?</h2>
+    <p>A <strong>parameter</strong> is a value <strong>passed into a procedure or function when it is called</strong>, allowing the same block of code to work with different data each time.</p>
+    <div class="worked-example">
+      <span class="we-label">Worked example — one procedure, many messages</span>
+      <div class="code-block"><span class="hl">PROCEDURE</span> Greet(Name : STRING)        <span class="comment">// Name is the parameter</span>
+    <span class="hl">OUTPUT</span> <span class="str">"Hello "</span> &amp; Name &amp; <span class="str">"!"</span>
+<span class="hl">ENDPROCEDURE</span>
+
+<span class="hl">CALL</span> Greet(<span class="str">"Aisha"</span>)     <span class="comment">// argument passed in</span>
+<span class="hl">CALL</span> Greet(<span class="str">"Ben"</span>)       <span class="comment">// same code, different data</span>
+<span class="hl">CALL</span> Greet(<span class="str">"Chen"</span>)</div>
+      <p class="text-small" style="margin-top:6px;">Output: <span class="inline-code">Hello Aisha! Hello Ben! Hello Chen!</span></p>
+    </div>
+    <div class="callout warn"><strong>Syllabus note:</strong> procedures and functions may have <strong>up to three parameters</strong>.</div>
+    <div class="slide-footer"><span class="section-label">8.1.6 · Procedures, Functions &amp; Scope</span><span class="slide-number">34 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 35 – PROCEDURES ============ -->
+  <div class="slide" data-slide="35">
+    <span class="section-badge">8.1.6</span>
+    <h2>Defining and Calling a Procedure</h2>
+    <p>Syntax: <span class="inline-code">PROCEDURE &lt;name&gt;(&lt;parameters&gt;) ... ENDPROCEDURE</span> — called with <span class="inline-code">CALL &lt;name&gt;(&lt;arguments&gt;)</span>.</p>
+    <div class="worked-example">
+      <span class="we-label">Worked example — formatted welcome message</span>
+      <div class="code-block"><span class="comment">// Definition</span>
+<span class="hl">PROCEDURE</span> WelcomeMessage(UserName : STRING)
+    <span class="hl">OUTPUT</span> <span class="str">"=============================="</span>
+    <span class="hl">OUTPUT</span> <span class="str">"Welcome to the quiz, "</span> &amp; UserName &amp; <span class="str">"!"</span>
+    <span class="hl">OUTPUT</span> <span class="str">"=============================="</span>
+<span class="hl">ENDPROCEDURE</span>
+
+<span class="comment">// Main program — calling it</span>
+<span class="hl">DECLARE</span> Name : STRING
+<span class="hl">INPUT</span> Name
+<span class="hl">CALL</span> WelcomeMessage(Name)</div>
+    </div>
+    <div class="callout info"><strong>Why use procedures?</strong> They make code <strong>reusable</strong>, easier to read, and easier to test — the same block can be CALLed many times.</div>
+    <div class="slide-footer"><span class="section-label">8.1.6 · Procedures, Functions &amp; Scope</span><span class="slide-number">35 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 36 – FUNCTIONS ============ -->
+  <div class="slide" data-slide="36">
+    <span class="section-badge">8.1.6</span>
+    <h2>Defining and Calling a Function</h2>
+    <p>Syntax: <span class="inline-code">FUNCTION &lt;name&gt;(&lt;parameters&gt;) RETURNS &lt;data type&gt; ... RETURN &lt;value&gt; ENDFUNCTION</span> — called by using it directly in an expression or assignment.</p>
+    <div class="worked-example">
+      <span class="we-label">Worked example — function returning the average of two numbers</span>
+      <div class="code-block"><span class="comment">// Definition</span>
+<span class="hl">FUNCTION</span> Average(Value1 : REAL, Value2 : REAL) <span class="hl">RETURNS</span> REAL
+    <span class="hl">DECLARE</span> Result : REAL
+    Result <span class="op">←</span> (Value1 + Value2) / 2
+    <span class="hl">RETURN</span> Result
+<span class="hl">ENDFUNCTION</span>
+
+<span class="comment">// Main program — calling it inside an assignment</span>
+<span class="hl">DECLARE</span> Mean : REAL
+Mean <span class="op">←</span> Average(7.5, 9.5)
+<span class="hl">OUTPUT</span> Mean          <span class="comment">// 8.5</span></div>
+    </div>
+    <div class="callout warn"><strong>Exam Tip:</strong> a function must end with a <span class="inline-code">RETURN</span> statement, and its data type must be declared after <span class="inline-code">RETURNS</span>.</div>
+    <div class="slide-footer"><span class="section-label">8.1.6 · Procedures, Functions &amp; Scope</span><span class="slide-number">36 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 37 – LOCAL VS GLOBAL ============ -->
+  <div class="slide" data-slide="37">
+    <span class="section-badge">8.1.6</span>
+    <h2>Local vs. Global Variables</h2>
+    <table>
+      <tr><th style="width:20%;"></th><th>Local variable</th><th>Global variable</th></tr>
+      <tr><td><strong>Where declared</strong></td><td>Inside a procedure / function</td><td>Outside all procedures / functions</td></tr>
+      <tr><td><strong>Where accessible</strong></td><td>Only within that procedure / function</td><td>From anywhere in the program</td></tr>
+      <tr><td><strong>Lifetime</strong></td><td>Created when the block runs; destroyed when it ends</td><td>Exists for the whole time the program runs</td></tr>
+      <tr><td><strong>Can be changed by…</strong></td><td>Only code inside that block</td><td>Any part of the program</td></tr>
+    </table>
+    <div class="worked-example">
+      <span class="we-label">Worked example</span>
+      <div class="code-block"><span class="hl">DECLARE</span> GlobalTotal : INTEGER     <span class="comment">// GLOBAL — used everywhere</span>
+
+<span class="hl">PROCEDURE</span> AddScore(Score : INTEGER)
+    <span class="hl">DECLARE</span> Bonus : INTEGER       <span class="comment">// LOCAL — only inside AddScore</span>
+    Bonus <span class="op">←</span> 10
+    GlobalTotal <span class="op">←</span> GlobalTotal + Score + Bonus
+<span class="hl">ENDPROCEDURE</span></div>
+    </div>
+    <div class="exam-tip"><span class="tip-icon">💡</span><span class="tip-text"><strong>Exam Tip:</strong> good programming practice favours <strong>local variables and parameters</strong> over global variables — this makes code <strong>easier to test and maintain</strong>.</span></div>
+    <div class="slide-footer"><span class="section-label">8.1.6 · Procedures, Functions &amp; Scope</span><span class="slide-number">37 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 38 – LIBRARY ROUTINES 1 ============ -->
+  <div class="slide" data-slide="38">
+    <span class="section-badge">8.1.6</span>
+    <h2>Library Routines (Part 1)</h2>
+    <p class="text-small" style="margin-bottom:6px;">Built-in functions provided by the programming environment — you don't write them yourself:</p>
+    <table>
+      <tr><th style="width:26%;">Routine</th><th>Purpose</th><th>Example</th></tr>
+      <tr><td class="mono">MOD</td><td>Returns the remainder after division</td><td class="mono">7 MOD 2 → 1</td></tr>
+      <tr><td class="mono">DIV</td><td>Returns the whole-number result of division</td><td class="mono">7 DIV 2 → 3</td></tr>
+    </table>
+    <div class="worked-example">
+      <span class="we-label">Worked example — splitting a 2-digit number into digits</span>
+      <div class="code-block"><span class="hl">DECLARE</span> Number : INTEGER
+<span class="hl">DECLARE</span> Tens : INTEGER
+<span class="hl">DECLARE</span> Units : INTEGER
+<span class="hl">INPUT</span> Number
+
+Tens <span class="op">←</span> Number <span class="hl">DIV</span> 10     <span class="comment">// 47 DIV 10 → 4</span>
+Units <span class="op">←</span> Number <span class="hl">MOD</span> 10    <span class="comment">// 47 MOD 10 → 7</span>
+<span class="hl">OUTPUT</span> Tens &amp; <span class="str">" and "</span> &amp; Units</div>
+    </div>
+    <div class="callout info"><strong>Same as the arithmetic operators</strong> from Section 8.1.5 — MOD and DIV appear again as library routines because they are provided ready-made.</div>
+    <div class="slide-footer"><span class="section-label">8.1.6 · Procedures, Functions &amp; Scope</span><span class="slide-number">38 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 39 – LIBRARY ROUTINES 2 ============ -->
+  <div class="slide" data-slide="39">
+    <span class="section-badge">8.1.6</span>
+    <h2>Library Routines (Part 2)</h2>
+    <table>
+      <tr><th style="width:30%;">Routine</th><th>Purpose</th><th>Example</th></tr>
+      <tr><td class="mono">ROUND(value, places)</td><td>Rounds a real number to a specified number of decimal places</td><td class="mono">ROUND(3.14159, 2) → 3.14</td></tr>
+      <tr><td class="mono">RANDOM(lower, upper)</td><td>Generates a random integer between a lower and upper bound</td><td class="mono">RANDOM(1, 6) → a die roll</td></tr>
+    </table>
+    <div class="worked-example">
+      <span class="we-label">Worked example — round a price, roll a die</span>
+      <div class="code-block"><span class="hl">DECLARE</span> Price : REAL
+<span class="hl">DECLARE</span> DiceRoll : INTEGER
+
+Price <span class="op">←</span> 19.995
+<span class="hl">OUTPUT</span> ROUND(Price, 2)          <span class="comment">// 20.0</span>
+
+DiceRoll <span class="op">←</span> RANDOM(1, 6)         <span class="comment">// any integer from 1 to 6</span>
+<span class="hl">OUTPUT</span> DiceRoll</div>
+    </div>
+    <div class="callout info"><strong>RANDOM uses:</strong> dice games, guessing games, shuffling — anywhere a program needs unpredictable values.</div>
+    <div class="slide-footer"><span class="section-label">8.1.6 · Procedures, Functions &amp; Scope</span><span class="slide-number">39 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 40 – WORKED FUNCTION + LIBRARY ============ -->
+  <div class="slide" data-slide="40">
+    <span class="section-badge">8.1.6</span>
+    <h2>Worked Example: Function + Parameter + Library Routine</h2>
+    <p class="text-small" style="margin-bottom:6px;">A function that takes two parameters, uses <span class="inline-code">ROUND</span>, and returns a value — called from the main program:</p>
+    <div class="worked-example">
+      <div class="code-block"><span class="comment">// Function: average of two exam marks, rounded to 1 d.p.</span>
+<span class="hl">FUNCTION</span> AverageRounded(Mark1 : REAL, Mark2 : REAL) <span class="hl">RETURNS</span> REAL
+    <span class="hl">DECLARE</span> Result : REAL
+    Result <span class="op">←</span> (Mark1 + Mark2) / 2
+    <span class="hl">RETURN</span> ROUND(Result, 1)
+<span class="hl">ENDFUNCTION</span>
+
+<span class="comment">// Main program</span>
+<span class="hl">DECLARE</span> FirstMark : REAL
+<span class="hl">DECLARE</span> SecondMark : REAL
+<span class="hl">DECLARE</span> Final : REAL
+
+<span class="hl">INPUT</span> FirstMark
+<span class="hl">INPUT</span> SecondMark
+Final <span class="op">←</span> AverageRounded(FirstMark, SecondMark)
+<span class="hl">OUTPUT</span> <span class="str">"Final average: "</span> &amp; Final</div>
+    </div>
+    <div class="grid-2" style="margin-top:8px;">
+      <div class="card"><h4>▶ Input</h4><p class="text-small"><span class="inline-code">67.5</span> and <span class="inline-code">71.25</span></p></div>
+      <div class="card"><h4>🖥 Output</h4><p class="text-small"><span class="inline-code">Final average: 69.4</span> &nbsp;(69.375 rounded to 1 d.p.)</p></div>
+    </div>
+    <div class="slide-footer"><span class="section-label">8.1.6 · Procedures, Functions &amp; Scope</span><span class="slide-number">40 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 41 – QUIZ 8.1.6 ============ -->
+  <div class="slide" data-slide="41">
+    <span class="section-badge quiz">8.1.6 · Recap</span>
+    <h2>Quick Check — Procedures, Functions, Scope</h2>
+    <div class="reveal-container">
+      <p><strong>Q10.</strong> Explain the difference between a procedure and a function.</p>
+      <button class="reveal-btn" data-target="q10">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q10"><strong>Answer:</strong> Both are named, reusable blocks of code, but a <strong>function returns a single value</strong> (using <span class="inline-code">RETURN</span>) while a <strong>procedure does not return a value</strong>.</div>
+    </div>
+    <div class="reveal-container">
+      <p><strong>Q11.</strong> Write pseudocode for a function called <span class="inline-code">Square</span> that takes one parameter and returns its square.</p>
+      <button class="reveal-btn" data-target="q11">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q11"><strong>Answer:</strong> <div class="code-block" style="margin-top:4px;"><span class="hl">FUNCTION</span> Square(Value : INTEGER) <span class="hl">RETURNS</span> INTEGER
+    <span class="hl">RETURN</span> Value * Value
+<span class="hl">ENDFUNCTION</span></div></div>
+    </div>
+    <div class="reveal-container">
+      <p><strong>Q12.</strong> Explain why using local variables is considered good programming practice.</p>
+      <button class="reveal-btn" data-target="q12">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q12"><strong>Answer:</strong> Local variables are only accessible inside their own block, so they cannot be accidentally changed by other parts of the program. This makes code <strong>easier to test, debug, and maintain</strong>.</div>
+    </div>
+    <div class="slide-footer"><span class="section-label">8.1.6 · Procedures, Functions &amp; Scope</span><span class="slide-number">41 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 42 – OBJECTIVES 8.1 PART 5 ============ -->
+  <div class="slide" data-slide="42">
+    <span class="section-badge">8.1.7</span>
+    <h2>Learning Objectives — 8.1 Programming Concepts (Part 5)</h2>
+    <p class="text-small" style="margin-bottom:12px;">By the end of this part you should be able to:</p>
+    <ul class="objectives-list">
+      <li><strong>Understand how to create a maintainable program</strong></li>
+    </ul>
+    <div class="slide-footer"><span class="section-label">8.1.7 · Maintainable Programs</span><span class="slide-number">42 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 43 – MAINTAINABLE ============ -->
+  <div class="slide" data-slide="43">
+    <span class="section-badge">8.1.7</span>
+    <h2>What Makes a Program Maintainable?</h2>
+    <p>A <strong>maintainable program</strong> is one that is easy for a programmer — <strong>including someone other than the original author</strong> — to read, understand, and modify in the future.</p>
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 100" role="img" aria-label="Maintainable program cycle: read, understand, modify">
+        <rect x="20" y="25" width="190" height="50" rx="9" fill="#13241a" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="115" y="45" fill="#86efac" font-size="12" font-weight="bold" text-anchor="middle" font-family="monospace">READ</text>
+        <text x="115" y="63" fill="#8fb39e" font-size="10" text-anchor="middle" font-family="monospace">follow the logic</text>
+        <rect x="265" y="25" width="190" height="50" rx="9" fill="#13241a" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="360" y="45" fill="#86efac" font-size="12" font-weight="bold" text-anchor="middle" font-family="monospace">UNDERSTAND</text>
+        <text x="360" y="63" fill="#8fb39e" font-size="10" text-anchor="middle" font-family="monospace">know what it does</text>
+        <rect x="510" y="25" width="190" height="50" rx="9" fill="#13241a" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="605" y="45" fill="#86efac" font-size="12" font-weight="bold" text-anchor="middle" font-family="monospace">MODIFY</text>
+        <text x="605" y="63" fill="#8fb39e" font-size="10" text-anchor="middle" font-family="monospace">change it safely</text>
+        <line x1="210" y1="50" x2="261" y2="50" stroke="#4ade80" stroke-width="2"/>
+        <line x1="455" y1="50" x2="506" y2="50" stroke="#4ade80" stroke-width="2"/>
+      </svg>
+      <div class="diagram-caption">Maintainability = how easily the next programmer can work with your code</div>
+    </div>
+    <div class="callout info"><strong>Real-world why:</strong> programs are updated and fixed for years after they are written — often by different people. Unmaintainable code is slow and costly to update.</div>
+    <div class="slide-footer"><span class="section-label">8.1.7 · Maintainable Programs</span><span class="slide-number">43 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 44 – TECHNIQUES ============ -->
+  <div class="slide" data-slide="44">
+    <span class="section-badge">8.1.7</span>
+    <h2>Techniques for Writing Maintainable Programs</h2>
+    <table>
+      <tr><th style="width:26%;">Technique</th><th>Explanation</th></tr>
+      <tr><td><strong>Meaningful identifiers</strong></td><td>Naming variables, constants, arrays, procedures and functions clearly to reflect their purpose — e.g. <span class="inline-code">StudentAge</span> rather than <span class="inline-code">x</span>.</td></tr>
+      <tr><td><strong>Commenting</strong></td><td>Using the commenting feature of the language to explain the purpose of sections of code — especially complex logic.</td></tr>
+      <tr><td><strong>Procedures and functions</strong></td><td>Breaking a program into logical, reusable blocks rather than writing one long sequence of code.</td></tr>
+      <tr><td><strong>Relevant &amp; appropriate commenting</strong></td><td>Ensuring comments add useful explanation <strong>without cluttering the code</strong> or stating the obvious.</td></tr>
+    </table>
+    <div class="callout warn"><strong>Balance:</strong> a comment like <span class="inline-code">// adds 1 to x</span> next to <span class="inline-code">x ← x + 1</span> states the obvious — comments should explain <em>why</em>, not just <em>what</em>.</div>
+    <div class="slide-footer"><span class="section-label">8.1.7 · Maintainable Programs</span><span class="slide-number">44 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 45 – BEFORE AND AFTER ============ -->
+  <div class="slide" data-slide="45">
+    <span class="section-badge">8.1.7</span>
+    <h2>Before and After: A Worked Comparison</h2>
+    <p class="text-small" style="margin-bottom:6px;">The same program — calculate total price with a discount — written poorly, then rewritten using all four techniques:</p>
+    <div class="grid-2">
+      <div class="worked-example" style="margin:0;">
+        <span class="we-label">❌ Before — hard to maintain</span>
+        <div class="code-block" style="margin-top:6px;"><span class="hl">DECLARE</span> p : REAL
+<span class="hl">DECLARE</span> q : INTEGER
+<span class="hl">DECLARE</span> t : REAL
+<span class="hl">INPUT</span> p
+<span class="hl">INPUT</span> q
+t <span class="op">←</span> p * q
+<span class="hl">IF</span> t &gt; 100 <span class="hl">THEN</span>
+    t <span class="op">←</span> t * 0.9
+<span class="hl">ENDIF</span>
+<span class="hl">OUTPUT</span> t</div>
+      </div>
+      <div class="worked-example" style="margin:0;">
+        <span class="we-label">✅ After — maintainable</span>
+        <div class="code-block" style="margin-top:6px;"><span class="comment">// Calculates total price with a 10% discount over $100</span>
+<span class="hl">CONSTANT</span> DiscountThreshold = 100
+<span class="hl">CONSTANT</span> DiscountRate = 0.9
+
+<span class="hl">FUNCTION</span> TotalWithDiscount(Price : REAL, Quantity : INTEGER) <span class="hl">RETURNS</span> REAL
+    <span class="hl">DECLARE</span> Total : REAL
+    Total <span class="op">←</span> Price * Quantity
+    <span class="hl">IF</span> Total &gt; DiscountThreshold <span class="hl">THEN</span>
+        Total <span class="op">←</span> Total * DiscountRate
+    <span class="hl">ENDIF</span>
+    <span class="hl">RETURN</span> Total
+<span class="hl">ENDFUNCTION</span></div>
+      </div>
+    </div>
+    <div class="callout info" style="margin-top:8px;"><strong>Spot the difference:</strong> meaningful names (<span class="inline-code">Price</span> not <span class="inline-code">p</span>), a comment explaining the purpose, constants for magic numbers, and the logic wrapped in a reusable function.</div>
+    <div class="slide-footer"><span class="section-label">8.1.7 · Maintainable Programs</span><span class="slide-number">45 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 46 – QUIZ 8.1.7 ============ -->
+  <div class="slide" data-slide="46">
+    <span class="section-badge quiz">8.1.7 · Recap</span>
+    <h2>Quick Check — Maintainable Programs</h2>
+    <div class="reveal-container">
+      <p><strong>Q13.</strong> State two ways a programmer can make their code more maintainable.</p>
+      <button class="reveal-btn" data-target="q13">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q13"><strong>Answer:</strong> Any two of: using <strong>meaningful identifiers</strong>; <strong>commenting</strong> the code; using <strong>procedures and functions</strong> to break the program into logical blocks; adding <strong>relevant/appropriate comments</strong> only.</div>
+    </div>
+    <div class="reveal-container">
+      <p><strong>Q14.</strong> Explain why meaningful identifiers improve the maintainability of a program.</p>
+      <button class="reveal-btn" data-target="q14">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q14"><strong>Answer:</strong> They make the code <strong>easier to read and understand</strong> — another programmer (or the author later) can immediately see what each variable, constant, or procedure represents without needing extra documentation.</div>
+    </div>
+    <div class="slide-footer"><span class="section-label">8.1.7 · Maintainable Programs</span><span class="slide-number">46 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 47 – OBJECTIVES 8.2 ============ -->
+  <div class="slide" data-slide="47">
+    <span class="section-badge sec-82">8.2</span>
+    <h2>Learning Objectives — Arrays</h2>
+    <p class="text-small" style="margin-bottom:12px;">By the end of this section you should be able to:</p>
+    <ul class="objectives-list">
+      <li><strong>Declare and use one-dimensional (1D)</strong> arrays</li>
+      <li><strong>Declare and use two-dimensional (2D)</strong> arrays</li>
+      <li><strong>Understand the use of arrays</strong> (why they are useful)</li>
+      <li><strong>Write values into, and read values from</strong>, an array using iteration</li>
+    </ul>
+    <div class="slide-footer"><span class="section-label">8.2 · Arrays</span><span class="slide-number">47 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 48 – WHAT IS AN ARRAY ============ -->
+  <div class="slide" data-slide="48">
+    <span class="section-badge sec-82">8.2</span>
+    <h2>What is an Array?</h2>
+    <p>An <strong>array</strong> is a data structure that stores <strong>multiple values of the same data type</strong> under a single identifier, with each value accessed using an <strong>index</strong>.</p>
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 130" role="img" aria-label="A 1D array of six exam scores with indexes">
+        <text x="30" y="30" fill="#86efac" font-size="12" font-family="monospace" font-weight="bold">Scores[1]</text>
+        <rect x="30" y="40" width="60" height="44" rx="6" fill="#13241a" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="60" y="68" fill="#f2fbf5" font-size="15" font-weight="bold" text-anchor="middle" font-family="monospace">78</text>
+        <text x="30" y="110" fill="#8fb39e" font-size="10" font-family="monospace">index 1</text>
+        <text x="140" y="30" fill="#86efac" font-size="12" font-family="monospace" font-weight="bold">Scores[2]</text>
+        <rect x="140" y="40" width="60" height="44" rx="6" fill="#13241a" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="170" y="68" fill="#f2fbf5" font-size="15" font-weight="bold" text-anchor="middle" font-family="monospace">92</text>
+        <text x="140" y="110" fill="#8fb39e" font-size="10" font-family="monospace">index 2</text>
+        <text x="250" y="30" fill="#86efac" font-size="12" font-family="monospace" font-weight="bold">Scores[3]</text>
+        <rect x="250" y="40" width="60" height="44" rx="6" fill="#13241a" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="280" y="68" fill="#f2fbf5" font-size="15" font-weight="bold" text-anchor="middle" font-family="monospace">65</text>
+        <text x="250" y="110" fill="#8fb39e" font-size="10" font-family="monospace">index 3</text>
+        <text x="360" y="30" fill="#86efac" font-size="12" font-family="monospace" font-weight="bold">Scores[4]</text>
+        <rect x="360" y="40" width="60" height="44" rx="6" fill="#13241a" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="390" y="68" fill="#f2fbf5" font-size="15" font-weight="bold" text-anchor="middle" font-family="monospace">88</text>
+        <text x="360" y="110" fill="#8fb39e" font-size="10" font-family="monospace">index 4</text>
+        <text x="470" y="30" fill="#86efac" font-size="12" font-family="monospace" font-weight="bold">Scores[5]</text>
+        <rect x="470" y="40" width="60" height="44" rx="6" fill="#13241a" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="500" y="68" fill="#f2fbf5" font-size="15" font-weight="bold" text-anchor="middle" font-family="monospace">54</text>
+        <text x="470" y="110" fill="#8fb39e" font-size="10" font-family="monospace">index 5</text>
+        <text x="580" y="30" fill="#86efac" font-size="12" font-family="monospace" font-weight="bold">Scores[6]</text>
+        <rect x="580" y="40" width="60" height="44" rx="6" fill="#13241a" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="610" y="68" fill="#f2fbf5" font-size="15" font-weight="bold" text-anchor="middle" font-family="monospace">79</text>
+        <text x="580" y="110" fill="#8fb39e" font-size="10" font-family="monospace">index 6</text>
+      </svg>
+      <div class="diagram-caption">One identifier (Scores), six stored values, each reached by its index</div>
+    </div>
+    <div class="callout info"><strong>Why use arrays?</strong> A class's exam scores can be stored and processed (totalled, averaged, searched) in a loop — without declaring a separate variable for each student.</div>
+    <div class="slide-footer"><span class="section-label">8.2 · Arrays</span><span class="slide-number">48 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 49 – 1D ARRAYS ============ -->
+  <div class="slide" data-slide="49">
+    <span class="section-badge sec-82">8.2</span>
+    <h2>Declaring and Using a 1D Array</h2>
+    <p>Syntax: <span class="inline-code">DECLARE &lt;identifier&gt; : ARRAY[&lt;lower&gt;:&lt;upper&gt;] OF &lt;data type&gt;</span>. Individual elements are accessed using an index, e.g. <span class="inline-code">Scores[3]</span>.</p>
+    <div class="worked-example">
+      <span class="we-label">Worked example</span>
+      <div class="code-block"><span class="hl">DECLARE</span> Scores : ARRAY[1:10] OF INTEGER   <span class="comment">// 10 elements: indexes 1–10</span>
+
+Scores[1] <span class="op">←</span> 78
+Scores[2] <span class="op">←</span> 92
+Scores[3] <span class="op">←</span> 65
+
+<span class="hl">OUTPUT</span> Scores[3]      <span class="comment">// displays 65</span>
+Scores[1] <span class="op">←</span> Scores[1] + 5   <span class="comment">// 78 → 83</span></div>
+    </div>
+    <div class="callout warn"><strong>Note:</strong> the first index can be <strong>zero or one</strong>, depending on the convention specified in the question — read carefully before writing your answer.</div>
+    <div class="slide-footer"><span class="section-label">8.2 · Arrays</span><span class="slide-number">49 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 50 – WRITE 1D ============ -->
+  <div class="slide" data-slide="50">
+    <span class="section-badge sec-82">8.2</span>
+    <h2>Worked Example: Writing to a 1D Array Using Iteration</h2>
+    <p class="text-small" style="margin-bottom:6px;">Use a <span class="inline-code">FOR</span> loop with a variable as the index to input a value from the user into each element, one at a time:</p>
+    <div class="worked-example">
+      <div class="code-block"><span class="comment">// Fill the array with 10 user-entered scores</span>
+<span class="hl">DECLARE</span> Scores : ARRAY[1:10] OF INTEGER
+<span class="hl">DECLARE</span> Index : INTEGER
+
+<span class="hl">FOR</span> Index = 1 <span class="hl">TO</span> 10
+    <span class="hl">OUTPUT</span> <span class="str">"Enter score "</span> &amp; Index
+    <span class="hl">INPUT</span> Scores[Index]     <span class="comment">// index variable selects the element</span>
+<span class="hl">NEXT</span> Index</div>
+    </div>
+    <div class="diagram-box" style="margin-top:8px;">
+      <svg viewBox="0 0 720 70" role="img" aria-label="Loop fills each array element in turn">
+        <text x="30" y="25" fill="#8fb39e" font-size="11" font-family="monospace">Index = 1 → Scores[1]</text>
+        <text x="200" y="25" fill="#8fb39e" font-size="11" font-family="monospace">Index = 2 → Scores[2]</text>
+        <text x="370" y="25" fill="#8fb39e" font-size="11" font-family="monospace">…</text>
+        <text x="410" y="25" fill="#8fb39e" font-size="11" font-family="monospace">Index = 10 → Scores[10]</text>
+        <line x1="180" y1="16" x2="196" y2="16" stroke="#4ade80" stroke-width="2"/>
+        <line x1="350" y1="16" x2="366" y2="16" stroke="#4ade80" stroke-width="2"/>
+        <rect x="30" y="40" width="640" height="22" rx="6" fill="#13241a" stroke="#22c55e" stroke-width="1.2"/>
+        <text x="350" y="55" fill="#86efac" font-size="11" text-anchor="middle" font-family="monospace">Index takes every value 1 to 10 — so every element gets filled</text>
+      </svg>
+      <div class="diagram-caption">The loop variable becomes the array index</div>
+    </div>
+    <div class="slide-footer"><span class="section-label">8.2 · Arrays</span><span class="slide-number">50 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 51 – READ 1D ============ -->
+  <div class="slide" data-slide="51">
+    <span class="section-badge sec-82">8.2</span>
+    <h2>Worked Example: Reading from a 1D Array Using Iteration</h2>
+    <p class="text-small" style="margin-bottom:6px;">Use a <span class="inline-code">FOR</span> loop with a variable as the index to output every value stored in the array, one at a time:</p>
+    <div class="worked-example">
+      <div class="code-block"><span class="comment">// Output every score in the array</span>
+<span class="hl">DECLARE</span> Scores : ARRAY[1:10] OF INTEGER
+<span class="hl">DECLARE</span> Index : INTEGER
+
+<span class="hl">FOR</span> Index = 1 <span class="hl">TO</span> 10
+    <span class="hl">OUTPUT</span> Scores[Index]
+<span class="hl">NEXT</span> Index</div>
+    </div>
+    <div class="worked-example">
+      <span class="we-label">Worked example — add a total at the same time</span>
+      <div class="code-block" style="margin-top:6px;"><span class="hl">DECLARE</span> Total : INTEGER
+Total <span class="op">←</span> 0
+
+<span class="hl">FOR</span> Index = 1 <span class="hl">TO</span> 10
+    Total <span class="op">←</span> Total + Scores[Index]   <span class="comment">// reading + totalling together</span>
+<span class="hl">NEXT</span> Index
+
+<span class="hl">OUTPUT</span> <span class="str">"Total: "</span> &amp; Total</div>
+    </div>
+    <div class="callout info"><strong>Key idea:</strong> loops + arrays are a perfect match — the loop variable supplies the index, so the same statement works on every element.</div>
+    <div class="slide-footer"><span class="section-label">8.2 · Arrays</span><span class="slide-number">51 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 52 – 2D ARRAYS ============ -->
+  <div class="slide" data-slide="52">
+    <span class="section-badge sec-82">8.2</span>
+    <h2>Declaring and Using a 2D Array</h2>
+    <p>Syntax: <span class="inline-code">DECLARE &lt;identifier&gt; : ARRAY[&lt;lower&gt;:&lt;upper&gt;, &lt;lower&gt;:&lt;upper&gt;] OF &lt;data type&gt;</span>. A 2D array is a <strong>grid of rows and columns</strong>; each element uses <strong>two indexes</strong>.</p>
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 180" role="img" aria-label="A 3 by 4 grid of a 2D array">
+        <text x="200" y="28" fill="#8fb39e" font-size="10" font-family="monospace">col 1</text>
+        <text x="290" y="28" fill="#8fb39e" font-size="10" font-family="monospace">col 2</text>
+        <text x="380" y="28" fill="#8fb39e" font-size="10" font-family="monospace">col 3</text>
+        <text x="470" y="28" fill="#8fb39e" font-size="10" font-family="monospace">col 4</text>
+        <text x="95" y="70" fill="#8fb39e" font-size="10" font-family="monospace">row 1</text>
+        <text x="95" y="115" fill="#8fb39e" font-size="10" font-family="monospace">row 2</text>
+        <text x="95" y="160" fill="#8fb39e" font-size="10" font-family="monospace">row 3</text>
+        <rect x="130" y="35" width="70" height="40" rx="5" fill="#13241a" stroke="#22c55e" stroke-width="1.2"/>
+        <text x="165" y="60" fill="#a7d4b8" font-size="12" text-anchor="middle" font-family="monospace">7</text>
+        <rect x="220" y="35" width="70" height="40" rx="5" fill="#13241a" stroke="#22c55e" stroke-width="1.2"/>
+        <text x="255" y="60" fill="#a7d4b8" font-size="12" text-anchor="middle" font-family="monospace">2</text>
+        <rect x="310" y="35" width="70" height="40" rx="5" fill="#13241a" stroke="#22c55e" stroke-width="1.2"/>
+        <text x="345" y="60" fill="#a7d4b8" font-size="12" text-anchor="middle" font-family="monospace">9</text>
+        <rect x="400" y="35" width="70" height="40" rx="5" fill="#13241a" stroke="#22c55e" stroke-width="1.2"/>
+        <text x="435" y="60" fill="#a7d4b8" font-size="12" text-anchor="middle" font-family="monospace">4</text>
+        <rect x="130" y="80" width="70" height="40" rx="5" fill="#13241a" stroke="#22c55e" stroke-width="1.2"/>
+        <text x="165" y="105" fill="#a7d4b8" font-size="12" text-anchor="middle" font-family="monospace">1</text>
+        <rect x="220" y="80" width="70" height="40" rx="5" fill="#13241a" stroke="#22c55e" stroke-width="1.2"/>
+        <text x="255" y="105" fill="#a7d4b8" font-size="12" text-anchor="middle" font-family="monospace">5</text>
+        <rect x="310" y="80" width="70" height="40" rx="5" fill="#4ade80" stroke="#22c55e" stroke-width="2"/>
+        <text x="345" y="105" fill="#f2fbf5" font-size="12" font-weight="bold" text-anchor="middle" font-family="monospace">8</text>
+        <rect x="400" y="80" width="70" height="40" rx="5" fill="#13241a" stroke="#22c55e" stroke-width="1.2"/>
+        <text x="435" y="105" fill="#a7d4b8" font-size="12" text-anchor="middle" font-family="monospace">3</text>
+        <rect x="130" y="125" width="70" height="40" rx="5" fill="#13241a" stroke="#22c55e" stroke-width="1.2"/>
+        <text x="165" y="150" fill="#a7d4b8" font-size="12" text-anchor="middle" font-family="monospace">6</text>
+        <rect x="220" y="125" width="70" height="40" rx="5" fill="#13241a" stroke="#22c55e" stroke-width="1.2"/>
+        <text x="255" y="150" fill="#a7d4b8" font-size="12" text-anchor="middle" font-family="monospace">0</text>
+        <rect x="310" y="125" width="70" height="40" rx="5" fill="#13241a" stroke="#22c55e" stroke-width="1.2"/>
+        <text x="345" y="150" fill="#a7d4b8" font-size="12" text-anchor="middle" font-family="monospace">2</text>
+        <rect x="400" y="125" width="70" height="40" rx="5" fill="#13241a" stroke="#22c55e" stroke-width="1.2"/>
+        <text x="435" y="150" fill="#a7d4b8" font-size="12" text-anchor="middle" font-family="monospace">5</text>
+        <text x="520" y="60" fill="#86efac" font-size="12" font-family="monospace">Grid[2, 3]</text>
+        <text x="520" y="105" fill="#8fb39e" font-size="10" font-family="monospace">row 2, column 3</text>
+        <text x="520" y="120" fill="#a7d4b8" font-size="10" font-family="monospace">→ value 8</text>
+      </svg>
+      <div class="diagram-caption">Grid[Row, Column] — two indexes pick the exact cell (sometimes written Grid[Row][Column])</div>
+    </div>
+    <div class="worked-example">
+      <span class="we-label">Declaration</span>
+      <div class="code-block" style="margin-top:6px;"><span class="hl">DECLARE</span> Grid : ARRAY[1:3, 1:4] OF INTEGER  <span class="comment">// 3 rows × 4 columns</span>
+Grid[2, 3] <span class="op">←</span> 8                     <span class="comment">// store 8 in row 2, column 3</span></div>
+    </div>
+    <div class="slide-footer"><span class="section-label">8.2 · Arrays</span><span class="slide-number">52 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 53 – WRITE 2D ============ -->
+  <div class="slide" data-slide="53">
+    <span class="section-badge sec-82">8.2</span>
+    <h2>Worked Example: Writing to a 2D Array Using Nested Iteration</h2>
+    <p class="text-small" style="margin-bottom:6px;">A <span class="inline-code">FOR</span> loop nested inside another <span class="inline-code">FOR</span> loop — one for rows, one for columns — to input a value into every element:</p>
+    <div class="worked-example">
+      <div class="code-block"><span class="comment">// Fill a 3 × 4 grid from the user</span>
+<span class="hl">DECLARE</span> Grid : ARRAY[1:3, 1:4] OF INTEGER
+<span class="hl">DECLARE</span> Row : INTEGER
+<span class="hl">DECLARE</span> Column : INTEGER
+
+<span class="hl">FOR</span> Row = 1 <span class="hl">TO</span> 3
+    <span class="hl">FOR</span> Column = 1 <span class="hl">TO</span> 4
+        <span class="hl">OUTPUT</span> <span class="str">"Enter value for row "</span> &amp; Row &amp; <span class="str">" column "</span> &amp; Column
+        <span class="hl">INPUT</span> Grid[Row, Column]
+    <span class="hl">NEXT</span> Column
+<span class="hl">NEXT</span> Row</div>
+    </div>
+    <div class="diagram-box" style="margin-top:8px;">
+      <svg viewBox="0 0 720 80" role="img" aria-label="Nested loops visit every cell of the grid">
+        <rect x="20" y="15" width="200" height="50" rx="8" fill="#13241a" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="120" y="36" fill="#86efac" font-size="11" text-anchor="middle" font-family="monospace">Row = 1</text>
+        <text x="120" y="53" fill="#8fb39e" font-size="10" text-anchor="middle" font-family="monospace">cols 1→2→3→4</text>
+        <rect x="260" y="15" width="200" height="50" rx="8" fill="#13241a" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="360" y="36" fill="#86efac" font-size="11" text-anchor="middle" font-family="monospace">Row = 2</text>
+        <text x="360" y="53" fill="#8fb39e" font-size="10" text-anchor="middle" font-family="monospace">cols 1→2→3→4</text>
+        <rect x="500" y="15" width="200" height="50" rx="8" fill="#13241a" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="600" y="36" fill="#86efac" font-size="11" text-anchor="middle" font-family="monospace">Row = 3</text>
+        <text x="600" y="53" fill="#8fb39e" font-size="10" text-anchor="middle" font-family="monospace">cols 1→2→3→4</text>
+        <line x1="220" y1="40" x2="256" y2="40" stroke="#4ade80" stroke-width="2"/>
+        <line x1="460" y1="40" x2="496" y2="40" stroke="#4ade80" stroke-width="2"/>
+      </svg>
+      <div class="diagram-caption">3 rows × 4 columns = 12 INPUTs in total — every cell gets a value</div>
+    </div>
+    <div class="slide-footer"><span class="section-label">8.2 · Arrays</span><span class="slide-number">53 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 54 – READ 2D ============ -->
+  <div class="slide" data-slide="54">
+    <span class="section-badge sec-82">8.2</span>
+    <h2>Worked Example: Reading from a 2D Array Using Nested Iteration</h2>
+    <p class="text-small" style="margin-bottom:6px;">Use nested <span class="inline-code">FOR</span> loops to output every value stored in the array, row by row:</p>
+    <div class="worked-example">
+      <div class="code-block"><span class="comment">// Output the whole grid, row by row</span>
+<span class="hl">DECLARE</span> Grid : ARRAY[1:3, 1:4] OF INTEGER
+<span class="hl">DECLARE</span> Row : INTEGER
+<span class="hl">DECLARE</span> Column : INTEGER
+
+<span class="hl">FOR</span> Row = 1 <span class="hl">TO</span> 3
+    <span class="hl">FOR</span> Column = 1 <span class="hl">TO</span> 4
+        <span class="hl">OUTPUT</span> Grid[Row, Column]
+    <span class="hl">NEXT</span> Column
+<span class="hl">NEXT</span> Row</div>
+    </div>
+    <div class="exam-tip"><span class="tip-icon">💡</span><span class="tip-text"><strong>Exam Tip:</strong> for a 2D array, always be clear about which index represents the <strong>row</strong> and which represents the <strong>column</strong>, and keep this consistent throughout your code.</span></div>
+    <div class="slide-footer"><span class="section-label">8.2 · Arrays</span><span class="slide-number">54 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 55 – QUIZ 8.2 ============ -->
+  <div class="slide" data-slide="55">
+    <span class="section-badge quiz">8.2 · Recap</span>
+    <h2>Quick Check — Arrays</h2>
+    <div class="reveal-container">
+      <p><strong>Q15.</strong> Write pseudocode to declare a 1D array to store the names of 10 students.</p>
+      <button class="reveal-btn" data-target="q15">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q15"><strong>Answer:</strong> <div class="code-block" style="margin-top:4px;"><span class="hl">DECLARE</span> StudentNames : ARRAY[1:10] OF STRING</div></div>
+    </div>
+    <div class="reveal-container">
+      <p><strong>Q16.</strong> Write pseudocode using iteration to output every value in a 2D array called <span class="inline-code">Grid</span> with 5 rows and 5 columns.</p>
+      <button class="reveal-btn" data-target="q16">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q16"><strong>Answer:</strong> <div class="code-block" style="margin-top:4px;"><span class="hl">FOR</span> Row = 1 <span class="hl">TO</span> 5
+    <span class="hl">FOR</span> Column = 1 <span class="hl">TO</span> 5
+        <span class="hl">OUTPUT</span> Grid[Row, Column]
+    <span class="hl">NEXT</span> Column
+<span class="hl">NEXT</span> Row</div></div>
+    </div>
+    <div class="reveal-container">
+      <p><strong>Q17.</strong> Explain one advantage of using an array instead of separate variables.</p>
+      <button class="reveal-btn" data-target="q17">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q17"><strong>Answer:</strong> An array stores many related values under <strong>one identifier</strong> and can be processed with a <strong>loop</strong> (e.g. using the loop variable as the index) — so there is no need to declare and handle a separate variable for each value, and there is less code to write.</div>
+    </div>
+    <div class="slide-footer"><span class="section-label">8.2 · Arrays</span><span class="slide-number">55 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 56 – OBJECTIVES 8.3 ============ -->
+  <div class="slide" data-slide="56">
+    <span class="section-badge sec-83">8.3</span>
+    <h2>Learning Objectives — File Handling</h2>
+    <p class="text-small" style="margin-bottom:12px;">By the end of this section you should be able to:</p>
+    <ul class="objectives-list">
+      <li><strong>Understand the purpose of storing data in a file</strong> to be used by a program</li>
+      <li><strong>Open, close, and use a file</strong> for reading and writing</li>
+    </ul>
+    <div class="slide-footer"><span class="section-label">8.3 · File Handling</span><span class="slide-number">56 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 57 – WHY FILES ============ -->
+  <div class="slide" data-slide="57">
+    <span class="section-badge sec-83">8.3</span>
+    <h2>Why Store Data in a File?</h2>
+    <p>Data stored <strong>only in variables is lost when the program ends</strong>. Storing data in a file means it can be <strong>saved permanently</strong> and reused the next time the program runs — or shared between different programs.</p>
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 120" role="img" aria-label="Variables are lost on exit, files persist">
+        <rect x="30" y="20" width="200" height="55" rx="9" fill="#13241a" stroke="#fda4af" stroke-width="1.5"/>
+        <text x="130" y="42" fill="#fda4af" font-size="12" font-weight="bold" text-anchor="middle" font-family="monospace">VARIABLES</text>
+        <text x="130" y="60" fill="#8fb39e" font-size="10" text-anchor="middle" font-family="monospace">in memory — GONE on exit</text>
+        <line x1="230" y1="47" x2="286" y2="47" stroke="#fda4af" stroke-width="2" stroke-dasharray="5 3"/>
+        <rect x="290" y="20" width="200" height="55" rx="9" fill="#13241a" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="390" y="42" fill="#86efac" font-size="12" font-weight="bold" text-anchor="middle" font-family="monospace">FILES</text>
+        <text x="390" y="60" fill="#8fb39e" font-size="10" text-anchor="middle" font-family="monospace">on disk — PERMANENT</text>
+        <rect x="520" y="20" width="180" height="55" rx="9" fill="#13241a" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="610" y="42" fill="#86efac" font-size="12" font-weight="bold" text-anchor="middle" font-family="monospace">NEXT RUN</text>
+        <text x="610" y="60" fill="#8fb39e" font-size="10" text-anchor="middle" font-family="monospace">read it back again</text>
+        <line x1="490" y1="47" x2="516" y2="47" stroke="#4ade80" stroke-width="2"/>
+      </svg>
+      <div class="diagram-caption">Files survive between program runs — variables do not</div>
+    </div>
+    <div class="callout info"><strong>Examples:</strong> high scores saved between games, a shop's stock list, student records — all stored in files so they are not lost.</div>
+    <div class="slide-footer"><span class="section-label">8.3 · File Handling</span><span class="slide-number">57 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 58 – THREE STEPS ============ -->
+  <div class="slide" data-slide="58">
+    <span class="section-badge sec-83">8.3</span>
+    <h2>The Three Steps of File Handling</h2>
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 130" role="img" aria-label="Three steps of file handling: open, read or write, close">
+        <rect x="20" y="40" width="200" height="56" rx="10" fill="#13241a" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="120" y="61" fill="#86efac" font-size="13" font-weight="bold" text-anchor="middle" font-family="monospace">1. OPEN</text>
+        <text x="120" y="79" fill="#8fb39e" font-size="10" text-anchor="middle" font-family="monospace">READ or WRITE mode</text>
+        <rect x="260" y="40" width="200" height="56" rx="10" fill="#13241a" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="360" y="61" fill="#86efac" font-size="13" font-weight="bold" text-anchor="middle" font-family="monospace">2. READ / WRITE</text>
+        <text x="360" y="79" fill="#8fb39e" font-size="10" text-anchor="middle" font-family="monospace">READFILE / WRITEFILE</text>
+        <rect x="500" y="40" width="200" height="56" rx="10" fill="#13241a" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="600" y="61" fill="#86efac" font-size="13" font-weight="bold" text-anchor="middle" font-family="monospace">3. CLOSE</text>
+        <text x="600" y="79" fill="#8fb39e" font-size="10" text-anchor="middle" font-family="monospace">finish safely</text>
+        <line x1="220" y1="68" x2="256" y2="68" stroke="#4ade80" stroke-width="2.5"/>
+        <line x1="460" y1="68" x2="496" y2="68" stroke="#4ade80" stroke-width="2.5"/>
+        <text x="360" y="118" fill="#8fb39e" font-size="11" text-anchor="middle" font-family="monospace">Always in this order: OPEN → read/write → CLOSE</text>
+      </svg>
+      <div class="diagram-caption">Every file-handling program follows the same three steps</div>
+    </div>
+    <div class="worked-example">
+      <span class="we-label">Worked example — the skeleton</span>
+      <div class="code-block" style="margin-top:6px;"><span class="hl">OPENFILE</span> <span class="str">"Data.txt"</span> <span class="hl">FOR</span> READ
+<span class="hl">READFILE</span> <span class="str">"Data.txt"</span>, Value
+<span class="hl">CLOSEFILE</span> <span class="str">"Data.txt"</span></div>
+    </div>
+    <div class="exam-tip"><span class="tip-icon">💡</span><span class="tip-text"><strong>Exam Tip:</strong> always <strong>close a file after use</strong> — forgetting to do so can cause data loss or prevent the file being used elsewhere. This is a common mark in exam answers.</span></div>
+    <div class="slide-footer"><span class="section-label">8.3 · File Handling</span><span class="slide-number">58 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 59 – OPEN/CLOSE ============ -->
+  <div class="slide" data-slide="59">
+    <span class="section-badge sec-83">8.3</span>
+    <h2>Opening and Closing a File</h2>
+    <p>Syntax: <span class="inline-code">OPENFILE &lt;filename&gt; FOR READ</span> or <span class="inline-code">OPENFILE &lt;filename&gt; FOR WRITE</span>, and <span class="inline-code">CLOSEFILE &lt;filename&gt;</span>.</p>
+    <table>
+      <tr><th style="width:30%;">Mode</th><th>Purpose</th></tr>
+      <tr><td class="mono">FOR READ</td><td>Open the file to <strong>retrieve existing data</strong> from it (the file must already exist).</td></tr>
+      <tr><td class="mono">FOR WRITE</td><td>Open the file to <strong>add new data</strong> to it (creates the file if it doesn't exist).</td></tr>
+    </table>
+    <div class="worked-example">
+      <span class="we-label">Worked example</span>
+      <div class="code-block" style="margin-top:6px;"><span class="comment">// Opening for WRITE then closing</span>
+<span class="hl">OPENFILE</span> <span class="str">"Results.txt"</span> <span class="hl">FOR</span> WRITE
+<span class="hl">CLOSEFILE</span> <span class="str">"Results.txt"</span>
+
+<span class="comment">// Opening for READ then closing</span>
+<span class="hl">OPENFILE</span> <span class="str">"Results.txt"</span> <span class="hl">FOR</span> READ
+<span class="hl">CLOSEFILE</span> <span class="str">"Results.txt"</span></div>
+    </div>
+    <div class="callout warn"><strong>Remember:</strong> you cannot READ from a file opened FOR WRITE, and you cannot WRITE to a file opened FOR READ — the mode must match the operation.</div>
+    <div class="slide-footer"><span class="section-label">8.3 · File Handling</span><span class="slide-number">59 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 60 – READ/WRITE SINGLE ============ -->
+  <div class="slide" data-slide="60">
+    <span class="section-badge sec-83">8.3</span>
+    <h2>Reading and Writing a Single Item of Data</h2>
+    <p>Syntax: <span class="inline-code">READFILE &lt;filename&gt;, &lt;identifier&gt;</span> and <span class="inline-code">WRITEFILE &lt;filename&gt;, &lt;value / identifier&gt;</span>.</p>
+    <div class="worked-example">
+      <span class="we-label">Worked example — write a score, then read it back</span>
+      <div class="code-block" style="margin-top:6px;"><span class="comment">// Write 85 to the file</span>
+<span class="hl">OPENFILE</span> <span class="str">"Score.txt"</span> <span class="hl">FOR</span> WRITE
+<span class="hl">WRITEFILE</span> <span class="str">"Score.txt"</span>, 85
+<span class="hl">CLOSEFILE</span> <span class="str">"Score.txt"</span>
+
+<span class="comment">// Read it back into a variable</span>
+<span class="hl">DECLARE</span> StoredScore : INTEGER
+<span class="hl">OPENFILE</span> <span class="str">"Score.txt"</span> <span class="hl">FOR</span> READ
+<span class="hl">READFILE</span> <span class="str">"Score.txt"</span>, StoredScore
+<span class="hl">CLOSEFILE</span> <span class="str">"Score.txt"</span>
+
+<span class="hl">OUTPUT</span> <span class="str">"Your saved score is "</span> &amp; StoredScore</div>
+    </div>
+    <div class="callout info"><strong>Note:</strong> when reading, the variable must be <strong>declared before</strong> the READFILE so it has somewhere to store the value.</div>
+    <div class="slide-footer"><span class="section-label">8.3 · File Handling</span><span class="slide-number">60 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 61 – LINES AND EOF ============ -->
+  <div class="slide" data-slide="61">
+    <span class="section-badge sec-83">8.3</span>
+    <h2>Reading and Writing a Line of Text</h2>
+    <p>A <strong>full line of text</strong> (e.g. a name and score combined, or a whole sentence) can be written to or read from a file in the same way. When reading many lines, check for the <strong>end of the file</strong> using <span class="inline-code">EOF(&lt;filename&gt;)</span> — TRUE when the end of the file has been reached.</p>
+    <div class="worked-example">
+      <span class="we-label">Worked example — write and read one line</span>
+      <div class="code-block" style="margin-top:6px;"><span class="hl">OPENFILE</span> <span class="str">"Names.txt"</span> <span class="hl">FOR</span> WRITE
+<span class="hl">WRITEFILE</span> <span class="str">"Names.txt"</span>, <span class="str">"Aisha Khan, 92"</span>
+<span class="hl">CLOSEFILE</span> <span class="str">"Names.txt"</span>
+
+<span class="hl">DECLARE</span> Line : STRING
+<span class="hl">OPENFILE</span> <span class="str">"Names.txt"</span> <span class="hl">FOR</span> READ
+<span class="hl">READFILE</span> <span class="str">"Names.txt"</span>, Line
+<span class="hl">CLOSEFILE</span> <span class="str">"Names.txt"</span>
+<span class="hl">OUTPUT</span> Line          <span class="comment">// Aisha Khan, 92</span></div>
+    </div>
+    <div class="callout warn"><strong>Why check EOF?</strong> Reading past the end of a file causes an <strong>error</strong> — EOF lets the loop know when to stop (see the next slide).</div>
+    <div class="slide-footer"><span class="section-label">8.3 · File Handling</span><span class="slide-number">61 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 62 – WRITE MULTIPLE ============ -->
+  <div class="slide" data-slide="62">
+    <span class="section-badge sec-83">8.3</span>
+    <h2>Worked Example: Writing Multiple Lines to a File</h2>
+    <p class="text-small" style="margin-bottom:6px;">Use a <span class="inline-code">FOR</span> loop to write several lines of user-input data — open the file for writing <strong>before</strong> the loop, close it <strong>afterward</strong>:</p>
+    <div class="worked-example">
+      <div class="code-block"><span class="comment">// Save 3 students' names and scores</span>
+<span class="hl">DECLARE</span> Name : STRING
+<span class="hl">DECLARE</span> Score : INTEGER
+
+<span class="hl">OPENFILE</span> <span class="str">"Results.txt"</span> <span class="hl">FOR</span> WRITE
+
+<span class="hl">FOR</span> i = 1 <span class="hl">TO</span> 3
+    <span class="hl">INPUT</span> Name
+    <span class="hl">INPUT</span> Score
+    <span class="hl">WRITEFILE</span> <span class="str">"Results.txt"</span>, Name &amp; <span class="str">", "</span> &amp; Score
+<span class="hl">NEXT</span> i
+
+<span class="hl">CLOSEFILE</span> <span class="str">"Results.txt"</span></div>
+    </div>
+    <div class="diagram-box" style="margin-top:8px;">
+      <svg viewBox="0 0 720 90" role="img" aria-label="File contents after writing three lines">
+        <text x="20" y="25" fill="#8fb39e" font-size="11" font-family="monospace">Results.txt (after the loop):</text>
+        <rect x="20" y="35" width="680" height="46" rx="7" fill="#0b120e" stroke="#2d5c3d" stroke-width="1.2"/>
+        <text x="35" y="55" fill="#a7d4b8" font-size="11" font-family="monospace">Aisha, 92</text>
+        <text x="35" y="72" fill="#a7d4b8" font-size="11" font-family="monospace">Ben, 78</text>
+        <text x="220" y="72" fill="#a7d4b8" font-size="11" font-family="monospace">Chen, 88</text>
+      </svg>
+      <div class="diagram-caption">One line written per loop pass — the file is opened once and closed once</div>
+    </div>
+    <div class="slide-footer"><span class="section-label">8.3 · File Handling</span><span class="slide-number">62 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 63 – READ UNTIL EOF ============ -->
+  <div class="slide" data-slide="63">
+    <span class="section-badge sec-83">8.3</span>
+    <h2>Worked Example: Reading Lines from a File Until EOF</h2>
+    <p class="text-small" style="margin-bottom:6px;">Use a <span class="inline-code">WHILE</span> loop with the <span class="inline-code">EOF</span> check to read and output every line until the end of the file is reached:</p>
+    <div class="worked-example">
+      <div class="code-block"><span class="comment">// Display all lines from Results.txt</span>
+<span class="hl">DECLARE</span> Line : STRING
+
+<span class="hl">OPENFILE</span> <span class="str">"Results.txt"</span> <span class="hl">FOR</span> READ
+
+<span class="hl">WHILE</span> <span class="hl">NOT</span> EOF(<span class="str">"Results.txt"</span>) <span class="hl">DO</span>
+    <span class="hl">READFILE</span> <span class="str">"Results.txt"</span>, Line
+    <span class="hl">OUTPUT</span> Line
+<span class="hl">ENDWHILE</span>
+
+<span class="hl">CLOSEFILE</span> <span class="str">"Results.txt"</span></div>
+    </div>
+    <div class="diagram-box" style="margin-top:8px;">
+      <svg viewBox="0 0 720 100" role="img" aria-label="While loop reading until end of file">
+        <rect x="20" y="15" width="200" height="70" rx="9" fill="#13241a" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="120" y="38" fill="#86efac" font-size="11" text-anchor="middle" font-family="monospace">NOT EOF?</text>
+        <text x="120" y="56" fill="#8fb39e" font-size="10" text-anchor="middle" font-family="monospace">more lines left?</text>
+        <text x="120" y="72" fill="#8fb39e" font-size="10" text-anchor="middle" font-family="monospace">→ read next line</text>
+        <rect x="260" y="15" width="440" height="70" rx="9" fill="#0b120e" stroke="#2d5c3d" stroke-width="1.2"/>
+        <text x="275" y="38" fill="#a7d4b8" font-size="11" font-family="monospace">Aisha, 92      ← line 1</text>
+        <text x="275" y="56" fill="#a7d4b8" font-size="11" font-family="monospace">Ben, 78        ← line 2</text>
+        <text x="275" y="72" fill="#a7d4b8" font-size="11" font-family="monospace">Chen, 88       ← line 3, then EOF → stop</text>
+      </svg>
+      <div class="diagram-caption">Keep reading while NOT EOF — stop exactly at the end of the file</div>
+    </div>
+    <div class="callout info"><strong>Pattern:</strong> <span class="inline-code">WHILE NOT EOF(filename) DO ... READFILE ... ENDWHILE</span> is the standard way to process a whole file.</div>
+    <div class="slide-footer"><span class="section-label">8.3 · File Handling</span><span class="slide-number">63 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 64 – QUIZ 8.3 ============ -->
+  <div class="slide" data-slide="64">
+    <span class="section-badge quiz">8.3 · Recap</span>
+    <h2>Quick Check — File Handling</h2>
+    <div class="reveal-container">
+      <p><strong>Q18.</strong> State the three steps required when working with a file.</p>
+      <button class="reveal-btn" data-target="q18">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q18"><strong>Answer:</strong> 1) <strong>OPEN</strong> the file (FOR READ or FOR WRITE); 2) perform the required <strong>READFILE / WRITEFILE</strong> operations; 3) <strong>CLOSE</strong> the file.</div>
+    </div>
+    <div class="reveal-container">
+      <p><strong>Q19.</strong> Write pseudocode to open a file called <span class="inline-code">Results.txt</span> for writing, write one line of text to it, then close it.</p>
+      <button class="reveal-btn" data-target="q19">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q19"><strong>Answer:</strong> <div class="code-block" style="margin-top:4px;"><span class="hl">OPENFILE</span> <span class="str">"Results.txt"</span> <span class="hl">FOR</span> WRITE
+<span class="hl">WRITEFILE</span> <span class="str">"Results.txt"</span>, <span class="str">"Hello"</span>
+<span class="hl">CLOSEFILE</span> <span class="str">"Results.txt"</span></div></div>
+    </div>
+    <div class="reveal-container">
+      <p><strong>Q20.</strong> Explain why a program should check for the end of a file when reading data.</p>
+      <button class="reveal-btn" data-target="q20">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q20"><strong>Answer:</strong> So the program <strong>knows when to stop reading</strong> — attempting to read past the end of the file causes an error. The <span class="inline-code">EOF</span> check (in a <span class="inline-code">WHILE NOT EOF(...) DO</span> loop) ensures every line is read exactly once, then the loop stops safely.</div>
+    </div>
+    <div class="slide-footer"><span class="section-label">8.3 · File Handling</span><span class="slide-number">64 / 65</span></div>
+  </div>
+
+  <!-- ============ SLIDE 65 – SUMMARY ============ -->
+  <div class="slide" data-slide="65">
+    <span class="section-badge">Topic 8</span>
+    <h2>Topic 8 Summary — Programming</h2>
+    <div class="diagram-box">
+      <svg viewBox="0 0 760 300" role="img" aria-label="Topic 8 mind-map summary">
+        <rect x="255" y="14" width="250" height="44" rx="10" fill="#15803d" stroke="#4ade80" stroke-width="1.8"/>
+        <text x="380" y="41" fill="#f2fbf5" font-size="15" font-weight="bold" text-anchor="middle" font-family="monospace">TOPIC 8</text>
+        <rect x="30" y="100" width="220" height="66" rx="9" fill="#13241a" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="140" y="122" fill="#86efac" font-size="12" font-weight="bold" text-anchor="middle" font-family="monospace">8.1 CONCEPTS</text>
+        <text x="140" y="139" fill="#8fb39e" font-size="10" text-anchor="middle" font-family="monospace">data types · I/O · sequence</text>
+        <text x="140" y="153" fill="#8fb39e" font-size="10" text-anchor="middle" font-family="monospace">selection · iteration · operators</text>
+        <text x="140" y="167" fill="#8fb39e" font-size="10" text-anchor="middle" font-family="monospace">functions · maintainability</text>
+        <rect x="270" y="100" width="220" height="66" rx="9" fill="#13241a" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="380" y="122" fill="#86efac" font-size="12" font-weight="bold" text-anchor="middle" font-family="monospace">8.2 ARRAYS</text>
+        <text x="380" y="139" fill="#8fb39e" font-size="10" text-anchor="middle" font-family="monospace">1D &amp; 2D arrays</text>
+        <text x="380" y="153" fill="#8fb39e" font-size="10" text-anchor="middle" font-family="monospace">indexes · loops to</text>
+        <text x="380" y="167" fill="#8fb39e" font-size="10" text-anchor="middle" font-family="monospace">read &amp; write elements</text>
+        <rect x="510" y="100" width="220" height="66" rx="9" fill="#13241a" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="620" y="122" fill="#86efac" font-size="12" font-weight="bold" text-anchor="middle" font-family="monospace">8.3 FILES</text>
+        <text x="620" y="139" fill="#8fb39e" font-size="10" text-anchor="middle" font-family="monospace">OPEN → read/write → CLOSE</text>
+        <text x="620" y="153" fill="#8fb39e" font-size="10" text-anchor="middle" font-family="monospace">READFILE / WRITEFILE</text>
+        <text x="620" y="167" fill="#8fb39e" font-size="10" text-anchor="middle" font-family="monospace">EOF loop</text>
+        <line x1="380" y1="58" x2="140" y2="96" stroke="#4ade80" stroke-width="1.5"/>
+        <line x1="380" y1="58" x2="380" y2="96" stroke="#4ade80" stroke-width="1.5"/>
+        <line x1="380" y1="58" x2="620" y2="96" stroke="#4ade80" stroke-width="1.5"/>
+        <rect x="140" y="215" width="480" height="44" rx="9" fill="#0f1d14" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="380" y="233" fill="#86efac" font-size="11" font-weight="bold" text-anchor="middle" font-family="monospace">DRAWS ON TOPIC 7</text>
+        <text x="380" y="250" fill="#8fb39e" font-size="10" text-anchor="middle" font-family="monospace">algorithm design — decomposition, standard methods, trace tables</text>
+      </svg>
+      <div class="diagram-caption">Concepts → Arrays → Files — all built on the algorithm-design skills from Topic 7</div>
+    </div>
+    <div class="callout info" style="margin-top:8px;"><strong>Exam-ready:</strong> practise writing the standard pseudocode patterns (I/O, IF/CASE, three loops, totalling/counting, procedures/functions, array loops, file open-read-close) until they are automatic.</div>
+    <div class="slide-footer"><span class="section-label">Topic 8 · Summary</span><span class="slide-number">65 / 65</span></div>
+  </div>
+
+</div>
+
+<!-- ===== NAV BAR ===== -->
+<div class="nav-bar">
+  <button id="prevBtn" aria-label="Previous slide" onclick="changeSlide(-1)">← Prev</button>
+  <div class="progress-dots" id="progressDots"></div>
+  <span class="slide-counter" id="slideCounter">1 / 65</span>
+  <button id="nextBtn" aria-label="Next slide" onclick="changeSlide(1)">Next →</button>
+</div>
+<div class="kbd-hint">← → arrows · Home / End to jump</div>
+
+<script>
+  (function() {
+    const TOTAL = 65;
+    let current = 0;
+    function renderDots() {
+      const container = document.getElementById('progressDots');
+      container.innerHTML = '';
+      for (let i = 0; i < TOTAL; i++) {
+        const dot = document.createElement('button');
+        dot.className = 'dot' + (i === current ? ' active' : '');
+        dot.setAttribute('aria-label', 'Go to slide ' + (i+1));
+        dot.onclick = function() { goToSlide(i); };
+        container.appendChild(dot);
+      }
+    }
+    function goToSlide(idx) {
+      document.querySelectorAll('.slide').forEach((s, i) => s.classList.toggle('active', i === idx));
+      current = idx;
+      updateUI();
+      const active = document.querySelector('.slide.active');
+      if (active) active.scrollTop = 0;
+    }
+    function changeSlide(delta) {
+      const next = current + delta;
+      if (next < 0 || next >= TOTAL) return;
+      goToSlide(next);
+    }
+    function updateUI() {
+      document.getElementById('prevBtn').disabled = (current === 0);
+      document.getElementById('nextBtn').disabled = (current === TOTAL - 1);
+      document.getElementById('slideCounter').textContent = (current + 1) + ' / ' + TOTAL;
+      document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
+    }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown') { changeSlide(1); e.preventDefault(); }
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') { changeSlide(-1); e.preventDefault(); }
+      else if (e.key === 'Home') { goToSlide(0); e.preventDefault(); }
+      else if (e.key === 'End') { goToSlide(TOTAL - 1); e.preventDefault(); }
+    });
+    renderDots();
+    updateUI();
+    window.changeSlide = changeSlide;
+    window.goToSlide = goToSlide;
+    document.querySelectorAll('.reveal-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const el = document.getElementById(this.getAttribute('data-target'));
+        if (el) {
+          el.classList.toggle('visible');
+          this.textContent = el.classList.contains('visible') ? '🙈 Hide Answer' : '📌 Reveal Answer';
+        }
+      });
+    });
+  })();
+</script>
+</body>
+</html>

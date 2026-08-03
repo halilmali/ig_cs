@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topic 3: Hardware — Cambridge IGCSE Computer Science</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/topic-common.css">
+<style>
+/* ===== Topic-specific CSS ===== */
+
+
+  
+  .hex-strip {
+    position: fixed;
+    top: 0; right: 0; bottom: 0;
+    width: 170px;
+    font-family: 'JetBrains Mono', 'Cascadia Code', monospace;
+    font-size: 12px;
+    line-height: 1.9;
+    color: rgba(59, 130, 246, 0.13);
+    padding: 24px 16px;
+    white-space: pre;
+    pointer-events: none;
+    z-index: 0;
+    user-select: none;
+    text-align: right;
+  }
+
+
+  .bg-glow-2 {
+    position: fixed; bottom: -20%; right: -10%; width: 55%; height: 55%;
+    background: radial-gradient(circle, rgba(224,138,74,0.07) 0%, transparent 70%);
+    z-index: 0; pointer-events: none;
+    animation: glowFloat 18s ease-in-out infinite alternate-reverse;
+  }
+
+
+
+  
+  .code-block {
+    font-family: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', Consolas, monospace;
+    background: #0b0e14;
+    border: 1px solid #2a3a52; border-radius: 8px;
+    padding: 12px 16px; font-size: 0.88rem; line-height: 1.6;
+    color: #d8e4f0; overflow-x: auto; margin: 8px 0; white-space: pre-wrap;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.3);
+  }
+
+
+  .code-block .comment { color: #5a6a7a; font-style: italic; }
+
+
+  .code-block .hl { background: rgba(244, 163, 96, 0.18); color: #ffd3a8; border-radius: 3px; }
+
+
+  .code-block .hl-blue { background: rgba(74, 158, 232, 0.2); color: #a8d0ff; border-radius: 3px; }
+
+
+  .code-block .hl-green { background: rgba(139, 195, 74, 0.18); color: #c3e88d; border-radius: 3px; }
+
+
+  .code-block .op { color: #7ab8ff; }
+
+
+  .formula {
+    font-family: 'JetBrains Mono', 'Cascadia Code', Consolas, monospace;
+    background: #0b0e14; border: 1px solid #2a4a72; border-radius: 8px;
+    padding: 10px 16px; font-size: 0.95rem; color: #d8e4f0; text-align: center; margin: 6px 0;
+  }
+
+
+  .formula .highlight { color: #f4a360; font-weight: 700; }
+
+
+  td.mono, th.mono { font-family: 'JetBrains Mono', Consolas, monospace; }
+
+
+
+  
+  .flex-row { display: flex; flex-direction: row; gap: 18px; }
+
+
+  .flex-col { display: flex; flex-direction: column; gap: 8px; }
+
+
+  .flex-1 { flex: 1; }
+
+
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+
+
+  .mt-6 { margin-top: 6px; }
+
+ .mt-8 { margin-top: 8px; }
+
+ .mt-10 { margin-top: 10px; }
+
+
+  .mt-12 { margin-top: 12px; }
+
+ .mt-16 { margin-top: 16px; }
+
+
+  .mb-6 { margin-bottom: 6px; }
+
+ .mb-8 { margin-bottom: 8px; }
+
+ .mb-10 { margin-bottom: 10px; }
+
+ .mb-12 { margin-bottom: 12px; }
+
+
+  .text-center { text-align: center; }
+
+
+  .tag {
+    display: inline-block; background: #16304a; color: #7ab8ff;
+    padding: 2px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 600;
+    border: 1px solid #2a4a72; margin-right: 3px;
+  }
+
+
+  .section-badge.sec-32 { background: linear-gradient(135deg, #5a3a1a, #8a5a2a); border-color: #aa7a3a; color: #ffd3a8; }
+
+
+  .section-badge.sec-33 { background: linear-gradient(135deg, #123a4a, #1a5a6a); border-color: #2a7a8a; color: #8ad8f0; }
+
+
+  .section-badge.sec-34 { background: linear-gradient(135deg, #2a2a5a, #4a4a8a); border-color: #6a6aaa; color: #c0c0ff; }
+
+
+  .section-badge.quiz { background: linear-gradient(135deg, #4a3a1a, #6a522a); border-color: #8a723a; color: #ffd54f; }
+
+
+
+  
+  .bits { display: flex; gap: 3px; flex-wrap: wrap; margin: 6px 0; }
+
+
+  .bit {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px; background: #0b0e14; border: 1px solid #2a3a52; border-radius: 4px;
+    font-family: 'JetBrains Mono', 'Cascadia Code', monospace; font-size: 0.9rem;
+    color: #7ab8ff; font-weight: 700;
+  }
+
+
+  .bit.on { background: #0f2a1f; border-color: #1f7a4a; color: #8bc34a; }
+
+
+  .bit.off { background: #181c22; border-color: #3a424c; color: #6a7686; }
+
+
+  .bit.highlight { border-color: #f4a360; box-shadow: 0 0 8px rgba(244,163,96,0.35); }
+
+
+  .bit-label { font-size: 0.7rem; color: #6a7a8a; text-align: center; margin-top: 2px; font-family: 'JetBrains Mono', monospace; }
+
+
+  .callout.success { border-left-color: #8bc34a; }
+
+
+
+  
+  .step-list { list-style: none; padding: 0; counter-reset: step; }
+
+
+  .step-list li { counter-increment: step; padding: 5px 10px 5px 30px; position: relative; margin-bottom: 3px; }
+
+
+  .step-list li::before { content: counter(step) "."; position: absolute; left: 4px; color: #4a9ee8; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+
+
+
+  .comparison-good { color: #8bc34a; }
+
+
+  .comparison-bad { color: #f48a8a; }
+
+
+  .comparison-neutral { color: #ffb74d; }
+
+
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+
+
+    .flex-row { flex-direction: column; }
+
+
+    .bit { width: 28px; height: 28px; font-size: 0.75rem; }
+
+
+    .hex-strip { display: none; }
+</style>
+</head>
+<body>
+
+<div class="hex-strip" aria-hidden="true">0x00400000 0x00400100 0x00400200 0x00400300
+0x00400400 0x00400500 0x00400600 0x00400700
+0x00400800 0x00400900 0x00400A00 0x00400B00
+0x00400C00 0x00400D00 0x00400E00 0x00400F00
+PC  MAR  MDR  CIR  ACC  CU  ALU  FDE
+CLOCK 3.5GHz CACHE 32MB CORES 8
+DDR4 2666MHz SATA SSD NVMe USB3
+INPUT SENSORS ADC OUTPUT ACTUATOR
+NIC MAC 00:1A:2B:3C:4D:5E
+IP 192.168.1.1 IPv6 2001:0db8:85a3::8a2e
+MAGNETIC OPTICAL SOLID-STATE
+RAM ROM VIRTUAL MEMORY CLOUD
+ROUTER LAN WAN FIREWALL SWITCH
+BITS BYTES TRACKS SECTORS PITS LANDS</div>
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+<div class="bg-glow-2"></div>
+
+<div class="presentation" id="presentation">
+
+<!-- ============ SLIDE 1 – TITLE ============ -->
+<div class="slide active" data-slide="1">
+  <div style="flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
+    <div class="section-badge" style="margin-bottom:16px; font-size:0.9rem;">Cambridge IGCSE Computer Science</div>
+    <h1 style="font-size:3rem; margin-bottom:8px;">Topic 3</h1>
+    <h1 style="font-size:2.6rem; margin-bottom:8px; color:#a8d0ff;">Hardware</h1>
+    <p style="font-size:1.1rem; color:#8a9ab0; margin-bottom:4px;">Syllabus 0478 · 0984 · 0418</p>
+    <div style="width:80px; height:3px; background:#4a9ee8; border-radius:2px; margin:16px 0 20px;"></div>
+    <div class="grid-4" style="max-width:720px; width:100%;">
+      <div class="icon-tile"><span class="ico">🧠</span><span class="ico-label">CPU</span><span class="ico-sub">ALU · CU · FDE</span></div>
+      <div class="icon-tile"><span class="ico">⌨️</span><span class="ico-label">I/O Devices</span><span class="ico-sub">input · output · sensors</span></div>
+      <div class="icon-tile"><span class="ico">💽</span><span class="ico-label">Storage</span><span class="ico-sub">RAM · SSD · cloud</span></div>
+      <div class="icon-tile"><span class="ico">🌐</span><span class="ico-label">Network Cards</span><span class="ico-sub">NIC · MAC · router</span></div>
+    </div>
+    <p style="color:#4a5a6a; font-size:0.85rem; margin-top:32px;">Architecture &middot; Input &amp; Output &middot; Storage &middot; Network Hardware</p>
+    <p style="color:#4a5a6a; font-size:0.8rem;">Press <span class="inline-code">→</span> or click the navigation to begin</p>
+  </div>
+  <div class="slide-footer"><span class="section-label">Topic 3 &middot; Overview</span><span class="slide-number">1 / 30</span></div>
+</div>
+
+<!-- ============ SLIDE 2 – LEARNING OBJECTIVES 3.1 ============ -->
+<div class="slide" data-slide="2">
+  <div class="section-badge">Section 3.1 &middot; Computer Architecture</div>
+  <h1>Learning Objectives</h1>
+  <div style="width:60px; height:3px; background:#4a9ee8; border-radius:2px; margin-bottom:14px;"></div>
+  <p style="margin-bottom:12px;">By the end of this section you will be able to:</p>
+  <div class="grid-2">
+    <div>
+      <ul class="objectives-list">
+        <li>Understand the role of the <strong>CPU</strong> and what a <strong>microprocessor</strong> is</li>
+        <li>Describe the components of a <strong>Von Neumann CPU</strong> (ALU, CU, registers, buses)</li>
+        <li>Describe the <strong>Fetch-Decode-Execute (FDE) cycle</strong> step by step</li>
+      </ul>
+    </div>
+    <div>
+      <ul class="objectives-list">
+        <li>Explain how <strong>cores, cache and clock speed</strong> affect performance</li>
+        <li>Understand the purpose of an <strong>instruction set</strong></li>
+        <li>Describe the purpose and characteristics of <strong>embedded systems</strong></li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout info mt-8"><strong>Syllabus reference:</strong> IGCSE 0478 / 0984 / 0418 &middot; Section 3.1 — Computer architecture.</div>
+  <div class="slide-footer"><span class="section-label">3.1 Computer Architecture</span><span class="slide-number">2 / 30</span></div>
+</div>
+
+<!-- ============ SLIDE 3 – THE CPU AND MICROPROCESSORS ============ -->
+<div class="slide" data-slide="3">
+  <div class="section-badge">3.1 &middot; Computer Architecture</div>
+  <h2>The CPU and Microprocessors</h2>
+  <div style="width:60px; height:3px; background:#4a9ee8; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="grid-2">
+    <div>
+      <div class="card">
+        <h4>🧠 What Does the CPU Do?</h4>
+        <p>The <strong>Central Processing Unit (CPU)</strong> processes the <strong>instructions and data</strong> input into the computer to <strong>produce output</strong>. It is often called the "brain" of the computer.</p>
+        <ul>
+          <li>Fetches instructions from memory</li>
+          <li>Decodes and executes them</li>
+          <li>Controls other hardware via signals</li>
+        </ul>
+      </div>
+      <div class="card mt-8">
+        <h4>🔬 Microprocessor</h4>
+        <p>A <strong>microprocessor</strong> is an <strong>integrated circuit (chip)</strong> containing the CPU on a <strong>single chip</strong> — it is small, cheap and low-power.</p>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="border-color:#4a9ee8;">
+        <h4>⚖ General-Purpose vs Specialised</h4>
+        <table>
+          <thead><tr><th>General-purpose CPU</th><th>Specialised microprocessor</th></tr></thead>
+          <tbody>
+            <tr><td>In PCs &amp; laptops</td><td>Embedded in devices</td></tr>
+            <tr><td>Runs many different programs</td><td>Performs one dedicated job</td></tr>
+            <tr><td>High performance, more power</td><td>Low cost, low power, small</td></tr>
+            <tr><td>e.g. Intel / AMD chips</td><td>e.g. in a washing machine</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="diagram-box mt-8">
+        <svg viewBox="0 0 340 120" style="width:100%; max-width:340px;">
+          <rect x="110" y="15" width="120" height="70" rx="10" fill="#12161f" stroke="#4a9ee8" stroke-width="2"/>
+          <text x="170" y="45" fill="#a8d0ff" font-size="12" font-weight="bold" text-anchor="middle" font-family="sans-serif">CPU</text>
+          <text x="170" y="65" fill="#7a8a9a" font-size="9" text-anchor="middle" font-family="monospace">single chip</text>
+          <text x="170" y="100" fill="#5a7a9a" font-size="10" text-anchor="middle" font-family="sans-serif">microprocessor = CPU on one chip</text>
+        </svg>
+        <div class="diagram-caption">A microprocessor packages the whole CPU onto one integrated circuit</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="section-label">3.1 Computer Architecture</span><span class="slide-number">3 / 30</span></div>
+</div>
+
+<!-- ============ SLIDE 4 – VON NEUMANN CORE UNITS ============ -->
+<div class="slide" data-slide="4">
+  <div class="section-badge">3.1 &middot; Computer Architecture</div>
+  <h2>Von Neumann Architecture — Core Units</h2>
+  <div style="width:60px; height:3px; background:#4a9ee8; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="grid-2">
+    <div class="card">
+      <h4>🎛️ Control Unit (CU)</h4>
+      <ul>
+        <li><strong>Decodes instructions</strong> so the CPU knows what to do</li>
+        <li><strong>Controls the flow of data</strong> through the computer</li>
+        <li>Sends <strong>control signals</strong> to other components</li>
+        <li>Coordinates the <strong>FDE cycle</strong></li>
+      </ul>
+    </div>
+    <div class="card" style="border-color:#f4a360;">
+      <h4>🧮 Arithmetic Logic Unit (ALU)</h4>
+      <ul>
+        <li>Performs <strong>arithmetic</strong>: addition, subtraction, multiplication, division</li>
+        <li>Performs <strong>logical operations</strong>: AND, OR, NOT</li>
+        <li>Performs <strong>comparisons</strong>: greater than, equal to, less than</li>
+        <li>Results are temporarily held in the <strong>Accumulator</strong></li>
+      </ul>
+    </div>
+  </div>
+  <div class="diagram-box mt-8">
+    <svg viewBox="0 0 560 150" style="width:100%; max-width:560px;">
+      <rect x="160" y="25" width="240" height="100" rx="12" fill="#12161f" stroke="#4a9ee8" stroke-width="2"/>
+      <text x="280" y="48" fill="#a8d0ff" font-size="13" font-weight="bold" text-anchor="middle" font-family="sans-serif">The CPU (Von Neumann)</text>
+      <rect x="185" y="62" width="95" height="48" rx="8" fill="#0f2a4a" stroke="#4a9ee8"/>
+      <text x="232" y="82" fill="#a8d0ff" font-size="10" text-anchor="middle" font-family="sans-serif">Control Unit</text>
+      <text x="232" y="98" fill="#7a9ab8" font-size="8" text-anchor="middle" font-family="sans-serif">decode · control signals</text>
+      <rect x="290" y="62" width="95" height="48" rx="8" fill="#2a1f0f" stroke="#f4a360"/>
+      <text x="337" y="82" fill="#ffd3a8" font-size="10" text-anchor="middle" font-family="sans-serif">ALU</text>
+      <text x="337" y="98" fill="#b89878" font-size="8" text-anchor="middle" font-family="sans-serif">arithmetic · logic</text>
+      <text x="280" y="140" fill="#5a7a9a" font-size="10" text-anchor="middle" font-family="sans-serif">+ registers &amp; system buses (next slides)</text>
+    </svg>
+    <div class="diagram-caption">CU decodes &amp; controls; ALU calculates &amp; compares</div>
+  </div>
+  <div class="slide-footer"><span class="section-label">3.1 Computer Architecture</span><span class="slide-number">4 / 30</span></div>
+</div>
+
+<!-- ============ SLIDE 5 – REGISTERS ============ -->
+<div class="slide" data-slide="5">
+  <div class="section-badge">3.1 &middot; Computer Architecture</div>
+  <h2>Von Neumann Architecture — Registers</h2>
+  <div style="width:60px; height:3px; background:#4a9ee8; border-radius:2px; margin-bottom:10px;"></div>
+  <p style="margin-bottom:8px;">Registers are <strong>tiny, ultra-fast memory locations inside the CPU</strong> used during processing.</p>
+  <table>
+    <thead><tr><th>Register</th><th>Stores…</th><th>Mnemonic</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Program Counter (PC)</strong></td><td>The address of the <strong>next instruction</strong> to be fetched</td><td class="mono">PC</td></tr>
+      <tr><td><strong>Memory Address Register (MAR)</strong></td><td>The address of the memory location currently being <strong>read from or written to</strong></td><td class="mono">MAR</td></tr>
+      <tr><td><strong>Memory Data Register (MDR)</strong></td><td>The data / instruction <strong>just read from</strong> or about to be <strong>written to</strong> memory</td><td class="mono">MDR</td></tr>
+      <tr><td><strong>Current Instruction Register (CIR)</strong></td><td>The instruction currently being <strong>decoded and executed</strong></td><td class="mono">CIR</td></tr>
+      <tr><td><strong>Accumulator (ACC)</strong></td><td><strong>Temporarily stores results</strong> of calculations from the ALU</td><td class="mono">ACC</td></tr>
+    </tbody>
+  </table>
+  <div class="callout info mt-8"><strong>Exam tip:</strong> learn the <strong>five registers</strong> and one key phrase each — PC (next instruction), MAR (address), MDR (data), CIR (current instruction), ACC (results).</div>
+  <div class="slide-footer"><span class="section-label">3.1 Computer Architecture</span><span class="slide-number">5 / 30</span></div>
+</div>
+
+<!-- ============ SLIDE 6 – SYSTEM BUSES ============ -->
+<div class="slide" data-slide="6">
+  <div class="section-badge">3.1 &middot; Computer Architecture</div>
+  <h2>Von Neumann Architecture — System Buses</h2>
+  <div style="width:60px; height:3px; background:#4a9ee8; border-radius:2px; margin-bottom:10px;"></div>
+  <p style="margin-bottom:8px;">A <strong>bus</strong> is a set of parallel wires that carries data, addresses or control signals between the CPU and other components.</p>
+  <table>
+    <thead><tr><th>Bus</th><th>Carries…</th><th>Direction</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Address Bus</strong></td><td>Memory <strong>addresses</strong> from CPU to RAM</td><td class="comparison-bad">Unidirectional (CPU → RAM)</td></tr>
+      <tr><td><strong>Data Bus</strong></td><td><strong>Data and instructions</strong> between CPU and RAM / I/O</td><td class="comparison-good">Bidirectional</td></tr>
+      <tr><td><strong>Control Bus</strong></td><td><strong>Control signals</strong> (read / write commands) from the CU</td><td class="comparison-good">Bidirectional</td></tr>
+    </tbody>
+  </table>
+  <div class="exam-tip">
+    <span class="tip-icon">💡</span>
+    <div class="tip-text"><strong>Exam Tip:</strong> Remember that the <strong>Address Bus is the ONLY unidirectional bus!</strong> Data and Control buses both go both ways.</div>
+  </div>
+  <div class="diagram-box mt-8">
+    <svg viewBox="0 0 640 140" style="width:100%; max-width:640px;">
+      <rect x="30" y="45" width="150" height="50" rx="10" fill="#12161f" stroke="#4a9ee8" stroke-width="2"/>
+      <text x="105" y="73" fill="#a8d0ff" font-size="12" font-weight="bold" text-anchor="middle" font-family="sans-serif">CPU</text>
+      <rect x="460" y="45" width="150" height="50" rx="10" fill="#12161f" stroke="#f4a360" stroke-width="2"/>
+      <text x="535" y="73" fill="#ffd3a8" font-size="12" font-weight="bold" text-anchor="middle" font-family="sans-serif">RAM / Memory</text>
+      <!-- address bus -->
+      <line x1="180" y1="58" x2="458" y2="58" stroke="#f48a8a" stroke-width="3"/>
+      <text x="320" y="52" fill="#f48a8a" font-size="10" text-anchor="middle" font-family="sans-serif">Address Bus (→ one way)</text>
+      <!-- data bus -->
+      <line x1="180" y1="73" x2="458" y2="73" stroke="#8bc34a" stroke-width="3"/>
+      <text x="320" y="95" fill="#8bc34a" font-size="10" text-anchor="middle" font-family="sans-serif">Data Bus (⇄ both ways)</text>
+      <!-- control bus -->
+      <line x1="180" y1="88" x2="458" y2="88" stroke="#7ab8ff" stroke-width="2.5" stroke-dasharray="6 4"/>
+      <text x="320" y="118" fill="#7ab8ff" font-size="10" text-anchor="middle" font-family="sans-serif">Control Bus (⇄ both ways)</text>
+    </svg>
+    <div class="diagram-caption">Address bus points one way; data and control buses work both ways</div>
+  </div>
+  <div class="slide-footer"><span class="section-label">3.1 Computer Architecture</span><span class="slide-number">6 / 30</span></div>
+</div>
+
+<!-- ============ SLIDE 7 – FDE CYCLE ============ -->
+<div class="slide" data-slide="7">
+  <div class="section-badge">3.1 &middot; Computer Architecture</div>
+  <h2>The Fetch-Decode-Execute (FDE) Cycle</h2>
+  <div style="width:60px; height:3px; background:#4a9ee8; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="grid-2">
+    <div>
+      <ol class="step-list">
+        <li><strong>Fetch:</strong> address in the <strong>PC</strong> is copied to the <strong>MAR</strong>. The instruction at that address is fetched from RAM via the <strong>data bus</strong> into the <strong>MDR</strong>. The <strong>PC is incremented</strong> by 1. The instruction in the MDR is copied to the <strong>CIR</strong>.</li>
+        <li><strong>Decode:</strong> the <strong>CU decodes</strong> the instruction in the CIR to understand what action is required.</li>
+        <li><strong>Execute:</strong> the instruction is <strong>carried out</strong> (e.g. ALU performs a calculation, data loaded into the ACC).</li>
+      </ol>
+      <div class="callout info mt-8"><strong>Exam tip:</strong> write FDE answers in the right order — Fetch <em>first</em>, then Decode, then Execute. Mention the <strong>registers by name</strong> for full marks.</div>
+    </div>
+    <div>
+      <div class="diagram-box">
+        <svg viewBox="0 0 400 260" style="width:100%; max-width:400px;">
+          <defs>
+            <marker id="arrF" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7ab8ff"/></marker>
+          </defs>
+          <!-- Fetch -->
+          <rect x="120" y="20" width="160" height="60" rx="10" fill="#0f2a4a" stroke="#4a9ee8" stroke-width="2"/>
+          <text x="200" y="45" fill="#a8d0ff" font-size="13" font-weight="bold" text-anchor="middle" font-family="sans-serif">1. FETCH</text>
+          <text x="200" y="64" fill="#7a9ab8" font-size="9" text-anchor="middle" font-family="sans-serif">PC → MAR → MDR → CIR, PC+1</text>
+          <!-- Decode -->
+          <rect x="120" y="100" width="160" height="60" rx="10" fill="#2a1f0f" stroke="#f4a360" stroke-width="2"/>
+          <text x="200" y="125" fill="#ffd3a8" font-size="13" font-weight="bold" text-anchor="middle" font-family="sans-serif">2. DECODE</text>
+          <text x="200" y="144" fill="#b89878" font-size="9" text-anchor="middle" font-family="sans-serif">CU decodes instruction in CIR</text>
+          <!-- Execute -->
+          <rect x="120" y="180" width="160" height="60" rx="10" fill="#0f2a1f" stroke="#8bc34a" stroke-width="2"/>
+          <text x="200" y="205" fill="#c3e88d" font-size="13" font-weight="bold" text-anchor="middle" font-family="sans-serif">3. EXECUTE</text>
+          <text x="200" y="224" fill="#8aa878" font-size="9" text-anchor="middle" font-family="sans-serif">ALU calculates, ACC stores result</text>
+          <!-- arrows -->
+          <line x1="200" y1="80" x2="200" y2="98" stroke="#7ab8ff" stroke-width="2.5" marker-end="url(#arrF)"/>
+          <line x1="200" y1="160" x2="200" y2="178" stroke="#7ab8ff" stroke-width="2.5" marker-end="url(#arrF)"/>
+          <!-- loop back -->
+          <path d="M 120 210 C 40 210, 40 50, 118 50" fill="none" stroke="#7ab8ff" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arrF)"/>
+          <text x="40" y="135" fill="#5a7a9a" font-size="9" text-anchor="middle" font-family="sans-serif">loop for next instruction</text>
+        </svg>
+        <div class="diagram-caption">The FDE cycle repeats for every instruction</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="section-label">3.1 Computer Architecture</span><span class="slide-number">7 / 30</span></div>
+</div>
+
+<!-- ============ SLIDE 8 – CPU PERFORMANCE ============ -->
+<div class="slide" data-slide="8">
+  <div class="section-badge">3.1 &middot; Computer Architecture</div>
+  <h2>CPU Performance Factors</h2>
+  <div style="width:60px; height:3px; background:#4a9ee8; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="grid-3">
+    <div class="card">
+      <h4>⏱️ Clock Speed</h4>
+      <p style="font-size:0.9rem;">Measured in <strong>Hertz (GHz)</strong> — the number of <strong>FDE cycles</strong> a CPU can perform per second.</p>
+      <div class="formula">Higher clock = <span class="highlight">faster processing</span></div>
+      <p style="font-size:0.82rem;">e.g. 3.5 GHz ≈ 3.5 billion cycles per second</p>
+    </div>
+    <div class="card" style="border-color:#4a9ee8;">
+      <h4>🗃️ Cache Size</h4>
+      <p style="font-size:0.9rem;">Small, <strong>ultra-fast memory inside the CPU</strong> that stores <strong>frequently used data</strong>.</p>
+      <div class="formula">Larger cache = <span class="highlight">fewer slow trips to RAM</span></div>
+      <p style="font-size:0.82rem;">Cache is much faster than RAM but more expensive</p>
+    </div>
+    <div class="card" style="border-color:#f4a360;">
+      <h4>🔢 Number of Cores</h4>
+      <p style="font-size:0.9rem;">Multiple <strong>independent processing units</strong> inside one CPU.</p>
+      <div class="formula">More cores = <span class="highlight">parallel processing</span></div>
+      <p style="font-size:0.82rem;">More instructions executed <strong>simultaneously</strong></p>
+    </div>
+  </div>
+  <div class="diagram-box mt-8">
+    <svg viewBox="0 0 640 110" style="width:100%; max-width:640px;">
+      <rect x="250" y="15" width="140" height="80" rx="10" fill="#12161f" stroke="#4a9ee8" stroke-width="2"/>
+      <text x="320" y="40" fill="#a8d0ff" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">CPU</text>
+      <rect x="265" y="52" width="40" height="30" rx="6" fill="#0f2a4a" stroke="#4a9ee8"/><text x="285" y="71" fill="#a8d0ff" font-size="8" text-anchor="middle" font-family="sans-serif">core</text>
+      <rect x="310" y="52" width="40" height="30" rx="6" fill="#0f2a4a" stroke="#4a9ee8"/><text x="330" y="71" fill="#a8d0ff" font-size="8" text-anchor="middle" font-family="sans-serif">core</text>
+      <rect x="355" y="52" width="40" height="30" rx="6" fill="#2a1f0f" stroke="#f4a360"/><text x="375" y="71" fill="#ffd3a8" font-size="8" text-anchor="middle" font-family="sans-serif">cache</text>
+      <rect x="30" y="30" width="120" height="50" rx="8" fill="#0b0e14" stroke="#5a6a7a"/>
+      <text x="90" y="52" fill="#8a9ab0" font-size="9" text-anchor="middle" font-family="sans-serif">RAM (slower, bigger)</text>
+      <text x="90" y="68" fill="#5a6a7a" font-size="8" text-anchor="middle" font-family="sans-serif">bigger cache → fewer trips here</text>
+      <line x1="150" y1="55" x2="248" y2="55" stroke="#8bc34a" stroke-width="2.5"/>
+      <text x="199" y="48" fill="#8bc34a" font-size="9" text-anchor="middle" font-family="sans-serif">bus</text>
+      <text x="510" y="40" fill="#5a7a9a" font-size="10" text-anchor="middle" font-family="sans-serif">clock: FDE cycles / second</text>
+      <text x="510" y="60" fill="#5a7a9a" font-size="10" text-anchor="middle" font-family="sans-serif">cores: work in parallel</text>
+      <text x="510" y="80" fill="#5a7a9a" font-size="10" text-anchor="middle" font-family="sans-serif">cache: hot data close by</text>
+    </svg>
+    <div class="diagram-caption">Clock speed, cache and cores all boost CPU performance</div>
+  </div>
+  <div class="slide-footer"><span class="section-label">3.1 Computer Architecture</span><span class="slide-number">8 / 30</span></div>
+</div>
+
+<!-- ============ SLIDE 9 – INSTRUCTION SETS & EMBEDDED SYSTEMS ============ -->
+<div class="slide" data-slide="9">
+  <div class="section-badge">3.1 &middot; Computer Architecture</div>
+  <h2>Instruction Sets &amp; Embedded Systems</h2>
+  <div style="width:60px; height:3px; background:#4a9ee8; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="grid-2">
+    <div>
+      <div class="card">
+        <h4>📋 Instruction Set</h4>
+        <p>The <strong>list of all commands (machine code)</strong> that a specific CPU can understand and execute.</p>
+        <ul>
+          <li>Every CPU has its <strong>own instruction set</strong></li>
+          <li>Programs are stored as these machine-code instructions</li>
+          <li>Different CPUs may need <strong>different machine code</strong> for the same task</li>
+        </ul>
+        <div class="code-block" style="font-size:0.82rem;">
+          <span class="comment">// example machine-code instructions</span>
+          <span class="hl-blue">ADD</span> &nbsp;R1, R2&nbsp;&nbsp;<span class="comment">; add two values</span>
+          <span class="hl-blue">JMP</span> &nbsp;0x0040&nbsp;&nbsp;<span class="comment">; jump to address</span>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="border-color:#f4a360;">
+        <h4>⚙️ Embedded Systems</h4>
+        <p>An <strong>embedded system</strong> is a microcontroller / microprocessor <strong>built into a device</strong> to perform a <strong>dedicated function</strong>.</p>
+        <ul>
+          <li><strong>Examples:</strong> washing machines, cars (ABS), security systems, microwaves</li>
+          <li>Runs <strong>one fixed program</strong> — not user-programmable like a PC</li>
+        </ul>
+      </div>
+      <div class="card mt-8">
+        <h4>⚖ Embedded vs General-Purpose</h4>
+        <table>
+          <thead><tr><th>Embedded</th><th>General-purpose PC</th></tr></thead>
+          <tbody>
+            <tr><td>One dedicated task</td><td>Many different tasks</td></tr>
+            <tr><td>Limited hardware / OS</td><td>Full OS &amp; applications</td></tr>
+            <tr><td>Cheap, low power</td><td>Expensive, high power</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="section-label">3.1 Computer Architecture</span><span class="slide-number">9 / 30</span></div>
+</div>
+
+<!-- ============ SLIDE 10 – RECAP 3.1 ============ -->
+<div class="slide" data-slide="10">
+  <div class="section-badge quiz">3.1 &middot; Quick Check</div>
+  <h2>Recap — Practice Questions</h2>
+  <div style="width:60px; height:3px; background:#ffd54f; border-radius:2px; margin-bottom:10px;"></div>
+  <p style="margin-bottom:10px;">Try each question, then reveal the answer.</p>
+  <div class="grid-2">
+    <div class="card" style="margin-bottom:10px;">
+      <h4>📝 Q1. Describe the role of the MAR during the fetch stage</h4>
+      <div class="reveal-container">
+        <button class="reveal-btn" data-target="q1">📌 Reveal Answer</button>
+        <div class="reveal-answer" id="q1">
+          <p>The address of the next instruction is <strong>copied from the PC into the MAR</strong>. The MAR holds the <strong>address of the memory location being read</strong>, so the instruction at that address can be fetched into the MDR.</p>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:10px;">
+      <h4>📝 Q2. State two characteristics of an embedded system</h4>
+      <div class="reveal-container">
+        <button class="reveal-btn" data-target="q2">📌 Reveal Answer</button>
+        <div class="reveal-answer" id="q2">
+          <p>Any two: built into a <strong>larger device</strong>; performs a <strong>single dedicated function</strong>; has <strong>limited hardware/resources</strong>; runs a <strong>fixed program</strong>; cheap and low-power.</p>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:10px;">
+      <h4>📝 Q3. Which register holds the instruction currently being decoded and executed?</h4>
+      <div class="reveal-container">
+        <button class="reveal-btn" data-target="q3">📌 Reveal Answer</button>
+        <div class="reveal-answer" id="q3">
+          <p>The <strong>Current Instruction Register (CIR)</strong>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="callout success mt-8"><strong>📖 Revision tip:</strong> FDE + the five registers is the most likely 6-mark question in this topic — learn the order and the register names.</div>
+  <div class="slide-footer"><span class="section-label">3.1 Computer Architecture</span><span class="slide-number">10 / 30</span></div>
+</div>
+
+<!-- ============ SLIDE 11 – LEARNING OBJECTIVES 3.2 ============ -->
+<div class="slide" data-slide="11">
+  <div class="section-badge sec-32">Section 3.2 &middot; Input and Output Devices</div>
+  <h1>Learning Objectives</h1>
+  <div style="width:60px; height:3px; background:#f4a360; border-radius:2px; margin-bottom:14px;"></div>
+  <p style="margin-bottom:12px;">By the end of this section you will be able to:</p>
+  <div class="grid-2">
+    <div>
+      <ul class="objectives-list">
+        <li>Understand the <strong>purpose of input and output devices</strong></li>
+        <li>Describe the operation of specific <strong>input devices</strong> (including the 3 touchscreen types)</li>
+      </ul>
+    </div>
+    <div>
+      <ul class="objectives-list">
+        <li>Describe the operation of specific <strong>output devices</strong></li>
+        <li>Identify and select <strong>suitable sensors</strong> for given contexts</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout info mt-8"><strong>Syllabus reference:</strong> IGCSE 0478 / 0984 / 0418 &middot; Section 3.2 — Input and output devices.</div>
+  <div class="slide-footer"><span class="section-label">3.2 Input &amp; Output Devices</span><span class="slide-number">11 / 30</span></div>
+</div>
+
+<!-- ============ SLIDE 12 – INPUT DEVICES ============ -->
+<div class="slide" data-slide="12">
+  <div class="section-badge sec-32">3.2 &middot; Input &amp; Output</div>
+  <h2>Input Devices</h2>
+  <div style="width:60px; height:3px; background:#f4a360; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="callout info"><strong>Input devices</strong> are hardware used to <strong>enter data into a computer</strong> so it can be processed.</div>
+  <div class="grid-2">
+    <div>
+      <div class="card">
+        <h4>📊 Key input devices</h4>
+        <table>
+          <thead><tr><th>Device</th><th>How it works</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Barcode scanner</strong></td><td>Red <strong>laser / LED</strong> reads the black &amp; white bars</td></tr>
+            <tr><td><strong>QR code scanner</strong></td><td><strong>Camera / imaging sensor</strong> reads the 2D matrix</td></tr>
+            <tr><td><strong>Digital camera</strong></td><td>Image sensor captures light → digital pixels</td></tr>
+            <tr><td><strong>Keyboard</strong></td><td>Keys pressed close a circuit → code sent to CPU</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <h4>📊 More input devices</h4>
+        <table>
+          <thead><tr><th>Device</th><th>How it works</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Optical mouse</strong></td><td>LED + sensor track movement over a surface</td></tr>
+            <tr><td><strong>2D scanner</strong></td><td>Scans flat documents / images into a computer</td></tr>
+            <tr><td><strong>3D scanner</strong></td><td>Captures 3D shape of objects (laser / structured light)</td></tr>
+            <tr><td><strong>Microphone</strong></td><td>Converts <strong>sound waves</strong> into electrical signals</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout success mt-8"><strong>Exam tip:</strong> be ready to match an input device to a scenario — e.g. scanning a ticket → barcode scanner; paying with a phone code → QR scanner.</div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="section-label">3.2 Input &amp; Output Devices</span><span class="slide-number">12 / 30</span></div>
+</div>
+
+<!-- ============ SLIDE 13 – TOUCHSCREEN TECHNOLOGIES ============ -->
+<div class="slide" data-slide="13">
+  <div class="section-badge sec-32">3.2 &middot; Input &amp; Output</div>
+  <h2>Touchscreen Technologies</h2>
+  <div style="width:60px; height:3px; background:#f4a360; border-radius:2px; margin-bottom:10px;"></div>
+  <table>
+    <thead>
+      <tr><th>Type</th><th>How it detects touch</th><th>Advantages</th><th>Disadvantages</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Capacitive</strong></td>
+        <td>Uses the <strong>electrical current</strong> of the human finger</td>
+        <td class="comparison-good">Highly responsive · supports <strong>multi-touch</strong></td>
+        <td class="comparison-bad">Cannot be used with standard gloves</td>
+      </tr>
+      <tr>
+        <td><strong>Resistive</strong></td>
+        <td>Two <strong>conductive layers</strong> press together when touched</td>
+        <td class="comparison-good">Cheap · works with <strong>gloves / stylus</strong></td>
+        <td class="comparison-bad">Easily scratched · <strong>no multi-touch</strong></td>
+      </tr>
+      <tr>
+        <td><strong>Infra-red</strong></td>
+        <td>Grid of <strong>invisible infrared beams</strong> across the screen</td>
+        <td class="comparison-good">Highly durable · supports <strong>multi-touch</strong></td>
+        <td class="comparison-bad">Can be triggered accidentally by <strong>dust / debris</strong></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="grid-3 mt-8">
+    <div class="card"><h4>📱 Capacitive</h4><p style="font-size:0.82rem;">Smartphones &amp; tablets — finger conducts tiny current.</p></div>
+    <div class="card"><h4>✍️ Resistive</h4><p style="font-size:0.82rem;">ATM machines, industrial panels — pressure sensitive.</p></div>
+    <div class="card"><h4>📺 Infra-red</h4><p style="font-size:0.82rem;">Interactive whiteboards, outdoor kiosks — beam grid.</p></div>
+  </div>
+  <div class="slide-footer"><span class="section-label">3.2 Input &amp; Output Devices</span><span class="slide-number">13 / 30</span></div>
+</div>
+
+<!-- ============ SLIDE 14 – OUTPUT DEVICES ============ -->
+<div class="slide" data-slide="14">
+  <div class="section-badge sec-32">3.2 &middot; Input &amp; Output</div>
+  <h2>Output Devices</h2>
+  <div style="width:60px; height:3px; background:#f4a360; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="callout info"><strong>Output devices</strong> present <strong>processed data</strong> to the user.</div>
+  <div class="grid-2">
+    <div>
+      <div class="card">
+        <h4>🖨️ Printers</h4>
+        <ul>
+          <li><strong>Inkjet</strong> — sprays <strong>liquid ink</strong> through nozzles</li>
+          <li><strong>Laser</strong> — uses <strong>toner powder</strong> and a <strong>static-electricity drum</strong></li>
+          <li><strong>3D printer</strong> — builds <strong>physical objects layer by layer</strong></li>
+        </ul>
+      </div>
+      <div class="card mt-8">
+        <h4>🎬 Projectors</h4>
+        <ul>
+          <li><strong>DLP</strong> — uses <strong>millions of micro-mirrors</strong></li>
+          <li><strong>LCD projector</strong> — light shines through liquid crystal panels</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <h4>🖥️ Screens</h4>
+        <ul>
+          <li><strong>LCD</strong> — <strong>liquid crystal pixels</strong> backlit by LEDs</li>
+          <li><strong>LED screen</strong> — pixels lit by light-emitting diodes</li>
+        </ul>
+      </div>
+      <div class="card mt-8" style="border-color:#f4a360;">
+        <h4>⚙️ Actuators</h4>
+        <p>Convert <strong>electrical signals into physical movement</strong>.</p>
+        <ul>
+          <li>Motors, valves, solenoids</li>
+          <li>Often paired with sensors in control systems (e.g. open a window when too hot)</li>
+        </ul>
+      </div>
+      <div class="callout success mt-8"><strong>Exam tip:</strong> actuator = <strong>output</strong> (moves things); sensor = <strong>input</strong> (measures things). They work as a pair in control systems.</div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="section-label">3.2 Input &amp; Output Devices</span><span class="slide-number">14 / 30</span></div>
+</div>
+
+<!-- ============ SLIDE 15 – SENSORS ============ -->
+<div class="slide" data-slide="15">
+  <div class="section-badge sec-32">3.2 &middot; Input &amp; Output</div>
+  <h2>Sensors in Computer Systems</h2>
+  <div style="width:60px; height:3px; background:#f4a360; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="grid-2">
+    <div>
+      <div class="card">
+        <h4>🌡️ What Is a Sensor?</h4>
+        <p>Sensors <strong>measure physical properties</strong> of the real world (temperature, light, pressure, movement…) and convert them into <strong>electrical signals</strong>.</p>
+        <ul>
+          <li>Sensors are <strong>input devices</strong></li>
+          <li>Their signal is <strong>analogue</strong> (continuous)</li>
+          <li>The CPU works with <strong>digital</strong> (0s and 1s)</li>
+        </ul>
+      </div>
+      <div class="card mt-8" style="border-color:#4a9ee8;">
+        <h4>🔄 The ADC</h4>
+        <p>An <strong>Analogue-to-Digital Converter (ADC)</strong> converts the analogue sensor signal into digital data the CPU can process.</p>
+      </div>
+    </div>
+    <div>
+      <div class="diagram-box">
+        <svg viewBox="0 0 520 150" style="width:100%; max-width:520px;">
+          <defs>
+            <marker id="arrS3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7ab8ff"/></marker>
+          </defs>
+          <rect x="20" y="55" width="120" height="50" rx="8" fill="#2a1f0f" stroke="#f4a360" stroke-width="2"/>
+          <text x="80" y="75" fill="#ffd3a8" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">Sensor</text>
+          <text x="80" y="93" fill="#b89878" font-size="8" text-anchor="middle" font-family="sans-serif">analogue signal</text>
+          <rect x="200" y="55" width="120" height="50" rx="8" fill="#0f2a4a" stroke="#4a9ee8" stroke-width="2"/>
+          <text x="260" y="75" fill="#a8d0ff" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">ADC</text>
+          <text x="260" y="93" fill="#7a9ab8" font-size="8" text-anchor="middle" font-family="sans-serif">analogue → digital</text>
+          <rect x="380" y="55" width="120" height="50" rx="8" fill="#0f2a1f" stroke="#8bc34a" stroke-width="2"/>
+          <text x="440" y="75" fill="#c3e88d" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">CPU</text>
+          <text x="440" y="93" fill="#8aa878" font-size="8" text-anchor="middle" font-family="sans-serif">processes digital data</text>
+          <line x1="140" y1="80" x2="198" y2="80" stroke="#f4a360" stroke-width="2.5" marker-end="url(#arrS3)"/>
+          <line x1="320" y1="80" x2="378" y2="80" stroke="#7ab8ff" stroke-width="2.5" marker-end="url(#arrS3)"/>
+          <text x="170" y="45" fill="#5a7a9a" font-size="9" text-anchor="middle" font-family="sans-serif">1. measure</text>
+          <text x="350" y="45" fill="#5a7a9a" font-size="9" text-anchor="middle" font-family="sans-serif">2. convert</text>
+          <text x="430" y="125" fill="#5a7a9a" font-size="9" text-anchor="middle" font-family="sans-serif">3. process</text>
+        </svg>
+        <div class="diagram-caption">Sensor → ADC → CPU: analogue measurement becomes digital data</div>
+      </div>
+      <div class="callout warn mt-8"><strong>Exam tip:</strong> remember the three-step chain — <em>sense (analogue)</em> → <em>convert (ADC)</em> → <em>process (digital)</em>.</div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="section-label">3.2 Input &amp; Output Devices</span><span class="slide-number">15 / 30</span></div>
+</div>
+
+<!-- ============ SLIDE 16 – SYLLABUS SENSORS GUIDE ============ -->
+<div class="slide" data-slide="16">
+  <div class="section-badge sec-32">3.2 &middot; Input &amp; Output</div>
+  <h2>Syllabus Sensors Guide (14 Sensors)</h2>
+  <div style="width:60px; height:3px; background:#f4a360; border-radius:2px; margin-bottom:10px;"></div>
+  <table style="font-size:0.84rem;">
+    <thead><tr><th>Sensor</th><th>Captures</th><th>Typical use</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Acoustic</strong></td><td>Sound levels</td><td>Security systems</td></tr>
+      <tr><td><strong>Accelerometer</strong></td><td>Rotation / acceleration</td><td>Smartphone screen rotation</td></tr>
+      <tr><td><strong>Flow</strong></td><td>Rate of fluid movement</td><td>Water pipes</td></tr>
+      <tr><td><strong>Gas</strong></td><td>Gas concentration</td><td>Carbon monoxide detector</td></tr>
+      <tr><td><strong>Humidity</strong></td><td>Moisture in the air</td><td>Greenhouses</td></tr>
+      <tr><td><strong>Infra-red</strong></td><td>Heat / motion</td><td>Automatic doors</td></tr>
+      <tr><td><strong>Level</strong></td><td>Liquid depth</td><td>Fuel tanks</td></tr>
+      <tr><td><strong>Light</strong></td><td>Ambient light</td><td>Automatic streetlights</td></tr>
+      <tr><td><strong>Magnetic field</strong></td><td>Magnetic strength</td><td>Anti-lock brakes (ABS)</td></tr>
+      <tr><td><strong>Moisture</strong></td><td>Soil wetness</td><td>Automated irrigation</td></tr>
+      <tr><td><strong>pH</strong></td><td>Acidity / alkalinity</td><td>Swimming pool monitoring</td></tr>
+      <tr><td><strong>Pressure</strong></td><td>Force applied</td><td>Burglar alarms / scales</td></tr>
+      <tr><td><strong>Proximity</strong></td><td>Distance to object</td><td>Parking sensors</td></tr>
+      <tr><td><strong>Temperature</strong></td><td>Heat levels</td><td>Central heating</td></tr>
+    </tbody>
+  </table>
+  <div class="slide-footer"><span class="section-label">3.2 Input &amp; Output Devices</span><span class="slide-number">16 / 30</span></div>
+</div>
+
+<!-- ============ SLIDE 17 – RECAP 3.2 ============ -->
+<div class="slide" data-slide="17">
+  <div class="section-badge quiz">3.2 &middot; Quick Check</div>
+  <h2>Recap — Practice Questions</h2>
+  <div style="width:60px; height:3px; background:#ffd54f; border-radius:2px; margin-bottom:10px;"></div>
+  <p style="margin-bottom:10px;">Try each scenario, then reveal the answer.</p>
+  <div class="grid-2">
+    <div class="card" style="margin-bottom:10px;">
+      <h4>📝 Q1. Which sensor and output device would control an automated greenhouse?</h4>
+      <div class="reveal-container">
+        <button class="reveal-btn" data-target="q4">📌 Reveal Answer</button>
+        <div class="reveal-answer" id="q4">
+          <p>Sensors: <strong>temperature</strong>, <strong>moisture</strong> and <strong>humidity</strong> (plus light). Output devices: <strong>actuators</strong> — to open windows / valves, run sprinklers or heaters when readings are outside the desired range.</p>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:10px;">
+      <h4>📝 Q2. Compare capacitive and resistive touchscreens</h4>
+      <div class="reveal-container">
+        <button class="reveal-btn" data-target="q5">📌 Reveal Answer</button>
+        <div class="reveal-answer" id="q5">
+          <p><strong>Capacitive:</strong> uses finger's electrical current; very responsive, supports multi-touch, but not with standard gloves. <strong>Resistive:</strong> two layers press together; cheap, works with gloves/stylus, but easily scratched and no multi-touch.</p>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:10px;">
+      <h4>📝 Q3. Which sensor makes automatic doors open when someone approaches?</h4>
+      <div class="reveal-container">
+        <button class="reveal-btn" data-target="q6">📌 Reveal Answer</button>
+        <div class="reveal-answer" id="q6">
+          <p>An <strong>infra-red</strong> sensor (detects body heat / motion) — often paired with a <strong>pressure</strong> sensor mat, triggering an <strong>actuator</strong> to open the door.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="callout success mt-8"><strong>📖 Revision tip:</strong> the 14 sensors with a use case each is a high-yield memory task — make flashcards!</div>
+  <div class="slide-footer"><span class="section-label">3.2 Input &amp; Output Devices</span><span class="slide-number">17 / 30</span></div>
+</div>
+
+<!-- ============ SLIDE 18 – LEARNING OBJECTIVES 3.3 ============ -->
+<div class="slide" data-slide="18">
+  <div class="section-badge sec-33">Section 3.3 &middot; Data Storage</div>
+  <h1>Learning Objectives</h1>
+  <div style="width:60px; height:3px; background:#4ac8e8; border-radius:2px; margin-bottom:14px;"></div>
+  <p style="margin-bottom:12px;">By the end of this section you will be able to:</p>
+  <div class="grid-2">
+    <div>
+      <ul class="objectives-list">
+        <li>Differentiate between <strong>primary</strong> and <strong>secondary</strong> storage</li>
+        <li><strong>Compare RAM and ROM</strong></li>
+        <li>Describe the operation of <strong>magnetic, optical and solid-state</strong> storage</li>
+      </ul>
+    </div>
+    <div>
+      <ul class="objectives-list">
+        <li>Explain the concept, creation and <strong>necessity of virtual memory</strong></li>
+        <li>Evaluate <strong>cloud storage vs local storage</strong></li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout info mt-8"><strong>Syllabus reference:</strong> IGCSE 0478 / 0984 / 0418 &middot; Section 3.3 — Data storage.</div>
+  <div class="slide-footer"><span class="section-label">3.3 Data Storage</span><span class="slide-number">18 / 30</span></div>
+</div>
+
+<!-- ============ SLIDE 19 – RAM VS ROM ============ -->
+<div class="slide" data-slide="19">
+  <div class="section-badge sec-33">3.3 &middot; Data Storage</div>
+  <h2>Primary Storage — RAM vs. ROM</h2>
+  <div style="width:60px; height:3px; background:#4ac8e8; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="callout info"><strong>Primary storage</strong> is <strong>directly accessed by the CPU</strong>. The two main types are RAM and ROM.</div>
+  <table>
+    <thead><tr><th>Feature</th><th>RAM</th><th>ROM</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Full name</strong></td><td>Random Access Memory</td><td>Read Only Memory</td></tr>
+      <tr><td><strong>Volatile?</strong></td><td class="comparison-bad">Volatile — <strong>loses data</strong> when powered off</td><td class="comparison-good">Non-volatile — <strong>retains data</strong></td></tr>
+      <tr><td><strong>Read / write?</strong></td><td class="comparison-good">Read and <strong>write</strong></td><td class="comparison-bad">Read-only (can't be changed)</td></tr>
+      <tr><td><strong>Stores</strong></td><td>Currently running programs &amp; OS data</td><td>Boot-up instructions (<strong>BIOS</strong>)</td></tr>
+    </tbody>
+  </table>
+  <div class="grid-2 mt-8">
+    <div class="card"><h4>🧩 Why do we need both?</h4><p style="font-size:0.88rem;"><strong>RAM</strong> gives fast, changeable working space for programs. <strong>ROM</strong> keeps the instructions the computer needs <strong>the instant it powers on</strong> — even before the OS loads.</p></div>
+    <div class="card" style="border-color:#4ac8e8;"><h4>💡 Key exam phrase</h4><p style="font-size:0.88rem;">"RAM is <strong>volatile</strong>, ROM is <strong>non-volatile</strong>." Learn this exact comparison — it appears constantly.</p></div>
+  </div>
+  <div class="slide-footer"><span class="section-label">3.3 Data Storage</span><span class="slide-number">19 / 30</span></div>
+</div>
+
+<!-- ============ SLIDE 20 – SECONDARY STORAGE ============ -->
+<div class="slide" data-slide="20">
+  <div class="section-badge sec-33">3.3 &middot; Data Storage</div>
+  <h2>Secondary Storage Technologies</h2>
+  <div style="width:60px; height:3px; background:#4ac8e8; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="callout info"><strong>Secondary storage</strong> is <strong>non-volatile</strong>, <strong>not directly accessed by the CPU</strong>, and used for <strong>permanent file storage</strong> (documents, photos, programs, OS).</div>
+  <div class="grid-3">
+    <div class="card" style="border-color:#f4a360;">
+      <h4>🧲 Magnetic</h4>
+      <p style="font-size:0.9rem;">Uses <strong>magnetic patterns</strong> on spinning platters.</p>
+      <ul style="font-size:0.85rem;">
+        <li>Hard Disk Drives (<strong>HDD</strong>)</li>
+        <li>Magnetic tape (backups)</li>
+        <li>Cheap per GB, large capacity</li>
+      </ul>
+    </div>
+    <div class="card" style="border-color:#4a9ee8;">
+      <h4>💿 Optical</h4>
+      <p style="font-size:0.9rem;">Uses <strong>laser light</strong> read from a spinning disc.</p>
+      <ul style="font-size:0.85rem;">
+        <li>CD, DVD, Blu-ray</li>
+        <li>Pits &amp; lands represent 0s &amp; 1s</li>
+        <li>Portable, cheap media</li>
+      </ul>
+    </div>
+    <div class="card" style="border-color:#8bc34a;">
+      <h4>⚡ Solid-State</h4>
+      <p style="font-size:0.9rem;">Uses <strong>flash memory</strong> — no moving parts.</p>
+      <ul style="font-size:0.85rem;">
+        <li>SSDs, SD cards, USB sticks</li>
+        <li>Very fast, durable, silent</li>
+        <li>More expensive per GB</li>
+      </ul>
+    </div>
+  </div>
+  <div class="exam-tip">
+    <span class="tip-icon">💡</span>
+    <div class="tip-text"><strong>Exam Tip:</strong> the classic comparison — <strong>SSD</strong> (fast, no moving parts, expensive) vs <strong>HDD</strong> (slower, moving parts, cheap, can be physically damaged).</div>
+  </div>
+  <div class="slide-footer"><span class="section-label">3.3 Data Storage</span><span class="slide-number">20 / 30</span></div>
+</div>
+
+<!-- ============ SLIDE 21 – HOW STORAGE MEDIA WORKS ============ -->
+<div class="slide" data-slide="21">
+  <div class="section-badge sec-33">3.3 &middot; Data Storage</div>
+  <h2>How Storage Media Works</h2>
+  <div style="width:60px; height:3px; background:#4ac8e8; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="grid-3">
+    <div class="card" style="border-color:#f4a360;">
+      <h4>🧲 Magnetic (HDD)</h4>
+      <ul style="font-size:0.88rem;">
+        <li>Spinning <strong>magnetic platters</strong> divided into <strong>tracks and sectors</strong></li>
+        <li>Read/write heads use <strong>electromagnets</strong> to change / detect <strong>magnetic states</strong></li>
+      </ul>
+      <div class="diagram-box" style="padding:8px;">
+        <svg viewBox="0 0 220 110" style="width:100%; max-width:220px;">
+          <circle cx="110" cy="60" r="40" fill="none" stroke="#f4a360" stroke-width="2"/>
+          <circle cx="110" cy="60" r="26" fill="none" stroke="#f4a360" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <circle cx="110" cy="60" r="12" fill="none" stroke="#f4a360" stroke-width="1" stroke-dasharray="2 3"/>
+          <line x1="110" y1="60" x2="70" y2="24" stroke="#7ab8ff" stroke-width="2"/>
+          <text x="88" y="22" fill="#7ab8ff" font-size="9" font-family="monospace">head</text>
+          <text x="110" y="96" fill="#7a8a9a" font-size="8" text-anchor="middle" font-family="sans-serif">platter: tracks &amp; sectors</text>
+        </svg>
+      </div>
+    </div>
+    <div class="card" style="border-color:#4a9ee8;">
+      <h4>💿 Optical (CD/DVD)</h4>
+      <ul style="font-size:0.88rem;">
+        <li>A <strong>laser</strong> shines on a spinning disc</li>
+        <li>Reads <strong>pits</strong> (indentations) and <strong>lands</strong> (flat areas) as binary 0s and 1s</li>
+      </ul>
+      <div class="diagram-box" style="padding:8px;">
+        <svg viewBox="0 0 220 110" style="width:100%; max-width:220px;">
+          <rect x="20" y="30" width="180" height="10" fill="#1a2430" stroke="#4a9ee8"/>
+          <rect x="20" y="30" width="20" height="10" fill="#0f2a4a"/><rect x="50" y="30" width="16" height="10" fill="#0f2a4a"/><rect x="80" y="30" width="22" height="10" fill="#0f2a4a"/><rect x="118" y="30" width="14" height="10" fill="#0f2a4a"/><rect x="150" y="30" width="20" height="10" fill="#0f2a4a"/>
+          <text x="110" y="22" fill="#a8d0ff" font-size="9" text-anchor="middle" font-family="sans-serif">pits (dips) = 0 · lands (flat) = 1</text>
+          <line x1="200" y1="35" x2="205" y2="35" stroke="#f4a360" stroke-width="2"/>
+          <text x="200" y="52" fill="#f4a360" font-size="9" font-family="monospace">laser</text>
+          <text x="110" y="80" fill="#7a8a9a" font-size="8" text-anchor="middle" font-family="sans-serif">laser reflects differently off pits &amp; lands</text>
+        </svg>
+      </div>
+    </div>
+    <div class="card" style="border-color:#8bc34a;">
+      <h4>⚡ Solid-State (SSD)</h4>
+      <ul style="font-size:0.88rem;">
+        <li>Uses <strong>NAND / NOR flash memory</strong> — no moving parts</li>
+        <li><strong>Transistors</strong> act as control gates &amp; <strong>floating gates</strong> to trap or release <strong>electrons</strong></li>
+      </ul>
+      <div class="diagram-box" style="padding:8px;">
+        <svg viewBox="0 0 220 110" style="width:100%; max-width:220px;">
+          <rect x="60" y="25" width="14" height="60" fill="#0f2a1f" stroke="#8bc34a"/>
+          <rect x="110" y="25" width="14" height="60" fill="#0f2a1f" stroke="#8bc34a"/>
+          <rect x="160" y="25" width="14" height="60" fill="#0f2a1f" stroke="#8bc34a"/>
+          <line x1="45" y1="55" x2="60" y2="55" stroke="#7a8a9a"/><line x1="74" y1="55" x2="110" y2="55" stroke="#7a8a9a"/><line x1="124" y1="55" x2="160" y2="55" stroke="#7a8a9a"/><line x1="174" y1="55" x2="185" y2="55" stroke="#7a8a9a"/>
+          <text x="110" y="100" fill="#7a8a9a" font-size="8" text-anchor="middle" font-family="sans-serif">floating gates trap electrons = 1 / release = 0</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="callout warn mt-8"><strong>Exam tip:</strong> for each technology know <em>one mechanism</em> — HDD = magnetism, optical = laser/pits-lands, SSD = trapped electrons in flash memory.</div>
+  <div class="slide-footer"><span class="section-label">3.3 Data Storage</span><span class="slide-number">21 / 30</span></div>
+</div>
+
+<!-- ============ SLIDE 22 – VIRTUAL MEMORY ============ -->
+<div class="slide" data-slide="22">
+  <div class="section-badge sec-33">3.3 &middot; Data Storage</div>
+  <h2>Virtual Memory</h2>
+  <div style="width:60px; height:3px; background:#4ac8e8; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="grid-2">
+    <div>
+      <div class="card">
+        <h4>🗄️ What Is It?</h4>
+        <p><strong>Virtual memory</strong> is a section of <strong>secondary storage (HDD / SSD)</strong> partitioned to <strong>act as RAM</strong> when physical RAM is full.</p>
+      </div>
+      <div class="card mt-8">
+        <h4>⚙️ How It Works</h4>
+        <ol class="step-list">
+          <li>The OS transfers <strong>inactive pages</strong> of data from RAM to virtual memory.</li>
+          <li>When those pages are needed again, they are <strong>swapped back</strong> into RAM.</li>
+        </ol>
+      </div>
+      <div class="card mt-8" style="border-color:#8bc34a;">
+        <h4>✅ Necessity</h4>
+        <p>Prevents the computer from <strong>crashing or freezing</strong> when it runs out of RAM.</p>
+      </div>
+    </div>
+    <div>
+      <div class="diagram-box">
+        <svg viewBox="0 0 460 220" style="width:100%; max-width:460px;">
+          <defs>
+            <marker id="arrV" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7ab8ff"/></marker>
+          </defs>
+          <rect x="20" y="70" width="170" height="90" rx="10" fill="#0f2a4a" stroke="#4a9ee8" stroke-width="2"/>
+          <text x="105" y="95" fill="#a8d0ff" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">RAM</text>
+          <text x="105" y="115" fill="#7a9ab8" font-size="9" text-anchor="middle" font-family="sans-serif">active pages</text>
+          <text x="105" y="130" fill="#7a9ab8" font-size="9" text-anchor="middle" font-family="sans-serif">(full!)</text>
+          <rect x="290" y="70" width="170" height="90" rx="10" fill="#2a1f0f" stroke="#f4a360" stroke-width="2"/>
+          <text x="375" y="95" fill="#ffd3a8" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">Virtual Memory</text>
+          <text x="375" y="115" fill="#b89878" font-size="9" text-anchor="middle" font-family="sans-serif">on HDD / SSD</text>
+          <text x="375" y="130" fill="#b89878" font-size="9" text-anchor="middle" font-family="sans-serif">inactive pages</text>
+          <line x1="190" y1="95" x2="288" y2="95" stroke="#7ab8ff" stroke-width="2.5" marker-end="url(#arrV)"/>
+          <text x="239" y="86" fill="#7ab8ff" font-size="9" text-anchor="middle" font-family="sans-serif">swap out (when full)</text>
+          <line x1="288" y1="135" x2="190" y2="135" stroke="#8bc34a" stroke-width="2.5" marker-end="url(#arrV)"/>
+          <text x="239" y="155" fill="#8bc34a" font-size="9" text-anchor="middle" font-family="sans-serif">swap back (when needed)</text>
+          <text x="230" y="200" fill="#6a7a8a" font-size="9" text-anchor="middle" font-family="sans-serif">pages are moved between RAM and secondary storage</text>
+        </svg>
+        <div class="diagram-caption">Virtual memory borrows HDD/SSD space when RAM is full</div>
+      </div>
+      <div class="callout warn mt-8"><strong>Drawback:</strong> HDD/SSD is much <strong>slower than RAM</strong> — heavy swapping makes the computer <strong>slow down</strong>.</div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="section-label">3.3 Data Storage</span><span class="slide-number">22 / 30</span></div>
+</div>
+
+<!-- ============ SLIDE 23 – CLOUD VS LOCAL ============ -->
+<div class="slide" data-slide="23">
+  <div class="section-badge sec-33">3.3 &middot; Data Storage</div>
+  <h2>Cloud Storage vs. Local Storage</h2>
+  <div style="width:60px; height:3px; background:#4ac8e8; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="callout info"><strong>Cloud storage</strong> stores data on <strong>remote physical servers</strong> accessed via the <strong>internet</strong>. Local storage keeps files on your own device.</div>
+  <table>
+    <thead><tr><th>Feature</th><th>Cloud</th><th>Local</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Access</strong></td><td class="comparison-good">From <strong>any device</strong> anywhere</td><td class="comparison-bad">Only that device</td></tr>
+      <tr><td><strong>Sharing</strong></td><td class="comparison-good">Easy to share files</td><td class="comparison-bad">Harder to share</td></tr>
+      <tr><td><strong>Backups</strong></td><td class="comparison-good">Automatic backups</td><td class="comparison-bad">Manual — no automatic backup</td></tr>
+      <tr><td><strong>Internet needed?</strong></td><td class="comparison-bad">Yes — needs a connection</td><td class="comparison-good">No — works offline</td></tr>
+      <tr><td><strong>Cost</strong></td><td class="comparison-neutral">Ongoing subscription</td><td class="comparison-good">One-off cost of the drive</td></tr>
+      <tr><td><strong>Risks</strong></td><td class="comparison-bad">Security / privacy concerns</td><td class="comparison-bad">Drive can be damaged / stolen</td></tr>
+    </tbody>
+  </table>
+  <div class="callout success mt-8"><strong>Exam tip:</strong> give <strong>balanced</strong> answers — one advantage and one disadvantage of each, with a real scenario (e.g. team project → cloud; private offline files → local).</div>
+  <div class="slide-footer"><span class="section-label">3.3 Data Storage</span><span class="slide-number">23 / 30</span></div>
+</div>
+
+<!-- ============ SLIDE 24 – RECAP 3.3 ============ -->
+<div class="slide" data-slide="24">
+  <div class="section-badge quiz">3.3 &middot; Quick Check</div>
+  <h2>Recap — Practice Questions</h2>
+  <div style="width:60px; height:3px; background:#ffd54f; border-radius:2px; margin-bottom:10px;"></div>
+  <p style="margin-bottom:10px;">Try each question, then reveal the answer.</p>
+  <div class="grid-2">
+    <div class="card" style="margin-bottom:10px;">
+      <h4>📝 Q1. Explain how an SSD stores data</h4>
+      <div class="reveal-container">
+        <button class="reveal-btn" data-target="q7">📌 Reveal Answer</button>
+        <div class="reveal-answer" id="q7">
+          <p>An SSD uses <strong>NAND / NOR flash memory</strong> with <strong>no moving parts</strong>. Transistors have <strong>control gates and floating gates</strong> — electrons are <strong>trapped</strong> in the floating gate to store a 1, or <strong>released</strong> to store a 0.</p>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:10px;">
+      <h4>📝 Q2. Why is virtual memory needed, and what is a drawback?</h4>
+      <div class="reveal-container">
+        <button class="reveal-btn" data-target="q8">📌 Reveal Answer</button>
+        <div class="reveal-answer" id="q8">
+          <p>Needed so the computer <strong>doesn't crash / freeze</strong> when RAM is full — inactive pages are swapped to HDD/SSD. Drawback: secondary storage is <strong>much slower than RAM</strong>, so heavy swapping <strong>slows the computer down</strong>.</p>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:10px;">
+      <h4>📝 Q3. Which is volatile: RAM or ROM?</h4>
+      <div class="reveal-container">
+        <button class="reveal-btn" data-target="q9">📌 Reveal Answer</button>
+        <div class="reveal-answer" id="q9">
+          <p><strong>RAM is volatile</strong> (loses contents when powered off). <strong>ROM is non-volatile</strong> (keeps the boot-up BIOS instructions).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="callout success mt-8"><strong>📖 Revision tip:</strong> practise one-line definitions — volatile, non-volatile, primary, secondary, virtual memory — they're quick marks.</div>
+  <div class="slide-footer"><span class="section-label">3.3 Data Storage</span><span class="slide-number">24 / 30</span></div>
+</div>
+
+<!-- ============ SLIDE 25 – LEARNING OBJECTIVES 3.4 ============ -->
+<div class="slide" data-slide="25">
+  <div class="section-badge sec-34">Section 3.4 &middot; Network Hardware</div>
+  <h1>Learning Objectives</h1>
+  <div style="width:60px; height:3px; background:#8080f0; border-radius:2px; margin-bottom:14px;"></div>
+  <p style="margin-bottom:12px;">By the end of this section you will be able to:</p>
+  <div class="grid-2">
+    <div>
+      <ul class="objectives-list">
+        <li>Understand the role of a <strong>Network Interface Card (NIC)</strong></li>
+        <li>Describe the purpose and structure of a <strong>MAC address</strong></li>
+      </ul>
+    </div>
+    <div>
+      <ul class="objectives-list">
+        <li>Describe the purpose and types of <strong>IP addresses</strong> (IPv4 vs IPv6)</li>
+        <li>Describe the <strong>role of a router</strong> in a network</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout info mt-8"><strong>Syllabus reference:</strong> IGCSE 0478 / 0984 / 0418 &middot; Section 3.4 — Network hardware.</div>
+  <div class="slide-footer"><span class="section-label">3.4 Network Hardware</span><span class="slide-number">25 / 30</span></div>
+</div>
+
+<!-- ============ SLIDE 26 – NIC & MAC ============ -->
+<div class="slide" data-slide="26">
+  <div class="section-badge sec-34">3.4 &middot; Network Hardware</div>
+  <h2>Network Interface Cards &amp; MAC Addresses</h2>
+  <div style="width:60px; height:3px; background:#8080f0; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="grid-2">
+    <div>
+      <div class="card">
+        <h4>📡 NIC</h4>
+        <p>A <strong>Network Interface Card (NIC)</strong> is the hardware component required to <strong>connect a device to a network</strong> (wired or wireless).</p>
+        <ul>
+          <li>Converts data into signals for the network</li>
+          <li>Every networked device needs one</li>
+        </ul>
+      </div>
+      <div class="card mt-8">
+        <h4>🏷️ MAC Address</h4>
+        <ul>
+          <li><strong>Media Access Control</strong> address</li>
+          <li>A <strong>unique physical address</strong> burned into the NIC <strong>at manufacture</strong></li>
+          <li><strong>Does not change</strong> — permanent</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="border-color:#8080f0;">
+        <h4>🔢 Structure (12 hex digits)</h4>
+        <div class="code-block" style="font-size:0.9rem; text-align:center;">
+          <span class="hl-blue">00:1A:2B</span> : <span class="hl">3C:4D:5E</span>
+        </div>
+        <div class="grid-2" style="gap:8px;">
+          <div class="card"><h4 style="font-size:0.85rem;">First half</h4><p style="font-size:0.82rem;">Manufacturer code (OUI)</p></div>
+          <div class="card"><h4 style="font-size:0.85rem;">Second half</h4><p style="font-size:0.82rem;">Device serial number</p></div>
+        </div>
+        <div class="bits" style="justify-content:center; margin-top:8px;">
+          <span class="bit" style="width:30px; font-size:0.7rem;">00</span>
+          <span class="bit" style="width:30px; font-size:0.7rem;">1A</span>
+          <span class="bit" style="width:30px; font-size:0.7rem;">2B</span>
+          <span class="bit highlight" style="width:30px; font-size:0.7rem;">3C</span>
+          <span class="bit highlight" style="width:30px; font-size:0.7rem;">4D</span>
+          <span class="bit highlight" style="width:30px; font-size:0.7rem;">5E</span>
+        </div>
+        <div class="bits" style="justify-content:center;">
+          <span class="bit-label" style="color:#7ab8ff;">manufacturer</span>
+          <span class="bit-label" style="color:#f4a360;">serial number</span>
+        </div>
+      </div>
+      <div class="callout info mt-8"><strong>Exam tip:</strong> MAC = <strong>physical, permanent, local</strong> (finds the device on the LAN). IP = <strong>logical, can change</strong> (routes across networks).</div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="section-label">3.4 Network Hardware</span><span class="slide-number">26 / 30</span></div>
+</div>
+
+<!-- ============ SLIDE 27 – IP ADDRESSES ============ -->
+<div class="slide" data-slide="27">
+  <div class="section-badge sec-34">3.4 &middot; Network Hardware</div>
+  <h2>IP Addresses — IPv4 vs. IPv6</h2>
+  <div style="width:60px; height:3px; background:#8080f0; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="callout info">An <strong>IP (Internet Protocol) address</strong> is a <strong>logical address</strong> allocated to a device by the network. It can be <strong>dynamic</strong> (changes) or <strong>static</strong> (stays the same).</div>
+  <table>
+    <thead><tr><th>Feature</th><th>IPv4</th><th>IPv6</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Bit length</strong></td><td class="mono">32-bit</td><td class="mono">128-bit</td></tr>
+      <tr><td><strong>Format</strong></td><td>4 denary numbers separated by <strong>dots</strong></td><td>8 groups of <strong>hex digits</strong> separated by <strong>colons</strong></td></tr>
+      <tr><td><strong>Example</strong></td><td class="mono">192.168.1.1</td><td class="mono">2001:0db8:85a3:0000:0000:8a2e:0370:7334</td></tr>
+      <tr><td><strong>Address space</strong></td><td class="comparison-bad">~4.3 billion — <strong>running out</strong></td><td class="comparison-good">Huge — created to <strong>provide more addresses</strong></td></tr>
+    </tbody>
+  </table>
+  <div class="grid-2 mt-8">
+    <div class="card"><h4>🌐 IPv4 example</h4><div class="code-block" style="font-size:0.85rem; text-align:center;"><span class="hl-blue">192.168.0.1</span></div><p style="font-size:0.82rem;">Four parts, each 0–255 (8 bits).</p></div>
+    <div class="card"><h4>🔷 IPv6 example</h4><div class="code-block" style="font-size:0.82rem; text-align:center;"><span class="hl">2001:0db8:85a3:0000:0000:8a2e:0370:7334</span></div><p style="font-size:0.82rem;">Eight groups of 4 hex digits.</p></div>
+  </div>
+  <h3 style="margin-top:10px;">MAC Address vs IP Address — Comparison</h3>
+  <table>
+    <thead><tr><th>Feature</th><th>MAC address</th><th>IP address</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Type</strong></td><td>Physical address</td><td>Logical address</td></tr>
+      <tr><td><strong>Where it comes from</strong></td><td>Burned into the NIC at manufacture</td><td>Allocated by the network</td></tr>
+      <tr><td><strong>Can it change?</strong></td><td class="comparison-good">No — permanent</td><td class="comparison-neutral">Yes — dynamic (or static)</td></tr>
+      <tr><td><strong>Bits / format</strong></td><td class="mono">48-bit, 12 hex digits</td><td class="mono">32-bit (IPv4) or 128-bit (IPv6)</td></tr>
+      <tr><td><strong>Role</strong></td><td>Identifies the device on the local network</td><td>Routes data across networks / internet</td></tr>
+      <tr><td><strong>Example</strong></td><td class="mono">00:1A:2B:3C:4D:5E</td><td class="mono">192.168.1.1 / 2001:0db8:85a3::8a2e</td></tr>
+    </tbody>
+  </table>
+  <div class="exam-tip">
+    <span class="tip-icon">💡</span>
+    <div class="tip-text"><strong>Exam Tip:</strong> IPv4 = <strong>32-bit, dotted decimal</strong>. IPv6 = <strong>128-bit, colon-separated hex</strong>. "IPv6 was introduced because IPv4 ran out of addresses."</div>
+  </div>
+  <div class="slide-footer"><span class="section-label">3.4 Network Hardware</span><span class="slide-number">27 / 30</span></div>
+</div>
+
+<!-- ============ SLIDE 28 – ROUTER ============ -->
+<div class="slide" data-slide="28">
+  <div class="section-badge sec-34">3.4 &middot; Network Hardware</div>
+  <h2>The Role of a Router</h2>
+  <div style="width:60px; height:3px; background:#8080f0; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="callout info">A <strong>router</strong> is a device that <strong>connects a local area network (LAN) to the internet</strong>.</div>
+  <div class="grid-2">
+    <div>
+      <h4>🎯 Key Functions</h4>
+      <ol class="step-list">
+        <li><strong>Receives data packets</strong> and reads the <strong>destination IP address</strong>.</li>
+        <li><strong>Sends / routes</strong> data packets to their correct destination.</li>
+        <li><strong>Assigns local IP addresses</strong> to devices on the network (via DHCP).</li>
+      </ol>
+      <div class="card mt-8">
+        <h4>📌 Quick facts</h4>
+        <ul>
+          <li>Works at the <strong>network layer</strong> — uses IP addresses</li>
+          <li>Links your home LAN to your ISP's network</li>
+          <li>Also often provides <strong>Wi-Fi</strong> and a firewall</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div class="diagram-box">
+        <svg viewBox="0 0 520 180" style="width:100%; max-width:520px;">
+          <defs>
+            <marker id="arrR2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7ab8ff"/></marker>
+          </defs>
+          <!-- LAN devices -->
+          <rect x="15" y="20" width="90" height="34" rx="8" fill="#141922" stroke="#4a9ee8"/><text x="60" y="41" fill="#a8d0ff" font-size="9" text-anchor="middle" font-family="sans-serif">PC 192.168.1.2</text>
+          <rect x="15" y="70" width="90" height="34" rx="8" fill="#141922" stroke="#4a9ee8"/><text x="60" y="91" fill="#a8d0ff" font-size="9" text-anchor="middle" font-family="sans-serif">Laptop 192.168.1.3</text>
+          <rect x="15" y="120" width="90" height="34" rx="8" fill="#141922" stroke="#4a9ee8"/><text x="60" y="141" fill="#a8d0ff" font-size="9" text-anchor="middle" font-family="sans-serif">Phone 192.168.1.4</text>
+          <!-- router -->
+          <rect x="210" y="70" width="100" height="50" rx="10" fill="#0f2a4a" stroke="#8080f0" stroke-width="2.5"/>
+          <text x="260" y="92" fill="#c0c0ff" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">ROUTER</text>
+          <text x="260" y="108" fill="#9a9ac8" font-size="8" text-anchor="middle" font-family="sans-serif">routes packets</text>
+          <!-- internet -->
+          <rect x="400" y="70" width="110" height="50" rx="10" fill="#0f2a1f" stroke="#8bc34a" stroke-width="2"/>
+          <text x="455" y="92" fill="#c3e88d" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">INTERNET</text>
+          <text x="455" y="108" fill="#8aa878" font-size="8" text-anchor="middle" font-family="sans-serif">ISP / WWW</text>
+          <!-- links -->
+          <line x1="105" y1="40" x2="208" y2="80" stroke="#4a9ee8" stroke-width="1.5"/>
+          <line x1="105" y1="90" x2="208" y2="90" stroke="#4a9ee8" stroke-width="1.5"/>
+          <line x1="105" y1="135" x2="208" y2="100" stroke="#4a9ee8" stroke-width="1.5"/>
+          <line x1="310" y1="92" x2="398" y2="92" stroke="#8bc34a" stroke-width="2.5" marker-end="url(#arrR2)"/>
+          <text x="355" y="84" fill="#8bc34a" font-size="9" text-anchor="middle" font-family="sans-serif">to the internet</text>
+          <text x="60" y="170" fill="#5a7a9a" font-size="9" text-anchor="middle" font-family="sans-serif">LAN devices (local IPs)</text>
+        </svg>
+        <div class="diagram-caption">Router joins the LAN to the internet and routes packets between them</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="section-label">3.4 Network Hardware</span><span class="slide-number">28 / 30</span></div>
+</div>
+
+<!-- ============ SLIDE 29 – RECAP 3.4 ============ -->
+<div class="slide" data-slide="29">
+  <div class="section-badge quiz">3.4 &middot; Quick Check</div>
+  <h2>Recap — Practice Questions</h2>
+  <div style="width:60px; height:3px; background:#ffd54f; border-radius:2px; margin-bottom:10px;"></div>
+  <p style="margin-bottom:10px;">Try each question, then reveal the answer.</p>
+  <div class="grid-2">
+    <div class="card" style="margin-bottom:10px;">
+      <h4>📝 Q1. State two differences between a MAC address and an IP address</h4>
+      <div class="reveal-container">
+        <button class="reveal-btn" data-target="q10">📌 Reveal Answer</button>
+        <div class="reveal-answer" id="q10">
+          <p>Any two: MAC is <strong>physical / permanent</strong>, IP is <strong>logical / can change</strong>; MAC is burned into the NIC at manufacture, IP is allocated by the network; MAC is 48-bit hex, IP is 32-bit (IPv4) or 128-bit (IPv6); MAC works on the local network, IP works across networks.</p>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:10px;">
+      <h4>📝 Q2. What is the main function of a router?</h4>
+      <div class="reveal-container">
+        <button class="reveal-btn" data-target="q11">📌 Reveal Answer</button>
+        <div class="reveal-answer" id="q11">
+          <p>To <strong>connect a LAN to the internet</strong> and <strong>route data packets</strong> to their correct destinations by reading the destination IP address (and to assign local IP addresses to devices).</p>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:10px;">
+      <h4>📝 Q3. How many bits does an IPv6 address use?</h4>
+      <div class="reveal-container">
+        <button class="reveal-btn" data-target="q12">📌 Reveal Answer</button>
+        <div class="reveal-answer" id="q12">
+          <p><span class="inline-code">128 bits</span> — written as 8 groups of 4 hex digits separated by colons (e.g. <span class="inline-code">2001:0db8:85a3::8a2e:0370:7334</span>).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="callout success mt-8"><strong>📖 Revision tip:</strong> MAC vs IP is a classic comparison question — build a two-column table in your notes.</div>
+  <div class="slide-footer"><span class="section-label">3.4 Network Hardware</span><span class="slide-number">29 / 30</span></div>
+</div>
+
+<!-- ============ SLIDE 30 – TOPIC 3 SUMMARY ============ -->
+<div class="slide" data-slide="30">
+  <div class="section-badge quiz" style="background:linear-gradient(135deg,#123a66,#1a5a9a); border-color:#2a6aaa; color:#a8d0ff;">Topic 3 &middot; Summary</div>
+  <h2>Topic 3 — The Big Picture</h2>
+  <div style="width:60px; height:3px; background:#4a9ee8; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="diagram-box" style="padding:20px;">
+    <svg viewBox="0 0 760 300" style="width:100%; max-width:760px;">
+      <defs>
+        <marker id="arrM3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#4a9ee8"/></marker>
+      </defs>
+      <!-- Box 1: CPU architecture -->
+      <rect x="15" y="60" width="170" height="170" rx="10" fill="#12161f" stroke="#2a4a72" stroke-width="1.5"/>
+      <text x="100" y="82" fill="#7ab8ff" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">3.1 CPU Architecture</text>
+      <text x="100" y="104" fill="#a8d0ff" font-size="10" text-anchor="middle" font-family="sans-serif">Von Neumann CPU</text>
+      <text x="100" y="122" fill="#9aa8b8" font-size="9" text-anchor="middle" font-family="sans-serif">CU · ALU · registers</text>
+      <text x="100" y="140" fill="#9aa8b8" font-size="9" text-anchor="middle" font-family="sans-serif">FDE cycle</text>
+      <text x="100" y="158" fill="#9aa8b8" font-size="9" text-anchor="middle" font-family="sans-serif">buses · instruction set</text>
+      <text x="100" y="176" fill="#9aa8b8" font-size="9" text-anchor="middle" font-family="sans-serif">clock · cache · cores</text>
+      <text x="100" y="196" fill="#9aa8b8" font-size="9" text-anchor="middle" font-family="sans-serif">embedded systems</text>
+      <!-- Box 2: I/O -->
+      <rect x="215" y="60" width="170" height="170" rx="10" fill="#12161f" stroke="#6a4a2a" stroke-width="1.5"/>
+      <text x="300" y="82" fill="#f4a360" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">3.2 Input &amp; Output</text>
+      <text x="300" y="104" fill="#ffd3a8" font-size="10" text-anchor="middle" font-family="sans-serif">input devices</text>
+      <text x="300" y="122" fill="#b89878" font-size="9" text-anchor="middle" font-family="sans-serif">touchscreens ×3</text>
+      <text x="300" y="140" fill="#b89878" font-size="9" text-anchor="middle" font-family="sans-serif">output devices</text>
+      <text x="300" y="158" fill="#b89878" font-size="9" text-anchor="middle" font-family="sans-serif">14 sensors + ADC</text>
+      <text x="300" y="176" fill="#b89878" font-size="9" text-anchor="middle" font-family="sans-serif">actuators</text>
+      <!-- Box 3: storage -->
+      <rect x="415" y="60" width="170" height="170" rx="10" fill="#12161f" stroke="#2a6a7a" stroke-width="1.5"/>
+      <text x="500" y="82" fill="#8ad8f0" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">3.3 Storage</text>
+      <text x="500" y="104" fill="#a8d0ff" font-size="10" text-anchor="middle" font-family="sans-serif">primary (RAM / ROM)</text>
+      <text x="500" y="122" fill="#9aa8b8" font-size="9" text-anchor="middle" font-family="sans-serif">secondary: magnetic</text>
+      <text x="500" y="140" fill="#9aa8b8" font-size="9" text-anchor="middle" font-family="sans-serif">optical · solid-state</text>
+      <text x="500" y="158" fill="#9aa8b8" font-size="9" text-anchor="middle" font-family="sans-serif">virtual memory</text>
+      <text x="500" y="176" fill="#9aa8b8" font-size="9" text-anchor="middle" font-family="sans-serif">cloud vs local</text>
+      <!-- Box 4: network -->
+      <rect x="615" y="60" width="130" height="170" rx="10" fill="#12161f" stroke="#4a4a8a" stroke-width="1.5"/>
+      <text x="680" y="82" fill="#c0c0ff" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">3.4 Network</text>
+      <text x="680" y="104" fill="#a8b0e8" font-size="10" text-anchor="middle" font-family="sans-serif">NIC · MAC</text>
+      <text x="680" y="122" fill="#9aa8b8" font-size="9" text-anchor="middle" font-family="sans-serif">IPv4 vs IPv6</text>
+      <text x="680" y="140" fill="#9aa8b8" font-size="9" text-anchor="middle" font-family="sans-serif">router</text>
+      <!-- arrows -->
+      <line x1="185" y1="145" x2="213" y2="145" stroke="#4a9ee8" stroke-width="2" marker-end="url(#arrM3)"/>
+      <line x1="385" y1="145" x2="413" y2="145" stroke="#4a9ee8" stroke-width="2" marker-end="url(#arrM3)"/>
+      <line x1="585" y1="145" x2="613" y2="145" stroke="#4a9ee8" stroke-width="2" marker-end="url(#arrM3)"/>
+      <!-- bottom banner -->
+      <rect x="140" y="252" width="480" height="34" rx="8" fill="#0f2a4a" stroke="#4a9ee8"/>
+      <text x="380" y="273" fill="#a8d0ff" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">CPU processes → devices sense &amp; show → storage remembers → network connects</text>
+    </svg>
+    <div class="diagram-caption">Mind map: architecture → I/O → storage → networking</div>
+  </div>
+  <div class="grid-4 mt-8">
+    <div class="card"><h4 style="color:#7ab8ff;">🧠 Process</h4><p style="font-size:0.82rem;">CPU + FDE + registers do the thinking.</p></div>
+    <div class="card"><h4 style="color:#f4a360;">🎛️ Sense &amp; show</h4><p style="font-size:0.82rem;">Inputs, sensors &amp; outputs connect the real world.</p></div>
+    <div class="card"><h4 style="color:#8ad8f0;">💽 Remember</h4><p style="font-size:0.82rem;">RAM/ROM, secondary storage &amp; cloud hold data.</p></div>
+    <div class="card"><h4 style="color:#c0c0ff;">🌐 Connect</h4><p style="font-size:0.82rem;">NICs, MAC/IP addresses &amp; routers link networks.</p></div>
+  </div>
+  <div class="callout success mt-8"><strong>Well done!</strong> You have completed Topic 3: Hardware. Move on to Topic 4 — Software!</div>
+  <div class="slide-footer"><span class="section-label">Topic 3 &middot; Summary</span><span class="slide-number">30 / 30</span></div>
+</div>
+
+</div>
+
+<div class="nav-bar" id="navBar">
+  <button id="prevBtn" onclick="changeSlide(-1)">◀ Prev</button>
+  <div class="progress-dots" id="progressDots"></div>
+  <span class="slide-counter" id="slideCounter">1 / 30</span>
+  <button id="nextBtn" onclick="changeSlide(1)">Next ▶</button>
+</div>
+<div class="kbd-hint">← → keys to navigate</div>
+
+<script>
+  (function() {
+    const TOTAL = 30;
+    let current = 0;
+    function renderDots() {
+      const container = document.getElementById('progressDots');
+      container.innerHTML = '';
+      for (let i = 0; i < TOTAL; i++) {
+        const dot = document.createElement('button');
+        dot.className = 'dot' + (i === current ? ' active' : '');
+        dot.setAttribute('aria-label', 'Go to slide ' + (i+1));
+        dot.onclick = function() { goToSlide(i); };
+        container.appendChild(dot);
+      }
+    }
+    function goToSlide(idx) {
+      document.querySelectorAll('.slide').forEach((s, i) => s.classList.toggle('active', i === idx));
+      current = idx;
+      updateUI();
+      const active = document.querySelector('.slide.active');
+      if (active) active.scrollTop = 0;
+    }
+    function changeSlide(delta) {
+      const next = current + delta;
+      if (next < 0 || next >= TOTAL) return;
+      goToSlide(next);
+    }
+    function updateUI() {
+      document.getElementById('prevBtn').disabled = (current === 0);
+      document.getElementById('nextBtn').disabled = (current === TOTAL - 1);
+      document.getElementById('slideCounter').textContent = (current + 1) + ' / ' + TOTAL;
+      document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
+    }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown') { changeSlide(1); e.preventDefault(); }
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') { changeSlide(-1); e.preventDefault(); }
+      else if (e.key === 'Home') { goToSlide(0); e.preventDefault(); }
+      else if (e.key === 'End') { goToSlide(TOTAL - 1); e.preventDefault(); }
+    });
+    renderDots();
+    updateUI();
+    window.changeSlide = changeSlide;
+    window.goToSlide = goToSlide;
+    document.querySelectorAll('.reveal-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const el = document.getElementById(this.getAttribute('data-target'));
+        if (el) {
+          el.classList.toggle('visible');
+          this.textContent = el.classList.contains('visible') ? '🙈 Hide Answer' : '📌 Reveal Answer';
+        }
+      });
+    });
+  })();
+</script>
+</body>
+</html>

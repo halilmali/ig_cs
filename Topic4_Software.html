@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topic 4: Software — Cambridge IGCSE Computer Science</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/topic-common.css">
+<style>
+/* ===== Topic-specific CSS ===== */
+
+
+  
+  .code-strip {
+    position: fixed;
+    top: 0; right: 0; bottom: 0;
+    width: 190px;
+    font-family: 'JetBrains Mono', 'Cascadia Code', monospace;
+    font-size: 12px;
+    line-height: 1.9;
+    color: rgba(59, 130, 246, 0.13);
+    padding: 24px 16px;
+    white-space: pre;
+    pointer-events: none;
+    z-index: 0;
+    user-select: none;
+    text-align: right;
+  }
+
+
+  .bg-glow-2 {
+    position: fixed; bottom: -20%; right: -10%; width: 55%; height: 55%;
+    background: radial-gradient(circle, rgba(37, 99, 235, 0.11) 0%, transparent 70%);
+    z-index: 0; pointer-events: none;
+    animation: glowFloat 18s ease-in-out infinite alternate-reverse;
+  }
+
+
+
+  
+  .code-block {
+    font-family: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', Consolas, monospace;
+    background: #0d0c18;
+    border: 1px solid #3b3566; border-radius: 8px;
+    padding: 12px 16px; font-size: 0.88rem; line-height: 1.6;
+    color: #e0ddf0; overflow-x: auto; margin: 8px 0; white-space: pre-wrap;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.3);
+  }
+
+
+  .code-block .comment { color: #6a6a8a; font-style: italic; }
+
+
+  .code-block .hl { background: rgba(167, 139, 250, 0.2); color: #e9d5ff; border-radius: 3px; }
+
+
+  .code-block .hl-indigo { background: rgba(99, 102, 241, 0.25); color: #c7d2fe; border-radius: 3px; }
+
+
+  .code-block .hl-green { background: rgba(139, 195, 74, 0.18); color: #c3e88d; border-radius: 3px; }
+
+
+  .code-block .op { color: #a5b4fc; }
+
+
+  td.mono, th.mono { font-family: 'JetBrains Mono', Consolas, monospace; }
+
+
+
+  
+  .flex-row { display: flex; flex-direction: row; gap: 18px; }
+
+
+  .flex-col { display: flex; flex-direction: column; gap: 8px; }
+
+
+  .flex-1 { flex: 1; }
+
+
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+
+
+  .mt-6 { margin-top: 6px; }
+
+ .mt-8 { margin-top: 8px; }
+
+ .mt-10 { margin-top: 10px; }
+
+
+  .mt-12 { margin-top: 12px; }
+
+ .mt-16 { margin-top: 16px; }
+
+
+  .mb-6 { margin-bottom: 6px; }
+
+ .mb-8 { margin-bottom: 8px; }
+
+ .mb-10 { margin-bottom: 10px; }
+
+ .mb-12 { margin-bottom: 12px; }
+
+
+  .text-center { text-align: center; }
+
+
+  .tag {
+    display: inline-block; background: #221d3d; color: #a5b4fc;
+    padding: 2px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 600;
+    border: 1px solid #3b3566; margin-right: 3px;
+  }
+
+
+  .section-badge.sec-42 { background: linear-gradient(135deg, #4a1f6a, #7a2a9a); border-color: #9a4ac0; color: #e9d5ff; }
+
+
+  .section-badge.quiz { background: linear-gradient(135deg, #4a3a1a, #6a522a); border-color: #8a723a; color: #ffd54f; }
+
+
+  .callout.success { border-left-color: #8bc34a; }
+
+
+
+  
+  .step-list { list-style: none; padding: 0; counter-reset: step; }
+
+
+  .step-list li { counter-increment: step; padding: 5px 10px 5px 30px; position: relative; margin-bottom: 3px; }
+
+
+  .step-list li::before { content: counter(step) "."; position: absolute; left: 4px; color: #6366f1; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+
+
+
+  .comparison-good { color: #8bc34a; }
+
+
+  .comparison-bad { color: #f48a8a; }
+
+
+  .comparison-neutral { color: #ffb74d; }
+
+
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+
+
+    .flex-row { flex-direction: column; }
+
+
+    .code-strip { display: none; }
+</style>
+</head>
+<body>
+
+<div class="code-strip" aria-hidden="true">#! python
+def main():
+    print("Hello, world!")
+    for i in range(10):
+        print(i)
+    return 0
+
+# system_software.py
+def boot():
+    load_firmware()
+    init_os()
+    run_apps()
+
+# interrupts.py
+ISR = handle_interrupt()
+save_registers()
+restore_registers()
+
+LDA #10    ; assembly
+ADD #05
+STO total
+HLT
+
+# compiler vs interpreter
+compile(source)  -> exe
+interpret(line)  -> run
+
+// IDE features
+// editor, run, debug
+// auto-complete
+// prettyprint
+
+if error: stop
+else: continue</div>
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+<div class="bg-glow-2"></div>
+
+<div class="presentation" id="presentation">
+
+<!-- ============ SLIDE 1 – TITLE ============ -->
+<div class="slide active" data-slide="1">
+  <div style="flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
+    <div class="section-badge" style="margin-bottom:16px; font-size:0.9rem;">Cambridge IGCSE Computer Science</div>
+    <h1 style="font-size:3rem; margin-bottom:8px;">Topic 4</h1>
+    <h1 style="font-size:2.6rem; margin-bottom:8px; color:#c7bfff;">Software</h1>
+    <p style="font-size:1.1rem; color:#9892b8; margin-bottom:4px;">Syllabus 0478 · 0984 · 0418</p>
+    <div style="width:80px; height:3px; background:#6366f1; border-radius:2px; margin:16px 0 20px;"></div>
+    <div class="grid-3" style="max-width:720px; width:100%;">
+      <div class="icon-tile"><span class="ico">🪟</span><span class="ico-label">Operating System</span><span class="ico-sub">GUI · files · multitasking</span></div>
+      <div class="icon-tile"><span class="ico">⌨️</span><span class="ico-label">Code Editor</span><span class="ico-sub">write · debug · run</span></div>
+      <div class="icon-tile"><span class="ico"><svg viewBox="0 0 48 30" style="width:38px; height:26px;"><text x="4" y="16" fill="#a5b4fc" font-size="7" font-family="monospace">src</text><line x1="17" y1="15" x2="25" y2="15" stroke="#a78bfa" stroke-width="2"/><polygon points="25,11 31,15 25,19" fill="#a78bfa"/><text x="33" y="16" fill="#c3e88d" font-size="7" font-family="monospace">exe</text></svg></span><span class="ico-label">Translators</span><span class="ico-sub">compiler · interpreter</span></div>
+    </div>
+    <p style="color:#4f4a6a; font-size:0.85rem; margin-top:32px;">Types of Software &amp; Interrupts &middot; Languages, Translators &amp; IDEs</p>
+    <p style="color:#4f4a6a; font-size:0.8rem;">Press <span class="inline-code">→</span> or click the navigation to begin</p>
+  </div>
+  <div class="slide-footer"><span class="section-label">Topic 4 &middot; Overview</span><span class="slide-number">1 / 22</span></div>
+</div>
+
+<!-- ============ SLIDE 2 – LEARNING OBJECTIVES 4.1 ============ -->
+<div class="slide" data-slide="2">
+  <div class="section-badge">Section 4.1 &middot; Types of Software &amp; Interrupts</div>
+  <h1>Learning Objectives</h1>
+  <div style="width:60px; height:3px; background:#6366f1; border-radius:2px; margin-bottom:14px;"></div>
+  <p style="margin-bottom:12px;">By the end of this section you will be able to:</p>
+  <ul class="objectives-list" style="max-width:760px;">
+    <li>Describe the difference between <strong>system software</strong> and <strong>application software</strong></li>
+    <li>Describe the <strong>role and basic functions</strong> of an operating system</li>
+    <li>Understand how <strong>hardware, firmware and the operating system</strong> work together to run applications</li>
+    <li>Describe the <strong>role and operation of interrupts</strong></li>
+  </ul>
+  <div class="callout info mt-8"><strong>Syllabus reference:</strong> IGCSE 0478 / 0984 / 0418 &middot; Section 4.1 — Types of software and interrupts.</div>
+  <div class="slide-footer"><span class="section-label">4.1 Types of Software &amp; Interrupts</span><span class="slide-number">2 / 22</span></div>
+</div>
+
+<!-- ============ SLIDE 3 – SYSTEM VS APPLICATION ============ -->
+<div class="slide" data-slide="3">
+  <div class="section-badge">4.1 &middot; Types of Software &amp; Interrupts</div>
+  <h2>System Software vs. Application Software</h2>
+  <div style="width:60px; height:3px; background:#6366f1; border-radius:2px; margin-bottom:10px;"></div>
+  <table>
+    <thead><tr><th>Feature</th><th>System Software</th><th>Application Software</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Provides…</strong></td><td>Services the <strong>computer</strong> requires</td><td>Services the <strong>user</strong> requires</td></tr>
+      <tr><td><strong>Includes</strong></td><td>Operating system + utility software (antivirus, disk defragmenter, file compression)</td><td>Word processors, spreadsheets, web browsers, games, media players</td></tr>
+      <tr><td><strong>Runs…</strong></td><td><strong>In the background</strong> — the user rarely sees it directly</td><td>Directly, on demand by the user</td></tr>
+      <tr><td><strong>Example</strong></td><td class="mono">Windows, macOS, antivirus, defrag</td><td class="mono">Word, Excel, Chrome, Minecraft</td></tr>
+    </tbody>
+  </table>
+  <div class="exam-tip">
+    <span class="tip-icon">💡</span>
+    <div class="tip-text"><strong>Exam Tip:</strong> If you can open and use it <strong>directly for a task</strong>, it's application software. If it <strong>manages the computer itself</strong>, it's system software.</div>
+  </div>
+  <div class="grid-2 mt-8">
+    <div class="card"><h4>🖥️ System software examples</h4><p style="font-size:0.88rem;">Operating systems, device drivers, antivirus, disk defragmenters, file compression tools.</p></div>
+    <div class="card"><h4>📱 Application examples</h4><p style="font-size:0.88rem;">Word processor (Word), spreadsheet (Excel), web browser (Chrome), games, media players, photo editors.</p></div>
+  </div>
+  <div class="slide-footer"><span class="section-label">4.1 Types of Software &amp; Interrupts</span><span class="slide-number">3 / 22</span></div>
+</div>
+
+<!-- ============ SLIDE 4 – OS FUNCTIONS PART 1 ============ -->
+<div class="slide" data-slide="4">
+  <div class="section-badge">4.1 &middot; Types of Software &amp; Interrupts</div>
+  <h2>Functions of an Operating System (Part 1)</h2>
+  <div style="width:60px; height:3px; background:#6366f1; border-radius:2px; margin-bottom:10px;"></div>
+  <p style="margin-bottom:8px;">The OS has <strong>9 required functions</strong>. Here are the first five:</p>
+  <div class="grid-2">
+    <div class="card">
+      <h4>1. 📁 Managing files</h4>
+      <p style="font-size:0.88rem;"><strong>Organising, naming, storing and retrieving</strong> data on storage devices.</p>
+    </div>
+    <div class="card">
+      <h4>2. 🚨 Handling interrupts</h4>
+      <p style="font-size:0.88rem;">Responding to <strong>signals from hardware or software</strong> that need immediate attention.</p>
+    </div>
+    <div class="card">
+      <h4>3. 🖥️ Providing an interface</h4>
+      <p style="font-size:0.88rem;">A <strong>GUI</strong> (graphical) or <strong>command-line interface</strong> for user interaction.</p>
+    </div>
+    <div class="card">
+      <h4>4. 🔌 Managing peripherals &amp; drivers</h4>
+      <p style="font-size:0.88rem;">Allowing hardware devices to <strong>communicate with the CPU via drivers</strong>.</p>
+    </div>
+    <div class="card">
+      <h4>5. 🧠 Managing memory</h4>
+      <p style="font-size:0.88rem;"><strong>Allocating RAM</strong> space to running programs and processes.</p>
+    </div>
+    <div class="card" style="border-color:#6366f1;">
+      <h4>💡 Worked scenario</h4>
+      <p style="font-size:0.88rem;">You save a Word file: the OS <strong>manages the file</strong> (files), keeps Word running (memory), and uses the printer <strong>driver</strong> (peripherals) — several functions at once.</p>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="section-label">4.1 Types of Software &amp; Interrupts</span><span class="slide-number">4 / 22</span></div>
+</div>
+
+<!-- ============ SLIDE 5 – OS FUNCTIONS PART 2 ============ -->
+<div class="slide" data-slide="5">
+  <div class="section-badge">4.1 &middot; Types of Software &amp; Interrupts</div>
+  <h2>Functions of an Operating System (Part 2)</h2>
+  <div style="width:60px; height:3px; background:#6366f1; border-radius:2px; margin-bottom:10px;"></div>
+  <p style="margin-bottom:8px;">The remaining four functions:</p>
+  <div class="grid-2">
+    <div class="card">
+      <h4>6. ⏱️ Managing multitasking</h4>
+      <p style="font-size:0.88rem;">Allowing multiple programs to run <strong>seemingly simultaneously</strong> by sharing CPU time.</p>
+    </div>
+    <div class="card">
+      <h4>7. 🏗️ Providing a platform for applications</h4>
+      <p style="font-size:0.88rem;">A <strong>base for software to be executed on</strong>.</p>
+    </div>
+    <div class="card">
+      <h4>8. 🔒 Providing system security</h4>
+      <p style="font-size:0.88rem;"><strong>Firewalls, user permissions and malware protection</strong>.</p>
+    </div>
+    <div class="card">
+      <h4>9. 👥 Managing user accounts</h4>
+      <p style="font-size:0.88rem;"><strong>Creating / deleting accounts</strong> and setting <strong>access permissions</strong>.</p>
+    </div>
+  </div>
+  <div class="exam-tip">
+    <span class="tip-icon">💡</span>
+    <div class="tip-text"><strong>Exam Tip:</strong> "State three functions of an OS" is a classic question — memorise <strong>files, interrupts, interface, peripherals, memory, multitasking, platform, security, user accounts</strong>.</div>
+  </div>
+  <div class="slide-footer"><span class="section-label">4.1 Types of Software &amp; Interrupts</span><span class="slide-number">5 / 22</span></div>
+</div>
+
+<!-- ============ SLIDE 6 – SOFTWARE/HARDWARE RELATIONSHIP ============ -->
+<div class="slide" data-slide="6">
+  <div class="section-badge">4.1 &middot; Types of Software &amp; Interrupts</div>
+  <h2>The Software / Hardware Relationship</h2>
+  <div style="width:60px; height:3px; background:#6366f1; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="grid-2">
+    <div>
+      <div class="diagram-box">
+        <svg viewBox="0 0 420 260" style="width:100%; max-width:420px;">
+          <defs>
+            <marker id="arrP4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#a5b4fc"/></marker>
+          </defs>
+          <!-- App layer -->
+          <rect x="90" y="15" width="240" height="50" rx="10" fill="#1c1840" stroke="#a78bfa" stroke-width="2"/>
+          <text x="210" y="38" fill="#e9d5ff" font-size="12" font-weight="bold" text-anchor="middle" font-family="sans-serif">APPLICATION SOFTWARE</text>
+          <text x="210" y="55" fill="#a89ad0" font-size="9" text-anchor="middle" font-family="sans-serif">runs on the operating system</text>
+          <!-- OS layer -->
+          <rect x="90" y="90" width="240" height="50" rx="10" fill="#13122a" stroke="#6366f1" stroke-width="2"/>
+          <text x="210" y="113" fill="#c7d2fe" font-size="12" font-weight="bold" text-anchor="middle" font-family="sans-serif">OPERATING SYSTEM</text>
+          <text x="210" y="130" fill="#8a86c0" font-size="9" text-anchor="middle" font-family="sans-serif">runs on the firmware</text>
+          <!-- Firmware layer -->
+          <rect x="90" y="165" width="240" height="50" rx="10" fill="#0d0c18" stroke="#8b7aff" stroke-width="2"/>
+          <text x="210" y="188" fill="#c4b5fd" font-size="12" font-weight="bold" text-anchor="middle" font-family="sans-serif">FIRMWARE / BOOTLOADER</text>
+          <text x="210" y="205" fill="#7a76a0" font-size="9" text-anchor="middle" font-family="sans-serif">runs directly on the hardware</text>
+          <!-- Hardware base -->
+          <rect x="90" y="230" width="240" height="24" rx="8" fill="#221d3d" stroke="#4a3f8a"/>
+          <text x="210" y="246" fill="#a5b4fc" font-size="10" font-weight="bold" text-anchor="middle" font-family="sans-serif">HARDWARE</text>
+          <!-- arrows -->
+          <line x1="210" y1="65" x2="210" y2="88" stroke="#a5b4fc" stroke-width="2" marker-end="url(#arrP4)"/>
+          <line x1="210" y1="140" x2="210" y2="163" stroke="#a5b4fc" stroke-width="2" marker-end="url(#arrP4)"/>
+          <line x1="210" y1="215" x2="210" y2="228" stroke="#a5b4fc" stroke-width="2" marker-end="url(#arrP4)"/>
+        </svg>
+        <div class="diagram-caption">Each layer runs on the layer below it</div>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <h4>🔓 The Bootloader</h4>
+        <p>The <strong>bootloader</strong> is <strong>firmware stored in ROM</strong> that <strong>loads the operating system into RAM</strong> when the computer starts.</p>
+        <ul>
+          <li>Runs first — before the OS exists</li>
+          <li>Checks hardware (POST)</li>
+          <li>Transfers control to the OS</li>
+        </ul>
+      </div>
+      <div class="card mt-8">
+        <h4>🔄 How It All Fits</h4>
+        <ol class="step-list">
+          <li><strong>Hardware</strong> powers on.</li>
+          <li><strong>Firmware (bootloader)</strong> in ROM loads the OS into RAM.</li>
+          <li>The <strong>OS</strong> manages hardware and provides a platform.</li>
+          <li><strong>Applications</strong> run on top of the OS.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="section-label">4.1 Types of Software &amp; Interrupts</span><span class="slide-number">6 / 22</span></div>
+</div>
+
+<!-- ============ SLIDE 7 – WHAT IS AN INTERRUPT ============ -->
+<div class="slide" data-slide="7">
+  <div class="section-badge">4.1 &middot; Types of Software &amp; Interrupts</div>
+  <h2>What Is an Interrupt?</h2>
+  <div style="width:60px; height:3px; background:#6366f1; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="card" style="border-color:#6366f1;">
+    <h4>🚨 Definition</h4>
+    <p>An <strong>interrupt</strong> is a <strong>signal sent to the processor</strong> that <strong>temporarily stops the normal fetch-decode-execute cycle</strong> so that a <strong>higher priority task</strong> can be dealt with <strong>immediately</strong>.</p>
+  </div>
+  <div class="grid-2 mt-8">
+    <div>
+      <div class="card">
+        <h4>🎯 Why Interrupts Matter</h4>
+        <ul>
+          <li>Let hardware tell the CPU "something needs doing now"</li>
+          <li>CPU doesn't waste time <strong>polling</strong> (constantly checking)</li>
+          <li>Keeps the system <strong>responsive</strong> — e.g. keypresses handled instantly</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div class="diagram-box">
+        <svg viewBox="0 0 420 130" style="width:100%; max-width:420px;">
+          <defs>
+            <marker id="arrI" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#a78bfa"/></marker>
+          </defs>
+          <rect x="20" y="40" width="130" height="50" rx="10" fill="#13122a" stroke="#6366f1" stroke-width="2"/>
+          <text x="85" y="63" fill="#c7d2fe" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">CPU</text>
+          <text x="85" y="80" fill="#8a86c0" font-size="9" text-anchor="middle" font-family="sans-serif">FDE cycle running</text>
+          <rect x="270" y="40" width="130" height="50" rx="10" fill="#1c1840" stroke="#a78bfa" stroke-width="2"/>
+          <text x="335" y="63" fill="#e9d5ff" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">Hardware / SW</text>
+          <text x="335" y="80" fill="#a89ad0" font-size="9" text-anchor="middle" font-family="sans-serif">sends interrupt signal</text>
+          <line x1="150" y1="52" x2="268" y2="52" stroke="#a78bfa" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#arrI)"/>
+          <text x="209" y="44" fill="#a78bfa" font-size="10" text-anchor="middle" font-family="sans-serif">INTERRUPT!</text>
+          <text x="209" y="115" fill="#7a76a0" font-size="9" text-anchor="middle" font-family="sans-serif">FDE pauses → higher-priority task handled → resume</text>
+        </svg>
+        <div class="diagram-caption">An interrupt pauses the current work to handle something urgent</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="section-label">4.1 Types of Software &amp; Interrupts</span><span class="slide-number">7 / 22</span></div>
+</div>
+
+<!-- ============ SLIDE 8 – HOW AN INTERRUPT IS HANDLED ============ -->
+<div class="slide" data-slide="8">
+  <div class="section-badge">4.1 &middot; Types of Software &amp; Interrupts</div>
+  <h2>How an Interrupt Is Handled</h2>
+  <div style="width:60px; height:3px; background:#6366f1; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="grid-2">
+    <div>
+      <ol class="step-list">
+        <li>An <strong>interrupt signal</strong> is generated (by hardware or software).</li>
+        <li>The <strong>current FDE cycle finishes</strong> executing its current instruction.</li>
+        <li>The CPU <strong>checks the priority</strong> of the interrupt against the current task.</li>
+        <li>The <strong>contents of the registers</strong> (the current state) are <strong>saved to a stack</strong> in memory.</li>
+        <li>The <strong>interrupt service routine (ISR)</strong> is run to deal with the interrupt.</li>
+        <li>Once the ISR is complete, the <strong>saved register contents are restored</strong>, and the original task <strong>resumes from where it left off</strong>.</li>
+      </ol>
+    </div>
+    <div>
+      <div class="diagram-box">
+        <svg viewBox="0 0 400 280" style="width:100%; max-width:400px;">
+          <defs>
+            <marker id="arrH" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#a5b4fc"/></marker>
+          </defs>
+          <rect x="110" y="15" width="180" height="40" rx="8" fill="#0d0c18" stroke="#4a3f8a"/>
+          <text x="200" y="38" fill="#c4b5fd" font-size="10" font-weight="bold" text-anchor="middle" font-family="sans-serif">1. Interrupt signal</text>
+          <rect x="110" y="65" width="180" height="40" rx="8" fill="#13122a" stroke="#6366f1"/>
+          <text x="200" y="88" fill="#c7d2fe" font-size="10" font-weight="bold" text-anchor="middle" font-family="sans-serif">2. FDE finishes instruction</text>
+          <rect x="110" y="115" width="180" height="40" rx="8" fill="#13122a" stroke="#6366f1"/>
+          <text x="200" y="138" fill="#c7d2fe" font-size="10" font-weight="bold" text-anchor="middle" font-family="sans-serif">3. Check priority</text>
+          <rect x="110" y="165" width="180" height="40" rx="8" fill="#1c1840" stroke="#a78bfa"/>
+          <text x="200" y="188" fill="#e9d5ff" font-size="10" font-weight="bold" text-anchor="middle" font-family="sans-serif">4. Save registers to stack</text>
+          <rect x="110" y="215" width="180" height="40" rx="8" fill="#1c1840" stroke="#a78bfa"/>
+          <text x="200" y="238" fill="#e9d5ff" font-size="10" font-weight="bold" text-anchor="middle" font-family="sans-serif">5. Run ISR</text>
+          <rect x="110" y="245" width="180" height="28" rx="8" fill="#13122a" stroke="#8bc34a"/>
+          <text x="200" y="263" fill="#c3e88d" font-size="9" font-weight="bold" text-anchor="middle" font-family="sans-serif">6. Restore → resume</text>
+          <line x1="200" y1="55" x2="200" y2="63" stroke="#a5b4fc" stroke-width="2" marker-end="url(#arrH)"/>
+          <line x1="200" y1="105" x2="200" y2="113" stroke="#a5b4fc" stroke-width="2" marker-end="url(#arrH)"/>
+          <line x1="200" y1="155" x2="200" y2="163" stroke="#a5b4fc" stroke-width="2" marker-end="url(#arrH)"/>
+          <line x1="200" y1="205" x2="200" y2="213" stroke="#a5b4fc" stroke-width="2" marker-end="url(#arrH)"/>
+        </svg>
+        <div class="diagram-caption">The six-step interrupt handling process</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="section-label">4.1 Types of Software &amp; Interrupts</span><span class="slide-number">8 / 22</span></div>
+</div>
+
+<!-- ============ SLIDE 9 – HARDWARE VS SOFTWARE INTERRUPTS ============ -->
+<div class="slide" data-slide="9">
+  <div class="section-badge">4.1 &middot; Types of Software &amp; Interrupts</div>
+  <h2>Hardware vs. Software Interrupts</h2>
+  <div style="width:60px; height:3px; background:#6366f1; border-radius:2px; margin-bottom:10px;"></div>
+  <table>
+    <thead><tr><th>Feature</th><th>Hardware Interrupts</th><th>Software Interrupts</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Caused by</strong></td><td>Physical <strong>hardware devices</strong></td><td>An issue with a <strong>running program / process</strong></td></tr>
+      <tr><td><strong>Source</strong></td><td>e.g. keyboard, mouse, printer, timer</td><td>e.g. an error in the executing program</td></tr>
+      <tr><td><strong>Examples</strong></td><td>Pressing a <strong>key on the keyboard</strong> · moving the <strong>mouse</strong> · a <strong>printer running out of paper</strong></td><td><strong>Division by zero</strong> error · two processes trying to access the <strong>same memory location</strong> · <strong>illegal instruction</strong></td></tr>
+    </tbody>
+  </table>
+  <div class="grid-2 mt-8">
+    <div class="card"><h4>⌨️ Hardware examples</h4><ul><li>Keyboard key pressed</li><li>Mouse moved</li><li>Printer out of paper</li></ul></div>
+    <div class="card"><h4>🐞 Software examples</h4><ul><li>Division by zero</li><li>Two processes accessing the same memory location</li><li>Illegal instruction executed</li></ul></div>
+  </div>
+  <div class="exam-tip">
+    <span class="tip-icon">💡</span>
+    <div class="tip-text"><strong>Exam Tip:</strong> hardware interrupt = a <strong>physical device</strong> needs attention; software interrupt = a <strong>program/process problem</strong>. Give one example of each.</div>
+  </div>
+  <div class="slide-footer"><span class="section-label">4.1 Types of Software &amp; Interrupts</span><span class="slide-number">9 / 22</span></div>
+</div>
+
+<!-- ============ SLIDE 10 – RECAP 4.1 ============ -->
+<div class="slide" data-slide="10">
+  <div class="section-badge quiz">4.1 &middot; Quick Check</div>
+  <h2>Recap — Practice Questions</h2>
+  <div style="width:60px; height:3px; background:#ffd54f; border-radius:2px; margin-bottom:10px;"></div>
+  <p style="margin-bottom:10px;">Try each question, then reveal the answer.</p>
+  <div class="grid-2">
+    <div class="card" style="margin-bottom:10px;">
+      <h4>📝 Q1. State three functions of an operating system</h4>
+      <div class="reveal-container">
+        <button class="reveal-btn" data-target="q1">📌 Reveal Answer</button>
+        <div class="reveal-answer" id="q1">
+          <p>Any three of: <strong>managing files</strong> · <strong>handling interrupts</strong> · <strong>providing an interface</strong> · managing peripherals &amp; drivers · managing memory · multitasking · providing a platform · system security · managing user accounts.</p>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:10px;">
+      <h4>📝 Q2. Describe what happens to the current process's data when an interrupt occurs</h4>
+      <div class="reveal-container">
+        <button class="reveal-btn" data-target="q2">📌 Reveal Answer</button>
+        <div class="reveal-answer" id="q2">
+          <p>The <strong>contents of the registers (current state) are saved to a stack in memory</strong>. After the interrupt service routine runs, the register contents are <strong>restored</strong> and the task resumes from where it left off.</p>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:10px;">
+      <h4>📝 Q3. Give one example of a hardware interrupt and one of a software interrupt</h4>
+      <div class="reveal-container">
+        <button class="reveal-btn" data-target="q3">📌 Reveal Answer</button>
+        <div class="reveal-answer" id="q3">
+          <p><strong>Hardware:</strong> pressing a keyboard key / moving the mouse / printer out of paper. <strong>Software:</strong> division by zero / two processes accessing the same memory location / an illegal instruction.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="callout success mt-8"><strong>📖 Revision tip:</strong> learn the 9 OS functions as a single memorised list — it answers "state three functions" every time.</div>
+  <div class="slide-footer"><span class="section-label">4.1 Types of Software &amp; Interrupts</span><span class="slide-number">10 / 22</span></div>
+</div>
+
+<!-- ============ SLIDE 11 – LEARNING OBJECTIVES 4.2 ============ -->
+<div class="slide" data-slide="11">
+  <div class="section-badge sec-42">Section 4.2 &middot; Languages, Translators &amp; IDEs</div>
+  <h1>Learning Objectives</h1>
+  <div style="width:60px; height:3px; background:#a78bfa; border-radius:2px; margin-bottom:14px;"></div>
+  <p style="margin-bottom:12px;">By the end of this section you will be able to:</p>
+  <div class="grid-2">
+    <div>
+      <ul class="objectives-list">
+        <li>Explain <strong>high-level and low-level languages</strong>, including advantages and disadvantages</li>
+        <li>Understand <strong>assembly language</strong> and the role of an <strong>assembler</strong></li>
+        <li>Describe the operation of a <strong>compiler</strong> and an <strong>interpreter</strong></li>
+      </ul>
+    </div>
+    <div>
+      <ul class="objectives-list">
+        <li>Explain the <strong>advantages and disadvantages</strong> of a compiler and an interpreter</li>
+        <li>Explain the <strong>role of an IDE</strong> and its common functions</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout info mt-8"><strong>Syllabus reference:</strong> IGCSE 0478 / 0984 / 0418 &middot; Section 4.2 — Types of programming language, translators and IDEs.</div>
+  <div class="slide-footer"><span class="section-label">4.2 Languages, Translators &amp; IDEs</span><span class="slide-number">11 / 22</span></div>
+</div>
+
+<!-- ============ SLIDE 12 – HIGH VS LOW LEVEL ============ -->
+<div class="slide" data-slide="12">
+  <div class="section-badge sec-42">4.2 &middot; Languages, Translators &amp; IDEs</div>
+  <h2>High-Level vs. Low-Level Languages</h2>
+  <div style="width:60px; height:3px; background:#a78bfa; border-radius:2px; margin-bottom:10px;"></div>
+  <table>
+    <thead><tr><th>Feature</th><th>High-Level Language</th><th>Low-Level Language</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Written using</strong></td><td><strong>English-like keywords</strong> (e.g. Python, Java)</td><td>Written for a <strong>specific processor</strong> (machine code, assembly)</td></tr>
+      <tr><td><strong>Machine dependency</strong></td><td class="comparison-good"><strong>Machine-independent</strong> — portable across systems</td><td class="comparison-bad"><strong>Machine-dependent</strong></td></tr>
+      <tr><td><strong>Example</strong></td><td class="mono">print("Hello")</td><td class="mono">LDA #10 · 10001010 00101010</td></tr>
+      <tr><td><strong>Who reads it easily</strong></td><td>Programmers (human-friendly)</td><td>The processor (closest to hardware)</td></tr>
+    </tbody>
+  </table>
+  <div class="grid-2 mt-8">
+    <div class="worked-example">
+      <div class="we-label">High-level example — Python</div>
+      <div class="code-block" style="font-size:0.85rem;">
+        <span class="comment"># readable, English-like</span>
+        <span class="op">total</span> = 5 + 3
+        <span class="op">print</span>("Total:", total)
+      </div>
+    </div>
+    <div class="worked-example">
+      <div class="we-label">Low-level example — machine code</div>
+      <div class="code-block" style="font-size:0.85rem;">
+        <span class="comment">// binary instructions the CPU runs</span>
+        <span class="hl">10110000 00000101</span> &nbsp;<span class="comment">; load 5</span>
+        <span class="hl">00000100 00000011</span> &nbsp;<span class="comment">; add 3</span>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="section-label">4.2 Languages, Translators &amp; IDEs</span><span class="slide-number">12 / 22</span></div>
+</div>
+
+<!-- ============ SLIDE 13 – ADVANTAGES & DISADVANTAGES ============ -->
+<div class="slide" data-slide="13">
+  <div class="section-badge sec-42">4.2 &middot; Languages, Translators &amp; IDEs</div>
+  <h2>Advantages and Disadvantages</h2>
+  <div style="width:60px; height:3px; background:#a78bfa; border-radius:2px; margin-bottom:10px;"></div>
+  <table>
+    <thead><tr><th>Criterion</th><th>High-Level</th><th>Low-Level</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Ease of reading / writing</strong></td><td class="comparison-good">Easy — English-like keywords</td><td class="comparison-bad">Hard — binary / mnemonics</td></tr>
+      <tr><td><strong>Ease of debugging</strong></td><td class="comparison-good">Easier to debug</td><td class="comparison-bad">Harder to debug</td></tr>
+      <tr><td><strong>Machine independence</strong></td><td class="comparison-good">Can run on different machines</td><td class="comparison-bad">Written for one specific processor type</td></tr>
+      <tr><td><strong>Hardware manipulation</strong></td><td class="comparison-bad">No direct control of hardware</td><td class="comparison-good">Direct manipulation (e.g. registers)</td></tr>
+    </tbody>
+  </table>
+  <div class="callout info mt-8"><strong>Summary:</strong> high-level = <strong>easier for humans</strong>, portable, slower. Low-level = <strong>closer to hardware</strong>, fast, but hard to write and machine-specific.</div>
+  <div class="slide-footer"><span class="section-label">4.2 Languages, Translators &amp; IDEs</span><span class="slide-number">13 / 22</span></div>
+</div>
+
+<!-- ============ SLIDE 14 – ASSEMBLY LANGUAGE ============ -->
+<div class="slide" data-slide="14">
+  <div class="section-badge sec-42">4.2 &middot; Languages, Translators &amp; IDEs</div>
+  <h2>Assembly Language and Assemblers</h2>
+  <div style="width:60px; height:3px; background:#a78bfa; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="grid-2">
+    <div>
+      <div class="card">
+        <h4>🔤 Assembly Language</h4>
+        <p>A <strong>low-level language</strong> that uses <strong>mnemonics</strong> — short, memorable commands like <span class="inline-code">LDA</span>, <span class="inline-code">ADD</span>, <span class="inline-code">STO</span> — instead of binary.</p>
+        <ul>
+          <li>One mnemonic ≈ one machine-code instruction</li>
+          <li>Still <strong>machine-specific</strong></li>
+          <li>Easier for humans than raw binary</li>
+        </ul>
+      </div>
+      <div class="card mt-8">
+        <h4>🔧 The Assembler</h4>
+        <p>An <strong>assembler</strong> is the <strong>translator software</strong> that converts an <strong>assembly language program into machine code</strong> (binary) the CPU can execute directly.</p>
+      </div>
+    </div>
+    <div>
+      <div class="worked-example">
+        <div class="we-label">Worked Example — mnemonics</div>
+        <div class="code-block" style="font-size:0.85rem;">
+          <span class="comment">; assembly program (mnemonics)</span>
+          <span class="hl-indigo">LDA</span> #10&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">; load 10 into accumulator</span>
+          <span class="hl-indigo">ADD</span> #05&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">; add 5</span>
+          <span class="hl-indigo">STO</span> total&nbsp;&nbsp;<span class="comment">; store result</span>
+          <span class="hl-indigo">HLT</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">; stop</span>
+        </div>
+        <p style="font-size:0.83rem; color:#c3e88d; text-align:center;">assembler → <span class="inline-code">10110000 00001010 …</span></p>
+      </div>
+      <div class="diagram-box mt-8">
+        <svg viewBox="0 0 460 90" style="width:100%; max-width:460px;">
+          <defs>
+            <marker id="arrA4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#a5b4fc"/></marker>
+          </defs>
+          <rect x="20" y="25" width="130" height="40" rx="8" fill="#1c1840" stroke="#a78bfa"/>
+          <text x="85" y="45" fill="#e9d5ff" font-size="10" font-weight="bold" text-anchor="middle" font-family="sans-serif">Assembly code</text>
+          <text x="85" y="60" fill="#a89ad0" font-size="8" text-anchor="middle" font-family="monospace">LDA ADD STO</text>
+          <rect x="165" y="25" width="130" height="40" rx="8" fill="#13122a" stroke="#6366f1"/>
+          <text x="230" y="45" fill="#c7d2fe" font-size="10" font-weight="bold" text-anchor="middle" font-family="sans-serif">ASSEMBLER</text>
+          <text x="230" y="60" fill="#8a86c0" font-size="8" text-anchor="middle" font-family="sans-serif">translator software</text>
+          <rect x="310" y="25" width="130" height="40" rx="8" fill="#0d0c18" stroke="#8bc34a"/>
+          <text x="375" y="45" fill="#c3e88d" font-size="10" font-weight="bold" text-anchor="middle" font-family="sans-serif">Machine code</text>
+          <text x="375" y="60" fill="#8aa878" font-size="8" text-anchor="middle" font-family="monospace">10110000 00001010</text>
+          <line x1="150" y1="45" x2="163" y2="45" stroke="#a5b4fc" stroke-width="2.5" marker-end="url(#arrA4)"/>
+          <line x1="295" y1="45" x2="308" y2="45" stroke="#a5b4fc" stroke-width="2.5" marker-end="url(#arrA4)"/>
+        </svg>
+        <div class="diagram-caption">Assembler converts mnemonics into binary machine code</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="section-label">4.2 Languages, Translators &amp; IDEs</span><span class="slide-number">14 / 22</span></div>
+</div>
+
+<!-- ============ SLIDE 15 – COMPILERS ============ -->
+<div class="slide" data-slide="15">
+  <div class="section-badge sec-42">4.2 &middot; Languages, Translators &amp; IDEs</div>
+  <h2>Compilers — How They Work</h2>
+  <div style="width:60px; height:3px; background:#a78bfa; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="grid-2">
+    <div>
+      <div class="card">
+        <h4>⚙️ The Process</h4>
+        <p>A <strong>compiler</strong> translates the <strong>entire high-level source code</strong> into machine code <strong>all at once</strong>, <strong>before</strong> the program is run.</p>
+        <ul>
+          <li>Produces a <strong>standalone executable file</strong></li>
+          <li>Run once per program version</li>
+        </ul>
+      </div>
+      <div class="card mt-8" style="border-color:#6366f1;">
+        <h4>📋 Error Reporting</h4>
+        <p>A compiler generates a <strong>full error report</strong> listing <strong>all errors</strong> found throughout the whole program, after <strong>scanning it completely</strong>.</p>
+      </div>
+    </div>
+    <div>
+      <div class="diagram-box">
+        <svg viewBox="0 0 460 160" style="width:100%; max-width:460px;">
+          <defs>
+            <marker id="arrC4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#a5b4fc"/></marker>
+          </defs>
+          <rect x="15" y="55" width="120" height="50" rx="8" fill="#1c1840" stroke="#a78bfa"/>
+          <text x="75" y="75" fill="#e9d5ff" font-size="10" font-weight="bold" text-anchor="middle" font-family="sans-serif">Source code</text>
+          <text x="75" y="93" fill="#a89ad0" font-size="8" text-anchor="middle" font-family="sans-serif">entire program</text>
+          <rect x="165" y="55" width="120" height="50" rx="8" fill="#13122a" stroke="#6366f1"/>
+          <text x="225" y="75" fill="#c7d2fe" font-size="10" font-weight="bold" text-anchor="middle" font-family="sans-serif">COMPILER</text>
+          <text x="225" y="93" fill="#8a86c0" font-size="8" text-anchor="middle" font-family="sans-serif">all at once</text>
+          <rect x="315" y="55" width="130" height="50" rx="8" fill="#0d0c18" stroke="#8bc34a"/>
+          <text x="380" y="75" fill="#c3e88d" font-size="10" font-weight="bold" text-anchor="middle" font-family="sans-serif">Executable</text>
+          <text x="380" y="93" fill="#8aa878" font-size="8" text-anchor="middle" font-family="monospace">program.exe</text>
+          <line x1="135" y1="80" x2="163" y2="80" stroke="#a5b4fc" stroke-width="2.5" marker-end="url(#arrC4)"/>
+          <line x1="285" y1="80" x2="313" y2="80" stroke="#a5b4fc" stroke-width="2.5" marker-end="url(#arrC4)"/>
+          <rect x="165" y="120" width="120" height="28" rx="6" fill="#13122a" stroke="#f48a8a"/>
+          <text x="225" y="138" fill="#ffb0b0" font-size="9" text-anchor="middle" font-family="sans-serif">full error report</text>
+          <line x1="225" y1="105" x2="225" y2="118" stroke="#f48a8a" stroke-width="1.5" stroke-dasharray="3 3"/>
+        </svg>
+        <div class="diagram-caption">Whole program → machine code → executable, then a full error report</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="section-label">4.2 Languages, Translators &amp; IDEs</span><span class="slide-number">15 / 22</span></div>
+</div>
+
+<!-- ============ SLIDE 16 – INTERPRETERS ============ -->
+<div class="slide" data-slide="16">
+  <div class="section-badge sec-42">4.2 &middot; Languages, Translators &amp; IDEs</div>
+  <h2>Interpreters — How They Work</h2>
+  <div style="width:60px; height:3px; background:#a78bfa; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="grid-2">
+    <div>
+      <div class="card">
+        <h4>⚙️ The Process</h4>
+        <p>An <strong>interpreter</strong> translates <strong>and executes</strong> high-level source code <strong>line by line</strong>, <strong>one instruction at a time</strong>.</p>
+        <ul>
+          <li>Does <strong>not</strong> produce a saved executable file</li>
+          <li>Needs the interpreter to be present to run</li>
+        </ul>
+      </div>
+      <div class="card mt-8" style="border-color:#6366f1;">
+        <h4>📋 Error Reporting</h4>
+        <p>An interpreter <strong>stops execution immediately</strong> as soon as it reaches a line containing an error, <strong>without checking the rest of the code</strong>.</p>
+      </div>
+    </div>
+    <div>
+      <div class="diagram-box">
+        <svg viewBox="0 0 460 170" style="width:100%; max-width:460px;">
+          <defs>
+            <marker id="arrR4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#a5b4fc"/></marker>
+          </defs>
+          <rect x="20" y="30" width="120" height="44" rx="8" fill="#1c1840" stroke="#a78bfa"/>
+          <text x="80" y="49" fill="#e9d5ff" font-size="10" font-weight="bold" text-anchor="middle" font-family="sans-serif">Line 1</text>
+          <text x="80" y="65" fill="#a89ad0" font-size="8" text-anchor="middle" font-family="sans-serif">translate + run</text>
+          <rect x="20" y="90" width="120" height="44" rx="8" fill="#1c1840" stroke="#a78bfa"/>
+          <text x="80" y="109" fill="#e9d5ff" font-size="10" font-weight="bold" text-anchor="middle" font-family="sans-serif">Line 2</text>
+          <text x="80" y="125" fill="#a89ad0" font-size="8" text-anchor="middle" font-family="sans-serif">translate + run</text>
+          <rect x="20" y="135" width="120" height="26" rx="6" fill="#13122a" stroke="#f48a8a"/>
+          <text x="80" y="152" fill="#ffb0b0" font-size="9" text-anchor="middle" font-family="sans-serif">Line 3 → ERROR → STOP</text>
+          <rect x="180" y="70" width="120" height="44" rx="8" fill="#13122a" stroke="#6366f1"/>
+          <text x="240" y="89" fill="#c7d2fe" font-size="10" font-weight="bold" text-anchor="middle" font-family="sans-serif">INTERPRETER</text>
+          <text x="240" y="105" fill="#8a86c0" font-size="8" text-anchor="middle" font-family="sans-serif">line by line</text>
+          <rect x="330" y="70" width="120" height="44" rx="8" fill="#0d0c18" stroke="#8bc34a"/>
+          <text x="390" y="89" fill="#c3e88d" font-size="10" font-weight="bold" text-anchor="middle" font-family="sans-serif">Runs directly</text>
+          <text x="390" y="105" fill="#8aa878" font-size="8" text-anchor="middle" font-family="sans-serif">no .exe saved</text>
+          <line x1="140" y1="70" x2="178" y2="84" stroke="#a5b4fc" stroke-width="2" marker-end="url(#arrR4)"/>
+          <line x1="300" y1="92" x2="328" y2="92" stroke="#a5b4fc" stroke-width="2.5" marker-end="url(#arrR4)"/>
+        </svg>
+        <div class="diagram-caption">Interpreter: one line at a time — stops at the first error</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="section-label">4.2 Languages, Translators &amp; IDEs</span><span class="slide-number">16 / 22</span></div>
+</div>
+
+<!-- ============ SLIDE 17 – COMPILER VS INTERPRETER ============ -->
+<div class="slide" data-slide="17">
+  <div class="section-badge sec-42">4.2 &middot; Languages, Translators &amp; IDEs</div>
+  <h2>Compiler vs. Interpreter — Pros &amp; Cons</h2>
+  <div style="width:60px; height:3px; background:#a78bfa; border-radius:2px; margin-bottom:10px;"></div>
+  <table>
+    <thead><tr><th>Feature</th><th>Compiler</th><th>Interpreter</th></tr></thead>
+    <tbody>
+      <tr><td><strong>How it translates</strong></td><td>Entire program <strong>all at once</strong>, before running</td><td><strong>Line by line</strong>, one instruction at a time</td></tr>
+      <tr><td><strong>Output</strong></td><td class="comparison-good">Fast, <strong>standalone executable</strong> — doesn't need source code or translator to run</td><td class="comparison-bad">No saved executable; <strong>requires the interpreter</strong> to run the program</td></tr>
+      <tr><td><strong>Source code privacy</strong></td><td class="comparison-good">Source code kept <strong>private / secure</strong></td><td class="comparison-bad">Source code <strong>must be shared</strong></td></tr>
+      <tr><td><strong>Errors</strong></td><td class="comparison-bad">Must <strong>fix all errors</strong> before the program can run at all</td><td class="comparison-good">Finds errors <strong>immediately line by line</strong> — great for testing / debugging</td></tr>
+      <tr><td><strong>Speed</strong></td><td class="comparison-good">Fast when running (already machine code)</td><td class="comparison-bad">Slower — <strong>translates every time</strong> it runs</td></tr>
+      <tr><td><strong>Development</strong></td><td class="comparison-bad">Recompiling takes time during development</td><td class="comparison-good">No need to wait for full compilation to test small changes</td></tr>
+    </tbody>
+  </table>
+  <div class="slide-footer"><span class="section-label">4.2 Languages, Translators &amp; IDEs</span><span class="slide-number">17 / 22</span></div>
+</div>
+
+<!-- ============ SLIDE 18 – WHEN TO USE EACH ============ -->
+<div class="slide" data-slide="18">
+  <div class="section-badge sec-42">4.2 &middot; Languages, Translators &amp; IDEs</div>
+  <h2>When to Use Each Translator</h2>
+  <div style="width:60px; height:3px; background:#a78bfa; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="diagram-box">
+    <svg viewBox="0 0 760 150" style="width:100%; max-width:760px;">
+      <defs>
+        <marker id="arrW" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#a5b4fc"/></marker>
+      </defs>
+      <rect x="30" y="55" width="300" height="55" rx="10" fill="#1c1840" stroke="#a78bfa" stroke-width="2"/>
+      <text x="180" y="76" fill="#e9d5ff" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">DEVELOPMENT</text>
+      <text x="180" y="96" fill="#a89ad0" font-size="9" text-anchor="middle" font-family="sans-serif">interpreter — catch &amp; fix errors quickly as you write</text>
+      <rect x="430" y="55" width="300" height="55" rx="10" fill="#0d0c18" stroke="#8bc34a" stroke-width="2"/>
+      <text x="580" y="76" fill="#c3e88d" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">DISTRIBUTION</text>
+      <text x="580" y="96" fill="#8aa878" font-size="9" text-anchor="middle" font-family="sans-serif">compiler — final tested program → executable to share</text>
+      <line x1="330" y1="82" x2="428" y2="82" stroke="#a5b4fc" stroke-width="2.5" marker-end="url(#arrW)"/>
+      <text x="380" y="74" fill="#a5b4fc" font-size="9" text-anchor="middle" font-family="sans-serif">finished program</text>
+      <text x="380" y="130" fill="#7a76a0" font-size="9" text-anchor="middle" font-family="sans-serif">Write &amp; test with an interpreter → then compile the final version for users</text>
+    </svg>
+    <div class="diagram-caption">The practical development cycle: interpret while writing, compile for release</div>
+  </div>
+  <div class="grid-2 mt-8">
+    <div class="card"><h4>🛠️ During development</h4><p style="font-size:0.88rem;">An <strong>interpreter</strong> is mostly used <em>during development</em> to <strong>catch and fix errors quickly</strong> as the program is being written.</p></div>
+    <div class="card"><h4>📦 For release</h4><p style="font-size:0.88rem;">A <strong>compiler</strong> translates the <strong>final, completed and tested program</strong> into an <strong>executable</strong> for distribution.</p></div>
+  </div>
+  <div class="slide-footer"><span class="section-label">4.2 Languages, Translators &amp; IDEs</span><span class="slide-number">18 / 22</span></div>
+</div>
+
+<!-- ============ SLIDE 19 – IDEs ============ -->
+<div class="slide" data-slide="19">
+  <div class="section-badge sec-42">4.2 &middot; Languages, Translators &amp; IDEs</div>
+  <h2>Integrated Development Environments (IDEs)</h2>
+  <div style="width:60px; height:3px; background:#a78bfa; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="grid-2">
+    <div>
+      <div class="card" style="border-color:#6366f1;">
+        <h4>🧰 What Is an IDE?</h4>
+        <p>An <strong>Integrated Development Environment</strong> is a <strong>single piece of software</strong> that <strong>bundles multiple tools together</strong> to make writing, testing and translating code <strong>easier and faster</strong> for programmers.</p>
+      </div>
+      <div class="card mt-8">
+        <h4>💻 Examples</h4>
+        <p style="font-size:0.9rem;">Visual Studio Code, PyCharm, Thonny, Eclipse — all-in-one tools for writing and running code.</p>
+      </div>
+    </div>
+    <div>
+      <div class="diagram-box">
+        <svg viewBox="0 0 420 150" style="width:100%; max-width:420px;">
+          <rect x="30" y="20" width="360" height="110" rx="12" fill="#0d0c18" stroke="#6366f1" stroke-width="2"/>
+          <rect x="45" y="35" width="12" height="12" rx="3" fill="#f48a8a"/><rect x="63" y="35" width="12" height="12" rx="3" fill="#ffb74d"/><rect x="81" y="35" width="12" height="12" rx="3" fill="#8bc34a"/>
+          <text x="120" y="45" fill="#8a86c0" font-size="9" font-family="sans-serif">code editor tab</text>
+          <rect x="45" y="58" width="180" height="60" rx="6" fill="#13122a" stroke="#3b3566"/>
+          <text x="55" y="76" fill="#a5b4fc" font-size="10" font-family="monospace">1  print("hi")</text>
+          <text x="55" y="92" fill="#c3e88d" font-size="10" font-family="monospace">2  for i in range(3):</text>
+          <text x="55" y="108" fill="#e9d5ff" font-size="10" font-family="monospace">3  print(i)</text>
+          <rect x="240" y="58" width="135" height="60" rx="6" fill="#13122a" stroke="#3b3566"/>
+          <text x="250" y="76" fill="#8a86c0" font-size="9" font-family="sans-serif">output / errors</text>
+          <text x="250" y="94" fill="#c3e88d" font-size="9" font-family="monospace">&gt; hi</text>
+          <text x="250" y="108" fill="#c3e88d" font-size="9" font-family="monospace">&gt; 0 1 2</text>
+          <text x="210" y="140" fill="#7a76a0" font-size="9" text-anchor="middle" font-family="sans-serif">editor + run + debug + tools in one window</text>
+        </svg>
+        <div class="diagram-caption">An IDE: everything a programmer needs in one window</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="section-label">4.2 Languages, Translators &amp; IDEs</span><span class="slide-number">19 / 22</span></div>
+</div>
+
+<!-- ============ SLIDE 20 – COMMON IDE FUNCTIONS ============ -->
+<div class="slide" data-slide="20">
+  <div class="section-badge sec-42">4.2 &middot; Languages, Translators &amp; IDEs</div>
+  <h2>Common IDE Functions (7 Features)</h2>
+  <div style="width:60px; height:3px; background:#a78bfa; border-radius:2px; margin-bottom:10px;"></div>
+  <table>
+    <thead><tr><th>Feature</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Code Editor</strong></td><td>A text-editing space <strong>specifically for writing source code</strong>.</td></tr>
+      <tr><td><strong>Run-Time Environment</strong></td><td>Allows the programmer to <strong>run / test the program directly</strong> within the IDE.</td></tr>
+      <tr><td><strong>Translators</strong></td><td>Built-in <strong>compilers / interpreters</strong> to convert code to machine code.</td></tr>
+      <tr><td><strong>Error Diagnostics</strong></td><td><strong>Highlights syntax errors</strong> and provides descriptive error messages.</td></tr>
+      <tr><td><strong>Auto-completion</strong></td><td><strong>Suggests and completes</strong> code keywords / variable names as you type.</td></tr>
+      <tr><td><strong>Auto-correction</strong></td><td>Automatically <strong>fixes common syntax mistakes</strong> as you type.</td></tr>
+      <tr><td><strong>Prettyprint</strong></td><td>Automatically <strong>formats and color-codes syntax</strong> to improve readability (syntax highlighting).</td></tr>
+    </tbody>
+  </table>
+  <div class="exam-tip">
+    <span class="tip-icon">💡</span>
+    <div class="tip-text"><strong>Exam Tip:</strong> "State three functions of an IDE" — pick any three: <strong>code editor, run-time environment, translators, error diagnostics, auto-completion, auto-correction, prettyprint</strong>.</div>
+  </div>
+  <div class="slide-footer"><span class="section-label">4.2 Languages, Translators &amp; IDEs</span><span class="slide-number">20 / 22</span></div>
+</div>
+
+<!-- ============ SLIDE 21 – RECAP 4.2 ============ -->
+<div class="slide" data-slide="21">
+  <div class="section-badge quiz">4.2 &middot; Quick Check</div>
+  <h2>Recap — Practice Questions</h2>
+  <div style="width:60px; height:3px; background:#ffd54f; border-radius:2px; margin-bottom:10px;"></div>
+  <p style="margin-bottom:10px;">Try each question, then reveal the answer.</p>
+  <div class="grid-2">
+    <div class="card" style="margin-bottom:10px;">
+      <h4>📝 Q1. Explain one advantage of using an interpreter over a compiler during development</h4>
+      <div class="reveal-container">
+        <button class="reveal-btn" data-target="q4">📌 Reveal Answer</button>
+        <div class="reveal-answer" id="q4">
+          <p>It finds errors <strong>immediately, line by line</strong>, so the programmer can <strong>catch and fix mistakes quickly</strong> without waiting for the whole program to compile. Small changes can be tested straight away.</p>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:10px;">
+      <h4>📝 Q2. State the purpose of an assembler</h4>
+      <div class="reveal-container">
+        <button class="reveal-btn" data-target="q5">📌 Reveal Answer</button>
+        <div class="reveal-answer" id="q5">
+          <p>An <strong>assembler</strong> translates an <strong>assembly language program (mnemonics like LDA, ADD)</strong> into <strong>machine code (binary)</strong> that the CPU can execute directly.</p>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:10px;">
+      <h4>📝 Q3. Name three functions provided by an IDE</h4>
+      <div class="reveal-container">
+        <button class="reveal-btn" data-target="q6">📌 Reveal Answer</button>
+        <div class="reveal-answer" id="q6">
+          <p>Any three of: <strong>code editor</strong> · <strong>run-time environment</strong> · <strong>translators</strong> · <strong>error diagnostics</strong> · <strong>auto-completion</strong> · <strong>auto-correction</strong> · <strong>prettyprint</strong> (syntax highlighting).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="callout success mt-8"><strong>📖 Revision tip:</strong> compiler vs interpreter is the most-tested comparison in this topic — memorise the pros/cons table and the "development vs distribution" cycle.</div>
+  <div class="slide-footer"><span class="section-label">4.2 Languages, Translators &amp; IDEs</span><span class="slide-number">21 / 22</span></div>
+</div>
+
+<!-- ============ SLIDE 22 – TOPIC 4 SUMMARY ============ -->
+<div class="slide" data-slide="22">
+  <div class="section-badge quiz" style="background:linear-gradient(135deg,#3730a3,#4f46e5); border-color:#6366f1; color:#c7d2fe;">Topic 4 &middot; Summary</div>
+  <h2>Topic 4 — The Big Picture</h2>
+  <div style="width:60px; height:3px; background:#6366f1; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="diagram-box" style="padding:20px;">
+    <svg viewBox="0 0 760 300" style="width:100%; max-width:760px;">
+      <defs>
+        <marker id="arrM4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#6366f1"/></marker>
+      </defs>
+      <!-- Box 1: types of software -->
+      <rect x="15" y="55" width="170" height="180" rx="10" fill="#13121f" stroke="#3b3566" stroke-width="1.5"/>
+      <text x="100" y="77" fill="#c4b5fd" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">Types of Software</text>
+      <text x="100" y="99" fill="#e9d5ff" font-size="10" text-anchor="middle" font-family="sans-serif">System vs Application</text>
+      <text x="100" y="117" fill="#a89ad0" font-size="9" text-anchor="middle" font-family="sans-serif">OS + utilities</text>
+      <text x="100" y="135" fill="#a89ad0" font-size="9" text-anchor="middle" font-family="sans-serif">word processors · browsers</text>
+      <text x="100" y="155" fill="#8a86a8" font-size="9" text-anchor="middle" font-family="sans-serif">9 OS functions</text>
+      <text x="100" y="173" fill="#8a86a8" font-size="9" text-anchor="middle" font-family="sans-serif">app → OS → firmware → HW</text>
+      <text x="100" y="195" fill="#8a86a8" font-size="9" text-anchor="middle" font-family="sans-serif">bootloader</text>
+      <!-- Box 2: interrupts -->
+      <rect x="215" y="55" width="170" height="180" rx="10" fill="#13121f" stroke="#4a3f8a" stroke-width="1.5"/>
+      <text x="300" y="77" fill="#a78bfa" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">Interrupts</text>
+      <text x="300" y="99" fill="#e9d5ff" font-size="10" text-anchor="middle" font-family="sans-serif">signal → pause FDE</text>
+      <text x="300" y="117" fill="#a89ad0" font-size="9" text-anchor="middle" font-family="sans-serif">hardware interrupts</text>
+      <text x="300" y="135" fill="#a89ad0" font-size="9" text-anchor="middle" font-family="sans-serif">software interrupts</text>
+      <text x="300" y="155" fill="#8a86a8" font-size="9" text-anchor="middle" font-family="sans-serif">save registers → stack</text>
+      <text x="300" y="173" fill="#8a86a8" font-size="9" text-anchor="middle" font-family="sans-serif">run ISR → restore</text>
+      <!-- Box 3: languages -->
+      <rect x="415" y="55" width="170" height="180" rx="10" fill="#13121f" stroke="#4a3f8a" stroke-width="1.5"/>
+      <text x="500" y="77" fill="#a5b4fc" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">Languages &amp; Translators</text>
+      <text x="500" y="99" fill="#e9d5ff" font-size="10" text-anchor="middle" font-family="sans-serif">high-level vs low-level</text>
+      <text x="500" y="117" fill="#a89ad0" font-size="9" text-anchor="middle" font-family="sans-serif">assembly + assembler</text>
+      <text x="500" y="135" fill="#a89ad0" font-size="9" text-anchor="middle" font-family="sans-serif">compiler (all at once)</text>
+      <text x="500" y="153" fill="#a89ad0" font-size="9" text-anchor="middle" font-family="sans-serif">interpreter (line by line)</text>
+      <text x="500" y="173" fill="#8a86a8" font-size="9" text-anchor="middle" font-family="sans-serif">development → distribution</text>
+      <!-- Box 4: IDEs -->
+      <rect x="615" y="55" width="130" height="180" rx="10" fill="#13121f" stroke="#6a5fae" stroke-width="1.5"/>
+      <text x="680" y="77" fill="#c4b5fd" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">IDEs</text>
+      <text x="680" y="99" fill="#e9d5ff" font-size="10" text-anchor="middle" font-family="sans-serif">all-in-one tools</text>
+      <text x="680" y="117" fill="#a89ad0" font-size="9" text-anchor="middle" font-family="sans-serif">editor · run · debug</text>
+      <text x="680" y="135" fill="#a89ad0" font-size="9" text-anchor="middle" font-family="sans-serif">translators</text>
+      <text x="680" y="153" fill="#a89ad0" font-size="9" text-anchor="middle" font-family="sans-serif">auto-complete</text>
+      <text x="680" y="171" fill="#a89ad0" font-size="9" text-anchor="middle" font-family="sans-serif">prettyprint</text>
+      <!-- arrows -->
+      <line x1="185" y1="145" x2="213" y2="145" stroke="#6366f1" stroke-width="2" marker-end="url(#arrM4)"/>
+      <line x1="385" y1="145" x2="413" y2="145" stroke="#6366f1" stroke-width="2" marker-end="url(#arrM4)"/>
+      <line x1="585" y1="145" x2="613" y2="145" stroke="#6366f1" stroke-width="2" marker-end="url(#arrM4)"/>
+      <!-- bottom banner -->
+      <rect x="140" y="255" width="480" height="34" rx="8" fill="#221d3d" stroke="#6366f1"/>
+      <text x="380" y="276" fill="#c7d2fe" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">Software types → OS functions → interrupts → languages → translators → IDEs</text>
+    </svg>
+    <div class="diagram-caption">Mind map: everything software — from OS to IDE</div>
+  </div>
+  <div class="grid-4 mt-8">
+    <div class="card"><h4 style="color:#c4b5fd;">🖥️ Types</h4><p style="font-size:0.82rem;">System vs application software, 9 OS functions.</p></div>
+    <div class="card"><h4 style="color:#a78bfa;">🚨 Interrupts</h4><p style="font-size:0.82rem;">Pause FDE, save state, run ISR, resume.</p></div>
+    <div class="card"><h4 style="color:#a5b4fc;">🔤 Languages</h4><p style="font-size:0.82rem;">High/low level, assembly, compiler vs interpreter.</p></div>
+    <div class="card"><h4 style="color:#c4b5fd;">🧰 IDEs</h4><p style="font-size:0.82rem;">Editor, run, debug, translators, auto tools.</p></div>
+  </div>
+  <div class="callout success mt-8"><strong>Well done!</strong> You have completed Topic 4: Software. Move on to Topic 5 — The Internet &amp; Its Uses!</div>
+  <div class="slide-footer"><span class="section-label">Topic 4 &middot; Summary</span><span class="slide-number">22 / 22</span></div>
+</div>
+
+</div>
+
+<div class="nav-bar" id="navBar">
+  <button id="prevBtn" onclick="changeSlide(-1)">◀ Prev</button>
+  <div class="progress-dots" id="progressDots"></div>
+  <span class="slide-counter" id="slideCounter">1 / 22</span>
+  <button id="nextBtn" onclick="changeSlide(1)">Next ▶</button>
+</div>
+<div class="kbd-hint">← → keys to navigate</div>
+
+<script>
+  (function() {
+    const TOTAL = 22;
+    let current = 0;
+    function renderDots() {
+      const container = document.getElementById('progressDots');
+      container.innerHTML = '';
+      for (let i = 0; i < TOTAL; i++) {
+        const dot = document.createElement('button');
+        dot.className = 'dot' + (i === current ? ' active' : '');
+        dot.setAttribute('aria-label', 'Go to slide ' + (i+1));
+        dot.onclick = function() { goToSlide(i); };
+        container.appendChild(dot);
+      }
+    }
+    function goToSlide(idx) {
+      document.querySelectorAll('.slide').forEach((s, i) => s.classList.toggle('active', i === idx));
+      current = idx;
+      updateUI();
+      const active = document.querySelector('.slide.active');
+      if (active) active.scrollTop = 0;
+    }
+    function changeSlide(delta) {
+      const next = current + delta;
+      if (next < 0 || next >= TOTAL) return;
+      goToSlide(next);
+    }
+    function updateUI() {
+      document.getElementById('prevBtn').disabled = (current === 0);
+      document.getElementById('nextBtn').disabled = (current === TOTAL - 1);
+      document.getElementById('slideCounter').textContent = (current + 1) + ' / ' + TOTAL;
+      document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
+    }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown') { changeSlide(1); e.preventDefault(); }
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') { changeSlide(-1); e.preventDefault(); }
+      else if (e.key === 'Home') { goToSlide(0); e.preventDefault(); }
+      else if (e.key === 'End') { goToSlide(TOTAL - 1); e.preventDefault(); }
+    });
+    renderDots();
+    updateUI();
+    window.changeSlide = changeSlide;
+    window.goToSlide = goToSlide;
+    document.querySelectorAll('.reveal-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const el = document.getElementById(this.getAttribute('data-target'));
+        if (el) {
+          el.classList.toggle('visible');
+          this.textContent = el.classList.contains('visible') ? '🙈 Hide Answer' : '📌 Reveal Answer';
+        }
+      });
+    });
+  })();
+</script>
+</body>
+</html>

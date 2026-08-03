@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IGCSE 0478 Computer Science — Complete Revision Portal</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #080c18; color: #d0dcec; min-height: 100vh; overflow-x: hidden; }
+  .bg-grid { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-image: linear-gradient(rgba(74,122,200,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(74,122,200,0.05) 1px, transparent 1px); background-size: 60px 60px; z-index: 0; pointer-events: none; }
+  .bg-glow { position: fixed; top: -20%; left: -10%; width: 60%; height: 60%; background: radial-gradient(circle, rgba(74,122,200,0.08) 0%, transparent 70%); z-index: 0; pointer-events: none; animation: glowFloat 12s ease-in-out infinite alternate; }
+  .bg-glow-2 { position: fixed; bottom: -20%; right: -10%; width: 60%; height: 60%; background: radial-gradient(circle, rgba(176,128,240,0.08) 0%, transparent 70%); z-index: 0; pointer-events: none; animation: glowFloat 15s ease-in-out infinite alternate-reverse; }
+  @keyframes glowFloat { 0% { transform: translate(0,0) scale(1); } 100% { transform: translate(60px,-40px) scale(1.2); } }
+  .hero { position: relative; z-index: 1; text-align: center; padding: 60px 24px 36px; max-width: 1100px; margin: 0 auto; }
+  .hero-badge { display: inline-block; background: linear-gradient(135deg, #1a3060, #2a5a9a); color: #b8d4ff; padding: 6px 20px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; border: 1px solid #3a6aaa; margin-bottom: 20px; }
+  .hero h1 { font-size: 3rem; font-weight: 800; color: #f0f6ff; margin-bottom: 8px; letter-spacing: -1px; line-height: 1.15; }
+  .hero h1 .highlight { background: linear-gradient(135deg, #4a7ac8, #b080f0, #f080a8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hero p { font-size: 1.15rem; color: #8aa8c8; max-width: 640px; margin: 0 auto 12px; line-height: 1.6; }
+  .hero-stats { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
+  .hero-stat { display: flex; flex-direction: column; align-items: center; background: rgba(10,14,26,0.6); border: 1px solid #1f3660; border-radius: 12px; padding: 12px 24px; backdrop-filter: blur(8px); }
+  .hero-stat .num { font-size: 1.6rem; font-weight: 700; color: #f0f6ff; } .hero-stat .label { font-size: 0.78rem; color: #6a8aaa; text-transform: uppercase; letter-spacing: 0.5px; }
+  .chapter-grid { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 16px 24px 80px; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+  .card-wrap { animation: cardIn 0.5s ease-out both; }
+  .card-wrap:nth-child(1) { animation-delay: 0.05s; } .card-wrap:nth-child(2) { animation-delay: 0.1s; } .card-wrap:nth-child(3) { animation-delay: 0.15s; } .card-wrap:nth-child(4) { animation-delay: 0.2s; } .card-wrap:nth-child(5) { animation-delay: 0.25s; } .card-wrap:nth-child(6) { animation-delay: 0.3s; } .card-wrap:nth-child(7) { animation-delay: 0.35s; } .card-wrap:nth-child(8) { animation-delay: 0.4s; } .card-wrap:nth-child(9) { animation-delay: 0.45s; } .card-wrap:nth-child(10) { animation-delay: 0.5s; }
+  @keyframes cardIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  .chapter-card { background: rgba(10,14,26,0.7); border-radius: 16px 16px 0 0; padding: 24px; backdrop-filter: blur(10px); transition: transform 0.3s ease, box-shadow 0.3s ease; position: relative; overflow: hidden; text-decoration: none; display: flex; flex-direction: column; border: 1px solid rgba(255,255,255,0.06); border-bottom: none; }
+  .chapter-card:hover { transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.3); border-color: var(--c); }
+  .chapter-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; border-radius: 16px 16px 0 0; background: linear-gradient(90deg, var(--c), #6a8aaa); }
+  .card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
+  .chapter-num { font-size: 1.8rem; font-weight: 800; line-height: 1; color: var(--c); }
+  .chapter-icon { font-size: 2rem; opacity: 0.7; }
+  .chapter-card h2 { font-size: 1.2rem; font-weight: 700; color: #f0f6ff; margin-bottom: 6px; line-height: 1.3; }
+  .topics { font-size: 0.85rem; color: #7a9abd; line-height: 1.5; flex: 1; margin-bottom: 14px; }
+  .card-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); }
+  .tag-group { display: flex; gap: 4px; flex-wrap: wrap; }
+  .mini-tag { display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; background: rgba(255,255,255,0.05); color: #8aa8c8; }
+  .cta { font-size: 0.78rem; font-weight: 600; display: flex; align-items: center; gap: 4px; color: var(--c); opacity: 0; transform: translateX(-8px); transition: opacity 0.3s, transform 0.3s; }
+  .chapter-card:hover .cta { opacity: 1; transform: translateX(0); }
+  .card-actions { margin-top: 12px; }
+  .test-link { display: block; text-align: center; padding: 11px 12px; border-radius: 0 0 14px 14px; font-size: 0.85rem; font-weight: 600; color: var(--c); background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-top: none; text-decoration: none; transition: all 0.2s; }
+  .test-link:hover { background: var(--c); color: #080c18; border-color: var(--c); }
+  .footer { position: relative; z-index: 1; text-align: center; padding: 24px; color: #4a6a8a; font-size: 0.8rem; border-top: 1px solid rgba(255,255,255,0.04); }
+  @media (max-width: 680px) { .hero h1 { font-size: 2rem; } .chapter-grid { grid-template-columns: 1fr; gap: 14px; padding: 12px 16px 60px; } .hero { padding: 40px 16px 24px; } }
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+<div class="bg-glow-2"></div>
+<section class="hero">
+  <div class="hero-badge">Cambridge IGCSE 0478</div>
+  <h1>Computer Science<br><span class="highlight">Complete Revision Portal</span></h1>
+  <p>All 10 syllabus topics, each with an interactive slide deck and a per-topic practice test with instant feedback and explanations.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="num">10</span><span class="label">Topics</span></div>
+    <div class="hero-stat"><span class="num">323</span><span class="label">Slides</span></div>
+    <div class="hero-stat"><span class="num">170+</span><span class="label">Test Questions</span></div>
+    <div class="hero-stat"><span class="num">2026–28</span><span class="label">Syllabus</span></div>
+  </div>
+</section>
+<section class="chapter-grid">
+  <div class="card-wrap" data-idx="1" style="--c:#4a7ac8;">
+    <a href="Topic1_Data_Representation_0418.html" class="chapter-card" target="_blank">
+      <div class="card-top">
+        <span class="chapter-num">01</span>
+        <span class="chapter-icon">💾</span>
+      </div>
+      <h2>Data Representation</h2>
+      <p class="topics">Binary & denary &bull; Hex &bull; Two's complement &bull; ASCII &amp; Unicode &bull; Sound &amp; images &bull; File sizes &bull; Compression &bull; RLE</p>
+      <div class="card-footer">
+        <div class="tag-group"><span class="mini-tag">32 slides</span><span class="mini-tag">Key topic</span></div>
+        <span class="cta">Open slides →</span>
+      </div>
+    </a>
+    <a href="Topic1_Test.html" class="test-link" target="_blank">✅ Take Topic 1 Test</a>
+  </div>
+  <div class="card-wrap" data-idx="2" style="--c:#4ac8a0;">
+    <a href="Topic2_Data_Transmission.html" class="chapter-card" target="_blank">
+      <div class="card-top">
+        <span class="chapter-num">02</span>
+        <span class="chapter-icon">📡</span>
+      </div>
+      <h2>Data Transmission</h2>
+      <p class="topics">Packets &amp; packet switching &bull; Serial vs parallel &bull; USB &bull; Simplex / half / full duplex &bull; Parity &amp; checksums &bull; ARQ &bull; Encryption</p>
+      <div class="card-footer">
+        <div class="tag-group"><span class="mini-tag">24 slides</span><span class="mini-tag">Key topic</span></div>
+        <span class="cta">Open slides →</span>
+      </div>
+    </a>
+    <a href="Topic2_Test.html" class="test-link" target="_blank">✅ Take Topic 2 Test</a>
+  </div>
+  <div class="card-wrap" data-idx="3" style="--c:#f0a030;">
+    <a href="Topic3_Hardware.html" class="chapter-card" target="_blank">
+      <div class="card-top">
+        <span class="chapter-num">03</span>
+        <span class="chapter-icon">🔧</span>
+      </div>
+      <h2>Hardware</h2>
+      <p class="topics">Von Neumann architecture &bull; FDE cycle &bull; Registers &amp; buses &bull; CPU performance &bull; Input / output &bull; Sensors &amp; actuators &bull; RAM vs ROM &bull; Storage &bull; Network hardware</p>
+      <div class="card-footer">
+        <div class="tag-group"><span class="mini-tag">30 slides</span><span class="mini-tag">Key topic</span></div>
+        <span class="cta">Open slides →</span>
+      </div>
+    </a>
+    <a href="Topic3_Test.html" class="test-link" target="_blank">✅ Take Topic 3 Test</a>
+  </div>
+  <div class="card-wrap" data-idx="4" style="--c:#b080f0;">
+    <a href="Topic4_Software.html" class="chapter-card" target="_blank">
+      <div class="card-top">
+        <span class="chapter-num">04</span>
+        <span class="chapter-icon">💿</span>
+      </div>
+      <h2>Software</h2>
+      <p class="topics">System vs application &bull; OS functions &bull; Interrupts &bull; High vs low-level languages &bull; Assembler &bull; Compilers vs interpreters &bull; IDE features</p>
+      <div class="card-footer">
+        <div class="tag-group"><span class="mini-tag">22 slides</span><span class="mini-tag">Key topic</span></div>
+        <span class="cta">Open slides →</span>
+      </div>
+    </a>
+    <a href="Topic4_Test.html" class="test-link" target="_blank">✅ Take Topic 4 Test</a>
+  </div>
+  <div class="card-wrap" data-idx="5" style="--c:#f08080;">
+    <a href="Topic5_Internet_Uses.html" class="chapter-card" target="_blank">
+      <div class="card-top">
+        <span class="chapter-num">05</span>
+        <span class="chapter-icon">🌐</span>
+      </div>
+      <h2>The Internet and its Uses</h2>
+      <p class="topics">Internet vs WWW &bull; URLs &amp; HTTP(S) &bull; DNS &bull; Cookies &bull; Blockchain &bull; Cyber threats &bull; Security solutions</p>
+      <div class="card-footer">
+        <div class="tag-group"><span class="mini-tag">27 slides</span><span class="mini-tag">Key topic</span></div>
+        <span class="cta">Open slides →</span>
+      </div>
+    </a>
+    <a href="Topic5_Test.html" class="test-link" target="_blank">✅ Take Topic 5 Test</a>
+  </div>
+  <div class="card-wrap" data-idx="6" style="--c:#f080a8;">
+    <a href="Topic6_Automated_Systems_Robotics_AI.html" class="chapter-card" target="_blank">
+      <div class="card-top">
+        <span class="chapter-num">06</span>
+        <span class="chapter-icon">🤖</span>
+      </div>
+      <h2>Automated Systems, Robotics & AI</h2>
+      <p class="topics">Sensor &rarr; microprocessor &rarr; actuator &bull; Robotics &bull; Expert systems &bull; Machine learning</p>
+      <div class="card-footer">
+        <div class="tag-group"><span class="mini-tag">27 slides</span><span class="mini-tag">Key topic</span></div>
+        <span class="cta">Open slides →</span>
+      </div>
+    </a>
+    <a href="Topic6_Test.html" class="test-link" target="_blank">✅ Take Topic 6 Test</a>
+  </div>
+  <div class="card-wrap" data-idx="7" style="--c:#2ac8b0;">
+    <a href="Topic7_Algorithm_Design_Problem_Solving.html" class="chapter-card" target="_blank">
+      <div class="card-top">
+        <span class="chapter-num">07</span>
+        <span class="chapter-icon">🧩</span>
+      </div>
+      <h2>Algorithm Design & Problem Solving</h2>
+      <p class="topics">PDLC &bull; Abstraction &amp; decomposition &bull; Standard algorithms &bull; Validation vs verification &bull; Test data &bull; Trace tables</p>
+      <div class="card-footer">
+        <div class="tag-group"><span class="mini-tag">43 slides</span><span class="mini-tag">Key topic</span></div>
+        <span class="cta">Open slides →</span>
+      </div>
+    </a>
+    <a href="Topic7_Test.html" class="test-link" target="_blank">✅ Take Topic 7 Test</a>
+  </div>
+  <div class="card-wrap" data-idx="8" style="--c:#7a8af0;">
+    <a href="Topic8_Programming.html" class="chapter-card" target="_blank">
+      <div class="card-top">
+        <span class="chapter-num">08</span>
+        <span class="chapter-icon">💻</span>
+      </div>
+      <h2>Programming</h2>
+      <p class="topics">Variables &amp; constants &bull; Data types &bull; Constructs &bull; Operators &bull; Procedures &amp; functions &bull; Arrays &bull; File handling</p>
+      <div class="card-footer">
+        <div class="tag-group"><span class="mini-tag">65 slides</span><span class="mini-tag">Key topic</span></div>
+        <span class="cta">Open slides →</span>
+      </div>
+    </a>
+    <a href="Topic8_Test.html" class="test-link" target="_blank">✅ Take Topic 8 Test</a>
+  </div>
+  <div class="card-wrap" data-idx="9" style="--c:#4ac87a;">
+    <a href="Topic9_Databases.html" class="chapter-card" target="_blank">
+      <div class="card-top">
+        <span class="chapter-num">09</span>
+        <span class="chapter-icon">🗄</span>
+      </div>
+      <h2>Databases</h2>
+      <p class="topics">Flat-file databases &bull; Tables / records / fields &bull; Data types &bull; Primary keys &bull; Validation &bull; SQL queries</p>
+      <div class="card-footer">
+        <div class="tag-group"><span class="mini-tag">20 slides</span><span class="mini-tag">Key topic</span></div>
+        <span class="cta">Open slides →</span>
+      </div>
+    </a>
+    <a href="Topic9_Test.html" class="test-link" target="_blank">✅ Take Topic 9 Test</a>
+  </div>
+  <div class="card-wrap" data-idx="10" style="--c:#f0a050;">
+    <a href="Topic10_Boolean_Logic.html" class="chapter-card" target="_blank">
+      <div class="card-top">
+        <span class="chapter-num">10</span>
+        <span class="chapter-icon">⚙</span>
+      </div>
+      <h2>Boolean Logic</h2>
+      <p class="topics">Logic gates &bull; Truth tables &bull; Logic expressions &bull; Building circuits &bull; Gate symbols</p>
+      <div class="card-footer">
+        <div class="tag-group"><span class="mini-tag">23 slides</span><span class="mini-tag">Key topic</span></div>
+        <span class="cta">Open slides →</span>
+      </div>
+    </a>
+    <a href="Topic10_Test.html" class="test-link" target="_blank">✅ Take Topic 10 Test</a>
+  </div>
+</section>
+<footer class="footer">
+  <p>IGCSE 0478 Computer Science • 2026–2028 Syllabus • Revision slides + practice tests</p>
+  <p style="margin-top:4px; font-size:0.72rem; color:#3a5a7a;">Use ← → arrow keys to navigate the slides • each test gives instant feedback and a full answer review</p>
+</footer>
+</body>
+</html>

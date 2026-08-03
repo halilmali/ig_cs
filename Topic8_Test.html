@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topic 8 Test — IGCSE 0478 Computer Science</title>
+<link rel="stylesheet" href="css/test-common.css">
+</head>
+<body>
+<div class="bg-grid"></div>
+<header class="header">
+  <a class="back" href="index.html">← Back to all topics</a>
+  <h1><span class="num">Topic 8</span> — Programming</h1>
+  <p>Exam-style practice test • instant feedback • explanations for every answer</p>
+  <span class="chapter-tag">💻 Variables &amp; constants &bull; Data types &bull; Constructs &bull; Operators &bull; Procedures &amp; functions &bull; Arrays &bull; File handling</span>
+</header>
+<div id="progressBarContainer"><div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div></div>
+<div class="main">
+  <div id="setupScreen">
+    <div class="setup-card">
+      <h2>⚙️ Test Settings</h2>
+      <div class="quiz-options">
+        <label>Questions: <select id="numQuestions"><option value="5">5</option><option value="10" selected>10</option><option value="14">14</option><option value="0">All</option></select></label>
+        <label>Type: <select id="questionType"><option value="all" selected>Mixed</option><option value="mcq">Multiple Choice</option><option value="truefalse">True / False</option></select></label>
+      </div>
+    </div>
+    <div class="center"><button class="btn-primary" onclick="startTest()">🚀 Start Test</button></div>
+  </div>
+  <div id="quizScreen" style="display:none;">
+    <div class="quiz-header">
+      <span class="quiz-progress">Question <strong id="currentQ">1</strong> of <strong id="totalQ">10</strong></span>
+      <span class="quiz-score">✅ <span id="scoreDisplay">0</span>/<span id="totalCorrect">0</span></span>
+    </div>
+    <div class="question-card">
+      <div class="question-number" id="qNum">Q1</div>
+      <div class="question-text" id="qText">Loading question...</div>
+      <div class="options-list" id="optionsList"></div>
+      <div class="feedback-area" id="feedbackArea"></div>
+      <div class="question-actions"><button class="btn-secondary" id="nextBtn" style="display:none;" onclick="nextQuestion()">Next →</button></div>
+    </div>
+  </div>
+  <div id="resultsScreen" style="display:none;">
+    <div class="results-card">
+      <div class="results-score" id="finalScore">0%</div>
+      <div class="results-label">Final Score</div>
+      <div class="results-details">
+        <div class="results-stat"><span class="num" id="rCorrect">0</span><div class="desc">Correct</div></div>
+        <div class="results-stat"><span class="num" id="rIncorrect">0</span><div class="desc">Incorrect</div></div>
+        <div class="results-stat"><span class="num" id="rTotal">0</span><div class="desc">Total</div></div>
+      </div>
+      <div class="results-msg" id="resultsMsg">Great job!</div>
+      <div class="review-list" id="reviewList"></div>
+      <div class="results-actions">
+        <button class="btn-primary" onclick="resetTest()">🔄 Try Again</button>
+        <button class="btn-secondary" onclick="showSetup()">⚙️ New Settings</button>
+        <button class="btn-secondary" onclick="location.href='index.html'">🌐 All Topics</button>
+      </div>
+    </div>
+  </div>
+</div>
+<footer class="footer">IGCSE 0478 Computer Science • 2026–2028 Syllabus • Topic 8 Practice Test</footer>
+<script>
+  var QUESTION_BANK = [{"q":"A variable is:","options":["A named memory location whose value can change","A named memory location whose value is fixed","A type of loop","A function that returns a value"],"correct":0,"explain":"A variable stores a value that can change during the program run."},{"q":"A constant is:","options":["A value that can be changed","A named memory location storing a fixed value that cannot change","A temporary calculation","A type of array"],"correct":1,"explain":"A constant’s value cannot be changed after declaration — reassigning it is an error."},{"q":"Which data type would store the value 3.14?","options":["Integer","Real","Char","Boolean"],"correct":1,"explain":"A Real is a number with a decimal point."},{"q":"The value ‘7’ (with quotes) is which data type?","options":["Integer","Real","Char","Boolean"],"correct":2,"explain":"‘7’ is a single character (Char) — different from the integer 7, which can be used in calculations."},{"q":"A telephone number should be stored as a:","options":["Integer","Real","String","Boolean"],"correct":2,"explain":"Phone numbers may start with 0, contain spaces, and are not used in calculations — so String."},{"q":"Which data type can only hold TRUE or FALSE?","options":["Char","String","Boolean","Integer"],"correct":2,"explain":"Boolean has exactly two possible values: TRUE and FALSE."},{"q":"Which loop is best when you want to check one variable against many discrete values?","options":["Nested IF","CASE","WHILE","FOR"],"correct":1,"explain":"CASE is cleaner than many nested IFs when testing one variable against many values."},{"q":"Which loop may run zero times because its condition is checked before each iteration?","options":["REPEAT…UNTIL","WHILE…DO","FOR…NEXT","All loops"],"correct":1,"explain":"WHILE checks the condition first, so it may not run at all. REPEAT…UNTIL always runs at least once."},{"q":"What is 17 MOD 5?","options":["3","2","5","4"],"correct":1,"explain":"MOD gives the remainder: 17 ÷ 5 = 3 remainder 2."},{"q":"What is 17 DIV 5?","options":["2","5","3","4"],"correct":2,"explain":"DIV gives the integer (whole) part of division: 17 DIV 5 = 3."},{"q":"What is LENGTH(“Cambridge”)?","options":["8","9","10","7"],"correct":1,"explain":"Cambridge has 9 characters."},{"q":"What is SUBSTRING(“Computer”, 1, 3)?","options":["“Com”","“put”","“Comp”","“ter”"],"correct":0,"explain":"Starting at position 1, take 3 characters: “Com”."},{"q":"Which statement about a function is correct?","options":["A function returns no value","A function returns exactly one value via RETURN","A function must have no parameters","A function can only be called once"],"correct":1,"explain":"A function returns exactly one value using RETURN and can be used in expressions."},{"q":"A procedure is best described as:","options":["A block that returns a value","A named reusable block that performs a task and returns no value","A data type","A type of loop"],"correct":1,"explain":"Procedures perform a task and return no value — called with CALL."},{"q":"What is a local variable?","options":["A variable declared outside all blocks","A variable declared inside a block, accessible only there","A constant","A global variable"],"correct":1,"explain":"Local variables exist only inside their block. Globals are declared outside all blocks and accessible anywhere."},{"q":"What does the loop FOR i = 1 TO 10 NEXT do if used as the index to fill an array?","options":["Fills one element","Repeats a fixed number of times to access each array element","Runs until the user stops it","Never runs"],"correct":1,"explain":"A count-controlled FOR loop iterates a fixed number of times — ideal for stepping through array indexes."},{"q":"What is the correct order of file handling operations?","options":["READ → WRITE → OPEN","OPEN → READ/WRITE → CLOSE","CLOSE → OPEN → READ","WRITE → CLOSE → OPEN"],"correct":1,"explain":"Files must be opened before use and always closed afterwards."},{"tf":true,"q":"A constant can be reassigned a new value during the program.","correct":false,"explain":"A constant is fixed — reassigning it causes an error. Only variables can change."},{"tf":true,"q":"An array can store values of different data types together.","correct":false,"explain":"Arrays store multiple values of the SAME data type under one identifier, accessed by index."},{"tf":true,"q":"You must always close a file after using it, or you risk losing data.","correct":true,"explain":"Forgetting to close a file can cause data loss or lock the file from other programs."}];
+  var state = { questions: [], currentIndex: 0, score: 0, answers: [], answered: false };
+  function startTest() {
+    var pool = QUESTION_BANK.slice();
+    var typeFilter = document.getElementById('questionType').value;
+    if (typeFilter !== 'all') { pool = pool.filter(function(q) { return q.type === typeFilter; }); }
+    if (pool.length === 0) { alert('No questions of this type available.'); return; }
+    for (var i = pool.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = pool[i]; pool[i] = pool[j]; pool[j] = t; }
+    var numQ = parseInt(document.getElementById('numQuestions').value);
+    if (numQ === 0 || numQ > pool.length) numQ = pool.length;
+    state.questions = pool.slice(0, numQ);
+    state.currentIndex = 0; state.score = 0; state.answers = []; state.answered = false;
+    showScreen('quizScreen'); renderQuestion();
+  }
+  function renderQuestion() {
+    var q = state.questions[state.currentIndex];
+    var total = state.questions.length; var idx = state.currentIndex;
+    document.getElementById('currentQ').textContent = idx + 1;
+    document.getElementById('totalQ').textContent = total;
+    document.getElementById('scoreDisplay').textContent = state.score;
+    document.getElementById('totalCorrect').textContent = total;
+    document.getElementById('progressFill').style.width = (idx / total * 100) + '%';
+    document.getElementById('qText').textContent = q.q;
+    document.getElementById('qNum').textContent = 'Q' + (idx + 1) + (q.tf ? ' (True / False)' : '');
+    var container = document.getElementById('optionsList'); container.innerHTML = '';
+    var options = q.tf ? ['True', 'False'] : q.options;
+    options.forEach(function(text, i) {
+      var btn = document.createElement('button');
+      btn.className = 'option-btn';
+      btn.setAttribute('data-index', i);
+      var letter = document.createElement('span');
+      letter.className = 'option-letter';
+      letter.textContent = q.tf ? (i === 0 ? 'T' : 'F') : ['A','B','C','D'][i];
+      btn.appendChild(letter);
+      btn.appendChild(document.createTextNode(text));
+      btn.addEventListener('click', function() { selectAnswer(i); });
+      container.appendChild(btn);
+    });
+    var fb = document.getElementById('feedbackArea');
+    fb.className = 'feedback-area'; fb.innerHTML = '';
+    document.getElementById('nextBtn').style.display = 'none';
+    state.answered = false;
+  }
+  function selectAnswer(index) {
+    if (state.answered) return;
+    state.answered = true;
+    var q = state.questions[state.currentIndex];
+    var correctIndex = q.tf ? (q.correct ? 0 : 1) : q.correct;
+    var isCorrect = (index === correctIndex);
+    var buttons = document.querySelectorAll('.option-btn');
+    buttons.forEach(function(btn, i) {
+      btn.classList.add('disabled');
+      if (i === correctIndex) btn.classList.add('correct');
+      if (i === index && !isCorrect) btn.classList.add('incorrect');
+      if (i === index) btn.classList.add('selected');
+    });
+    if (isCorrect) state.score++;
+    var fb = document.getElementById('feedbackArea');
+    fb.className = 'feedback-area ' + (isCorrect ? 'correct' : 'incorrect');
+    fb.innerHTML = '<span class="fb-label">' + (isCorrect ? '✅ Correct!' : '❌ Incorrect.') + '</span> ' + q.explain;
+    state.answers.push({ selected: index, correct: correctIndex, question: q, wasCorrect: isCorrect });
+    document.getElementById('scoreDisplay').textContent = state.score;
+    var nb = document.getElementById('nextBtn');
+    nb.style.display = 'inline-flex';
+    nb.textContent = (state.currentIndex === state.questions.length - 1) ? '📊 See Results' : 'Next →';
+  }
+  function nextQuestion() {
+    if (state.currentIndex >= state.questions.length - 1) { showResults(); return; }
+    state.currentIndex++; renderQuestion();
+  }
+  function showResults() {
+    showScreen('resultsScreen');
+    var total = state.questions.length; var correct = state.score; var pct = total > 0 ? Math.round(correct / total * 100) : 0;
+    document.getElementById('finalScore').textContent = pct + '%';
+    document.getElementById('rCorrect').textContent = correct;
+    document.getElementById('rIncorrect').textContent = total - correct;
+    document.getElementById('rTotal').textContent = total;
+    var msg = document.getElementById('resultsMsg');
+    msg.className = 'results-msg';
+    if (pct === 100) { msg.textContent = '🏆 Perfect score! You are a Computer Science master!'; msg.classList.add('perfect'); }
+    else if (pct >= 80) { msg.textContent = '🌟 Excellent! Strong understanding of this topic.'; msg.classList.add('great'); }
+    else if (pct >= 60) { msg.textContent = '👍 Good effort! Review the incorrect answers.'; msg.classList.add('good'); }
+    else { msg.textContent = '📚 Keep studying! Re-read the slides and try again.'; msg.classList.add('retry'); }
+    var rl = document.getElementById('reviewList');
+    rl.innerHTML = '<h3 style="font-size:0.95rem;color:#b8d4ff;margin-bottom:8px;">📋 Review Answers</h3>';
+    state.answers.forEach(function(a, i) {
+      var item = document.createElement('div');
+      item.className = 'review-item ' + (a.wasCorrect ? 'correct-review' : 'incorrect-review');
+      var q = a.question;
+      var letters = ['A','B','C','D'];
+      var yourAns = q.tf ? (a.selected === 0 ? 'True' : 'False') : letters[a.selected];
+      var corrAns = q.tf ? (a.correct === 0 ? 'True' : 'False') : letters[a.correct];
+      item.innerHTML = '<div class="review-q">' + (i+1) + '. ' + q.q + '</div>' +
+        '<div class="review-a">' + (a.wasCorrect ? '<span class="correct-answer">✅ Correct</span>' : '<span class="your-answer">❌ Your answer: ' + yourAns + '</span> — <span class="correct-answer">Correct: ' + corrAns + '</span>') + '</div>' +
+        '<div style="color:#7a9abd;font-size:0.78rem;margin-top:4px;">' + q.explain + '</div>';
+      rl.appendChild(item);
+    });
+  }
+  function resetTest() {
+    state.currentIndex = 0; state.score = 0; state.answers = []; state.answered = false;
+    var pool = state.questions;
+    for (var i = pool.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = pool[i]; pool[i] = pool[j]; pool[j] = t; }
+    showScreen('quizScreen'); renderQuestion();
+  }
+  function showSetup() { showScreen('setupScreen'); }
+  function showScreen(id) {
+    var screens = ['setupScreen', 'quizScreen', 'resultsScreen'];
+    screens.forEach(function(s) { document.getElementById(s).style.display = (s === id) ? 'block' : 'none'; });
+    document.getElementById('progressBarContainer').style.display = (id === 'quizScreen') ? 'block' : 'none';
+  }
+  showScreen('setupScreen');
+</script>
+</body>
+</html>

@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topic 10: Boolean Logic — Cambridge IGCSE Computer Science</title>
+<link rel="stylesheet" href="css/topic-common.css">
+<style>
+/* ===== Topic-specific CSS ===== */
+
+
+  
+  .ckt-strip {
+    position: fixed;
+    top: 0; right: 0; bottom: 0;
+    width: 200px;
+    font-family: 'JetBrains Mono', 'Cascadia Code', monospace;
+    font-size: 12px;
+    line-height: 1.85;
+    color: rgba(59, 130, 246, 0.13);
+    padding: 24px 16px;
+    white-space: pre;
+    pointer-events: none;
+    z-index: 0;
+    user-select: none;
+    text-align: left;
+  }
+
+
+  .bg-glow-2 {
+    position: fixed; bottom: -20%; right: -10%; width: 55%; height: 55%;
+    background: radial-gradient(circle, rgba(37, 99, 235, 0.11) 0%, transparent 70%);
+    z-index: 0; pointer-events: none;
+    animation: glowFloat 18s ease-in-out infinite alternate-reverse;
+  }
+
+
+  .expr {
+    font-family: 'JetBrains Mono', 'Cascadia Code', Consolas, monospace;
+    font-size: 1.1rem; color: #93c5fd; background: #0a1220;
+    border: 1px solid #2b3a55; border-radius: 8px; padding: 10px 14px;
+    text-align: center; margin: 8px 0; letter-spacing: 0.5px;
+  }
+
+
+
+  
+  table.tt { width: auto; min-width: 58%; margin: 10px auto; }
+
+
+  table.tt th, table.tt td { text-align: center; font-family: 'JetBrains Mono', Consolas, monospace; padding: 6px 16px; }
+
+
+  table.tt td.hl { color: #3b82f6; font-weight: 700; background: rgba(59, 130, 246, 0.10); }
+
+
+  table.tt th { color: #93c5fd; }
+
+
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+
+  .section-badge.sec-102 { background: linear-gradient(135deg, #1e40af, #2563eb); border-color: #60a5fa; }
+
+
+  .section-badge.sec-103 { background: linear-gradient(135deg, #1e3a8a, #1d4ed8); border-color: #60a5fa; }
+
+
+  .section-badge.quiz { background: linear-gradient(135deg, #172554, #1e3a8a); border-color: #3b82f6; color: #bfdbfe; }
+
+
+  .reveal-answer svg { max-width: 100%; height: auto; }
+
+
+
+  
+  .gate-sym {
+    background: #0a1220; border: 1px solid #2b3a55; border-radius: 10px;
+    padding: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+
+
+  .gate-sym svg { width: 110px; height: 88px; }
+
+
+  .gate-sym .gate-name { font-size: 0.85rem; color: #93c5fd; font-weight: 700; font-family: 'JetBrains Mono', monospace; margin-top: 6px; }
+
+
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+
+
+    .ckt-strip { display: none; }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="g-and" viewBox="0 0 50 40">
+    <path d="M 5 5 L 20 5 C 32 5 38 11 38 20 C 38 29 32 35 20 35 L 5 35 Z" stroke="#60a5fa" stroke-width="2" fill="rgba(96,165,250,0.06)"/>
+  </symbol>
+  <symbol id="g-or" viewBox="0 0 50 40">
+    <path d="M 5 5 C 12 6 16 10 16 20 C 16 30 12 34 5 35 C 13 33 25 29 33 20 C 25 11 13 7 5 5 Z" stroke="#60a5fa" stroke-width="2" fill="rgba(96,165,250,0.06)"/>
+  </symbol>
+  <symbol id="g-not" viewBox="0 0 50 40">
+    <path d="M 5 5 L 30 20 L 5 35 Z" stroke="#60a5fa" stroke-width="2" fill="rgba(96,165,250,0.06)"/>
+    <circle cx="34" cy="20" r="3.5" stroke="#60a5fa" stroke-width="2" fill="#0a1220"/>
+  </symbol>
+  <symbol id="g-nand" viewBox="0 0 50 40">
+    <path d="M 5 5 L 20 5 C 32 5 38 11 38 20 C 38 29 32 35 20 35 L 5 35 Z" stroke="#60a5fa" stroke-width="2" fill="rgba(96,165,250,0.06)"/>
+    <circle cx="42" cy="20" r="3.5" stroke="#60a5fa" stroke-width="2" fill="#0a1220"/>
+  </symbol>
+  <symbol id="g-nor" viewBox="0 0 50 40">
+    <path d="M 5 5 C 12 6 16 10 16 20 C 16 30 12 34 5 35 C 13 33 25 29 33 20 C 25 11 13 7 5 5 Z" stroke="#60a5fa" stroke-width="2" fill="rgba(96,165,250,0.06)"/>
+    <circle cx="37" cy="20" r="3.5" stroke="#60a5fa" stroke-width="2" fill="#0a1220"/>
+  </symbol>
+  <symbol id="g-xor" viewBox="0 0 50 40">
+    <path d="M 5 5 C 12 6 16 10 16 20 C 16 30 12 34 5 35 C 13 33 25 29 33 20 C 25 11 13 7 5 5 Z" stroke="#60a5fa" stroke-width="2" fill="rgba(96,165,250,0.06)"/>
+    <path d="M 0 5 C 5 6 8 11 8 20 C 8 29 5 34 0 35" stroke="#60a5fa" stroke-width="2" fill="none"/>
+  </symbol>
+</svg>
+
+<div class="ckt-strip">  A ──┐
+      ┌─┐
+      │&gt;│── Q
+B ──┐ └─┘
+    │
+  A ─┤&gt;1
+    │
+  B ─┤
+
+A ──┤1
+    └─┘
+
+A B│Q
+0 0│0
+0 1│0
+1 0│0
+1 1│1
+
+A B│Q
+0 0│0
+0 1│1
+1 0│1
+1 1│0
+
+A B│Q
+0 0│1
+0 1│1
+1 0│1
+1 1│0
+
+Q = NOT (A AND B)
+Q = (A AND B) OR C
+  ──┐
+    │
+  ──┘
+   ▍</div>
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+<div class="bg-glow-2"></div>
+
+<div class="presentation">
+
+  <!-- ============ SLIDE 1 – TITLE ============ -->
+  <div class="slide active" data-slide="1">
+    <div style="flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
+      <div class="section-badge">Cambridge IGCSE · 0478 / 0984 / 0418</div>
+      <h1 style="font-size:3rem; margin-top:10px;">Topic 10: Boolean Logic</h1>
+      <p style="color:#8ba3c2; font-size:1.05rem; margin-top:8px;">Logic gates, circuits &amp; truth tables — the mathematics behind every decision a computer makes</p>
+      <div class="grid-3" style="max-width:680px; margin-top:34px; width:100%;">
+        <div class="icon-tile"><span class="ico"><svg viewBox="0 0 120 64" style="width:110px; height:58px;"><line x1="8" y1="18" x2="52" y2="18" stroke="#60a5fa" stroke-width="2"/><line x1="8" y1="46" x2="52" y2="46" stroke="#60a5fa" stroke-width="2"/><use href="#g-and" width="50" height="40" x="52" y="8" transform="scale(1.1)"/><line x1="93.8" y1="32" x2="112" y2="32" stroke="#60a5fa" stroke-width="2"/><text x="88" y="14" fill="#8ba3c2" font-size="9" font-family="monospace">A</text><text x="88" y="52" fill="#8ba3c2" font-size="9" font-family="monospace">B</text><text x="114" y="36" fill="#93c5fd" font-size="10" font-family="monospace">Q</text></svg></span><span class="ico-label">AND Gate</span><span class="ico-sub">both inputs</span></div>
+        <div class="icon-tile"><span class="ico"><svg viewBox="0 0 120 64" style="width:110px; height:58px;"><line x1="8" y1="18" x2="46" y2="18" stroke="#60a5fa" stroke-width="2"/><line x1="8" y1="46" x2="46" y2="46" stroke="#60a5fa" stroke-width="2"/><use href="#g-or" width="50" height="40" x="46" y="8" transform="scale(1.1)"/><line x1="82.3" y1="32" x2="112" y2="32" stroke="#60a5fa" stroke-width="2"/><text x="88" y="14" fill="#8ba3c2" font-size="9" font-family="monospace">A</text><text x="88" y="52" fill="#8ba3c2" font-size="9" font-family="monospace">B</text><text x="114" y="36" fill="#93c5fd" font-size="10" font-family="monospace">Q</text></svg></span><span class="ico-label">OR Gate</span><span class="ico-sub">either input</span></div>
+        <div class="icon-tile"><span class="ico"><svg viewBox="0 0 120 64" style="width:110px; height:58px;"><line x1="8" y1="32" x2="42" y2="32" stroke="#60a5fa" stroke-width="2"/><use href="#g-not" width="50" height="40" x="42" y="8" transform="scale(1.1)"/><line x1="92" y1="32" x2="112" y2="32" stroke="#60a5fa" stroke-width="2"/><text x="34" y="24" fill="#8ba3c2" font-size="9" font-family="monospace">A</text><text x="114" y="36" fill="#93c5fd" font-size="10" font-family="monospace">Q</text></svg></span><span class="ico-label">NOT Gate</span><span class="ico-sub">inverts</span></div>
+      </div>
+      <p style="color:#54627a; font-size:0.85rem; margin-top:32px;">10.1 Logic Gate Symbols &amp; Functions · 10.2 Building Logic Circuits · 10.3 Completing Truth Tables</p>
+      <p style="color:#54627a; font-size:0.8rem;">Press <span class="inline-code">→</span> or click the navigation to begin</p>
+    </div>
+    <div class="slide-footer"><span class="section-label">Topic 10 · Overview</span><span class="slide-number">1 / 23</span></div>
+  </div>
+
+  <!-- ============ SLIDE 2 – OBJECTIVES 10.1 ============ -->
+  <div class="slide" data-slide="2">
+    <span class="section-badge">10.1</span>
+    <h2>Learning Objectives — Logic Gate Symbols and Functions</h2>
+    <p class="text-small" style="margin-bottom:12px;">By the end of this section you should be able to:</p>
+    <ul class="objectives-list">
+      <li><strong>Identify and use the standard symbols</strong> for logic gates</li>
+      <li><strong>Define and understand the functions</strong> of logic gates</li>
+    </ul>
+    <div class="callout info" style="margin-top:12px;"><strong>Note:</strong> NOT is a <strong>single-input</strong> gate. All other gates covered in this topic (<strong>AND, OR, NAND, NOR, XOR</strong>) are limited to <strong>two inputs</strong>.</div>
+    <div class="slide-footer"><span class="section-label">10.1 · Logic Gate Symbols</span><span class="slide-number">2 / 23</span></div>
+  </div>
+
+  <!-- ============ SLIDE 3 – NOT GATE ============ -->
+  <div class="slide" data-slide="3">
+    <span class="section-badge">10.1</span>
+    <h2>The NOT Gate</h2>
+    <div class="grid-2" style="margin-top:6px;">
+      <div class="gate-sym">
+        <svg viewBox="0 0 50 40" role="img" aria-label="NOT gate symbol"><use href="#g-not" width="50" height="40"/></svg>
+        <div class="gate-name">NOT</div>
+      </div>
+      <div style="display:flex; flex-direction:column; justify-content:center;">
+        <p><strong>Function:</strong> outputs the <strong>opposite (inverse)</strong> of the single input.</p>
+        <div class="expr">Q = NOT A</div>
+        <p class="text-small">A triangle followed by a small "bubble" on the output — the bubble always means <strong>inversion</strong>.</p>
+      </div>
+    </div>
+    <table class="tt">
+      <tr><th>A</th><th>Q = NOT A</th></tr>
+      <tr><td>0</td><td class="hl">1</td></tr>
+      <tr><td>1</td><td class="hl">0</td></tr>
+    </table>
+    <div class="callout info"><strong>Think of it as:</strong> NOT simply flips the value — 0 becomes 1, 1 becomes 0.</div>
+    <div class="slide-footer"><span class="section-label">10.1 · Logic Gate Symbols</span><span class="slide-number">3 / 23</span></div>
+  </div>
+
+  <!-- ============ SLIDE 4 – AND GATE ============ -->
+  <div class="slide" data-slide="4">
+    <span class="section-badge">10.1</span>
+    <h2>The AND Gate</h2>
+    <div class="grid-2" style="margin-top:6px;">
+      <div class="gate-sym">
+        <svg viewBox="0 0 50 40" role="img" aria-label="AND gate symbol"><use href="#g-and" width="50" height="40"/></svg>
+        <div class="gate-name">AND</div>
+      </div>
+      <div style="display:flex; flex-direction:column; justify-content:center;">
+        <p><strong>Function:</strong> outputs 1 <strong>only if BOTH inputs are 1</strong>.</p>
+        <div class="expr">Q = A AND B</div>
+        <p class="text-small">The D-shape with a flat left side and curved right side is the standard BS symbol.</p>
+      </div>
+    </div>
+    <table class="tt">
+      <tr><th>A</th><th>B</th><th>Q = A AND B</th></tr>
+      <tr><td>0</td><td>0</td><td class="hl">0</td></tr>
+      <tr><td>0</td><td>1</td><td class="hl">0</td></tr>
+      <tr><td>1</td><td>0</td><td class="hl">0</td></tr>
+      <tr><td>1</td><td>1</td><td class="hl">1</td></tr>
+    </table>
+    <div class="callout info"><strong>Memory hook:</strong> AND is strict — it only says "yes" when <em>everything</em> is true.</div>
+    <div class="slide-footer"><span class="section-label">10.1 · Logic Gate Symbols</span><span class="slide-number">4 / 23</span></div>
+  </div>
+
+  <!-- ============ SLIDE 5 – OR GATE ============ -->
+  <div class="slide" data-slide="5">
+    <span class="section-badge">10.1</span>
+    <h2>The OR Gate</h2>
+    <div class="grid-2" style="margin-top:6px;">
+      <div class="gate-sym">
+        <svg viewBox="0 0 50 40" role="img" aria-label="OR gate symbol"><use href="#g-or" width="50" height="40"/></svg>
+        <div class="gate-name">OR</div>
+      </div>
+      <div style="display:flex; flex-direction:column; justify-content:center;">
+        <p><strong>Function:</strong> outputs 1 <strong>if AT LEAST ONE input is 1</strong>.</p>
+        <div class="expr">Q = A OR B</div>
+        <p class="text-small">The curved, shield-like shape — concave on the input side, pointed on the output side.</p>
+      </div>
+    </div>
+    <table class="tt">
+      <tr><th>A</th><th>B</th><th>Q = A OR B</th></tr>
+      <tr><td>0</td><td>0</td><td class="hl">0</td></tr>
+      <tr><td>0</td><td>1</td><td class="hl">1</td></tr>
+      <tr><td>1</td><td>0</td><td class="hl">1</td></tr>
+      <tr><td>1</td><td>1</td><td class="hl">1</td></tr>
+    </table>
+    <div class="callout info"><strong>Memory hook:</strong> OR is relaxed — it says "yes" if <em>any one</em> of the inputs is true.</div>
+    <div class="slide-footer"><span class="section-label">10.1 · Logic Gate Symbols</span><span class="slide-number">5 / 23</span></div>
+  </div>
+
+  <!-- ============ SLIDE 6 – NAND GATE ============ -->
+  <div class="slide" data-slide="6">
+    <span class="section-badge">10.1</span>
+    <h2>The NAND Gate</h2>
+    <div class="grid-2" style="margin-top:6px;">
+      <div class="gate-sym">
+        <svg viewBox="0 0 50 40" role="img" aria-label="NAND gate symbol"><use href="#g-nand" width="50" height="40"/></svg>
+        <div class="gate-name">NAND</div>
+      </div>
+      <div style="display:flex; flex-direction:column; justify-content:center;">
+        <p><strong>Function:</strong> outputs the <strong>opposite of AND</strong> — outputs <strong>0 only if both inputs are 1</strong>.</p>
+        <div class="expr">Q = NOT (A AND B)</div>
+        <p class="text-small">An AND gate with a small <strong>circle (bubble)</strong> on the output.</p>
+      </div>
+    </div>
+    <table class="tt">
+      <tr><th>A</th><th>B</th><th>Q = NOT (A AND B)</th></tr>
+      <tr><td>0</td><td>0</td><td class="hl">1</td></tr>
+      <tr><td>0</td><td>1</td><td class="hl">1</td></tr>
+      <tr><td>1</td><td>0</td><td class="hl">1</td></tr>
+      <tr><td>1</td><td>1</td><td class="hl">0</td></tr>
+    </table>
+    <div class="callout info"><strong>NAND = NOT + AND.</strong> Whatever AND would output, NAND flips it.</div>
+    <div class="slide-footer"><span class="section-label">10.1 · Logic Gate Symbols</span><span class="slide-number">6 / 23</span></div>
+  </div>
+
+  <!-- ============ SLIDE 7 – NOR GATE ============ -->
+  <div class="slide" data-slide="7">
+    <span class="section-badge">10.1</span>
+    <h2>The NOR Gate</h2>
+    <div class="grid-2" style="margin-top:6px;">
+      <div class="gate-sym">
+        <svg viewBox="0 0 50 40" role="img" aria-label="NOR gate symbol"><use href="#g-nor" width="50" height="40"/></svg>
+        <div class="gate-name">NOR</div>
+      </div>
+      <div style="display:flex; flex-direction:column; justify-content:center;">
+        <p><strong>Function:</strong> outputs the <strong>opposite of OR</strong> — outputs <strong>1 only if both inputs are 0</strong>.</p>
+        <div class="expr">Q = NOT (A OR B)</div>
+        <p class="text-small">An OR gate with a small <strong>circle (bubble)</strong> on the output.</p>
+      </div>
+    </div>
+    <table class="tt">
+      <tr><th>A</th><th>B</th><th>Q = NOT (A OR B)</th></tr>
+      <tr><td>0</td><td>0</td><td class="hl">1</td></tr>
+      <tr><td>0</td><td>1</td><td class="hl">0</td></tr>
+      <tr><td>1</td><td>0</td><td class="hl">0</td></tr>
+      <tr><td>1</td><td>1</td><td class="hl">0</td></tr>
+    </table>
+    <div class="callout info"><strong>NOR = NOT + OR.</strong> The only time NOR says "yes" is when every input is 0.</div>
+    <div class="slide-footer"><span class="section-label">10.1 · Logic Gate Symbols</span><span class="slide-number">7 / 23</span></div>
+  </div>
+
+  <!-- ============ SLIDE 8 – XOR GATE ============ -->
+  <div class="slide" data-slide="8">
+    <span class="section-badge">10.1</span>
+    <h2>The XOR (EOR) Gate</h2>
+    <div class="grid-2" style="margin-top:6px;">
+      <div class="gate-sym">
+        <svg viewBox="0 0 50 40" role="img" aria-label="XOR gate symbol"><use href="#g-xor" width="50" height="40"/></svg>
+        <div class="gate-name">XOR</div>
+      </div>
+      <div style="display:flex; flex-direction:column; justify-content:center;">
+        <p><strong>Function:</strong> outputs 1 <strong>only if the inputs are DIFFERENT</strong> from each other.</p>
+        <div class="expr">Q = A XOR B</div>
+        <p class="text-small">An OR gate with an <strong>extra curved line</strong> on the input side. Also called EOR.</p>
+      </div>
+    </div>
+    <table class="tt">
+      <tr><th>A</th><th>B</th><th>Q = A XOR B</th></tr>
+      <tr><td>0</td><td>0</td><td class="hl">0</td></tr>
+      <tr><td>0</td><td>1</td><td class="hl">1</td></tr>
+      <tr><td>1</td><td>0</td><td class="hl">1</td></tr>
+      <tr><td>1</td><td>1</td><td class="hl">0</td></tr>
+    </table>
+    <div class="callout info"><strong>Memory hook:</strong> XOR = "exclusive OR" — like OR, but it <em>excludes</em> the case where both are 1.</div>
+    <div class="slide-footer"><span class="section-label">10.1 · Logic Gate Symbols</span><span class="slide-number">8 / 23</span></div>
+  </div>
+
+  <!-- ============ SLIDE 9 – ALL SIX AT A GLANCE ============ -->
+  <div class="slide" data-slide="9">
+    <span class="section-badge">10.1</span>
+    <h2>All Six Gates at a Glance</h2>
+    <div class="grid-3" style="margin-top:8px;">
+      <div class="card"><svg viewBox="0 0 50 40" style="width:70px; height:56px; display:block; margin:0 auto;"><use href="#g-not" width="50" height="40"/></svg><h4 style="text-align:center; margin-top:4px;">NOT</h4><p class="text-small" style="text-align:center;">1 input · inverts</p></div>
+      <div class="card"><svg viewBox="0 0 50 40" style="width:70px; height:56px; display:block; margin:0 auto;"><use href="#g-and" width="50" height="40"/></svg><h4 style="text-align:center; margin-top:4px;">AND</h4><p class="text-small" style="text-align:center;">2 inputs · 1 only if both 1</p></div>
+      <div class="card"><svg viewBox="0 0 50 40" style="width:70px; height:56px; display:block; margin:0 auto;"><use href="#g-or" width="50" height="40"/></svg><h4 style="text-align:center; margin-top:4px;">OR</h4><p class="text-small" style="text-align:center;">2 inputs · 1 if either 1</p></div>
+      <div class="card"><svg viewBox="0 0 50 40" style="width:70px; height:56px; display:block; margin:0 auto;"><use href="#g-nand" width="50" height="40"/></svg><h4 style="text-align:center; margin-top:4px;">NAND</h4><p class="text-small" style="text-align:center;">2 inputs · NOT AND</p></div>
+      <div class="card"><svg viewBox="0 0 50 40" style="width:70px; height:56px; display:block; margin:0 auto;"><use href="#g-nor" width="50" height="40"/></svg><h4 style="text-align:center; margin-top:4px;">NOR</h4><p class="text-small" style="text-align:center;">2 inputs · NOT OR</p></div>
+      <div class="card"><svg viewBox="0 0 50 40" style="width:70px; height:56px; display:block; margin:0 auto;"><use href="#g-xor" width="50" height="40"/></svg><h4 style="text-align:center; margin-top:4px;">XOR</h4><p class="text-small" style="text-align:center;">2 inputs · 1 if inputs differ</p></div>
+    </div>
+    <div class="exam-tip" style="margin-top:10px;"><span class="tip-icon">💡</span><span class="tip-text"><strong>Exam Tip:</strong> learn to sketch each symbol accurately <strong>from memory</strong> — mixing up the AND/OR shape or forgetting the NAND/NOR bubble is a very common way to lose easy marks.</span></div>
+    <div class="slide-footer"><span class="section-label">10.1 · Logic Gate Symbols</span><span class="slide-number">9 / 23</span></div>
+  </div>
+
+  <!-- ============ SLIDE 10 – QUIZ 10.1 ============ -->
+  <div class="slide" data-slide="10">
+    <span class="section-badge quiz">10.1 · Recap</span>
+    <h2>Quick Check — Logic Gate Symbols &amp; Functions</h2>
+    <div class="reveal-container">
+      <p><strong>Q1.</strong> Draw the standard symbol for a NOR gate.</p>
+      <button class="reveal-btn" data-target="q1">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q1"><strong>Answer:</strong> an OR shape with a bubble on the output: <svg viewBox="0 0 50 40" style="width:90px; height:72px; display:block; margin-top:6px;"><use href="#g-nor" width="50" height="40"/></svg></div>
+    </div>
+    <div class="reveal-container">
+      <p><strong>Q2.</strong> State the output of an AND gate when both inputs are 1.</p>
+      <button class="reveal-btn" data-target="q2">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q2"><strong>Answer:</strong> <span class="inline-code">1</span> — AND outputs 1 only when both inputs are 1.</div>
+    </div>
+    <div class="reveal-container">
+      <p><strong>Q3.</strong> Identify which gate is being described: "outputs 1 only when its two inputs are different".</p>
+      <button class="reveal-btn" data-target="q3">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q3"><strong>Answer:</strong> The <strong>XOR (EOR)</strong> gate — it outputs 1 when the inputs differ (0 and 1, or 1 and 0).</div>
+    </div>
+    <div class="slide-footer"><span class="section-label">10.1 · Logic Gate Symbols</span><span class="slide-number">10 / 23</span></div>
+  </div>
+
+  <!-- ============ SLIDE 11 – OBJECTIVES 10.2 ============ -->
+  <div class="slide" data-slide="11">
+    <span class="section-badge sec-102">10.2</span>
+    <h2>Learning Objectives — Building Logic Circuits</h2>
+    <p class="text-small" style="margin-bottom:12px;">By the end of this section you should be able to:</p>
+    <ul class="objectives-list">
+      <li><strong>Use logic gates to create logic circuits</strong> from a problem statement</li>
+      <li><strong>Use logic gates to create logic circuits</strong> from a logic expression</li>
+      <li><strong>Use logic gates to create logic circuits</strong> from a truth table</li>
+    </ul>
+    <div class="callout warn" style="margin-top:12px;"><strong>Note:</strong> circuits must be drawn for the <strong>statement given, without simplification</strong>. Logic circuits are limited to a maximum of <strong>three inputs and one output</strong>.</div>
+    <div class="slide-footer"><span class="section-label">10.2 · Building Logic Circuits</span><span class="slide-number">11 / 23</span></div>
+  </div>
+
+  <!-- ============ SLIDE 12 – STATEMENT TO CIRCUIT ============ -->
+  <div class="slide" data-slide="12">
+    <span class="section-badge sec-102">10.2</span>
+    <h2>From a Problem Statement to a Circuit</h2>
+    <ol class="text-small" style="padding-left:20px; margin-bottom:8px;">
+      <li><strong>Identify each condition</strong> mentioned in the statement as an input.</li>
+      <li><strong>Identify the logical relationship</strong> between them (AND, OR, NOT, etc.).</li>
+      <li><strong>Draw the corresponding gates</strong> connected in the correct order.</li>
+    </ol>
+    <div class="worked-example">
+      <span class="we-label">Worked example</span>
+      <h4>"An alarm should sound if the door is open AND the system is armed."</h4>
+      <div class="expr">Q = Door AND Armed</div>
+      <div class="diagram-box">
+        <svg viewBox="0 0 720 170" role="img" aria-label="Single AND gate circuit">
+          <line x1="60" y1="87.5" x2="308" y2="87.5" stroke="#60a5fa" stroke-width="2"/>
+          <line x1="60" y1="102.5" x2="308" y2="102.5" stroke="#60a5fa" stroke-width="2"/>
+          <text x="20" y="84" fill="#93c5fd" font-size="13" font-family="monospace">Door</text>
+          <text x="20" y="106" fill="#93c5fd" font-size="13" font-family="monospace">Armed</text>
+          <use href="#g-and" width="50" height="40" transform="translate(300,65) scale(1.5)"/>
+          <line x1="357" y1="95" x2="440" y2="95" stroke="#60a5fa" stroke-width="2"/>
+          <text x="460" y="100" fill="#93c5fd" font-size="15" font-weight="bold" font-family="monospace">Q</text>
+        </svg>
+        <div class="diagram-caption">Two conditions → one AND gate → output Q (alarm)</div>
+      </div>
+    </div>
+    <div class="callout info"><strong>Notice:</strong> one AND gate is all this statement needs — two inputs (Door, Armed) and one output (Q).</div>
+    <div class="slide-footer"><span class="section-label">10.2 · Building Logic Circuits</span><span class="slide-number">12 / 23</span></div>
+  </div>
+
+  <!-- ============ SLIDE 13 – TWO-GATE WORKED EXAMPLE ============ -->
+  <div class="slide" data-slide="13">
+    <span class="section-badge sec-102">10.2</span>
+    <h2>Worked Example: Three-Gate Circuit from a Problem Statement</h2>
+    <p class="text-small" style="margin-bottom:6px;"><strong>Statement:</strong> "A warning light switches on if the temperature sensor detects a HIGH reading (T) <strong>OR</strong> the pressure sensor detects a HIGH reading (P), but <strong>NOT</strong> if the system is in manual override mode (M)."</p>
+    <div class="expr">Q = (T OR P) AND (NOT M)</div>
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 240" role="img" aria-label="Two-gate circuit with OR, NOT and AND gates">
+        <line x1="40" y1="52.5" x2="218" y2="52.5" stroke="#60a5fa" stroke-width="2"/>
+        <line x1="40" y1="67.5" x2="218" y2="67.5" stroke="#60a5fa" stroke-width="2"/>
+        <text x="18" y="49" fill="#93c5fd" font-size="13" font-family="monospace">T</text>
+        <text x="18" y="71" fill="#93c5fd" font-size="13" font-family="monospace">P</text>
+        <use href="#g-or" width="50" height="40" transform="translate(210,30) scale(1.5)"/>
+        <line x1="260" y1="60" x2="380" y2="60" stroke="#60a5fa" stroke-width="2"/>
+        <line x1="380" y1="60" x2="380" y2="102.5" stroke="#60a5fa" stroke-width="2"/>
+        <line x1="380" y1="102.5" x2="438" y2="102.5" stroke="#60a5fa" stroke-width="2"/>
+        <text x="384" y="56" fill="#8ba3c2" font-size="11" font-family="monospace">X</text>
+        <line x1="40" y1="170" x2="218" y2="170" stroke="#60a5fa" stroke-width="2"/>
+        <text x="18" y="167" fill="#93c5fd" font-size="13" font-family="monospace">M</text>
+        <use href="#g-not" width="50" height="40" transform="translate(210,140) scale(1.5)"/>
+        <line x1="267" y1="170" x2="390" y2="170" stroke="#60a5fa" stroke-width="2"/>
+        <line x1="390" y1="170" x2="390" y2="117.5" stroke="#60a5fa" stroke-width="2"/>
+        <line x1="390" y1="117.5" x2="438" y2="117.5" stroke="#60a5fa" stroke-width="2"/>
+        <text x="394" y="166" fill="#8ba3c2" font-size="11" font-family="monospace">Y</text>
+        <use href="#g-and" width="50" height="40" transform="translate(430,80) scale(1.5)"/>
+        <line x1="487" y1="110" x2="560" y2="110" stroke="#60a5fa" stroke-width="2"/>
+        <text x="580" y="115" fill="#93c5fd" font-size="15" font-weight="bold" font-family="monospace">Q</text>
+      </svg>
+      <div class="diagram-caption">Step 1: OR the two sensors (X) · Step 2: NOT the override (Y) · Step 3: AND them together (Q)</div>
+    </div>
+    <div class="callout info"><strong>Step-by-step:</strong> (T OR P) is done by the OR gate → X. NOT M is done by the NOT gate → Y. The AND gate combines X and Y → Q.</div>
+    <div class="slide-footer"><span class="section-label">10.2 · Building Logic Circuits</span><span class="slide-number">13 / 23</span></div>
+  </div>
+
+  <!-- ============ SLIDE 14 – EXPRESSION TO CIRCUIT ============ -->
+  <div class="slide" data-slide="14">
+    <span class="section-badge sec-102">10.2</span>
+    <h2>From a Logic Expression to a Circuit</h2>
+    <p class="text-small" style="margin-bottom:6px;"><strong>Process:</strong> work through the expression following <strong>operator precedence</strong> — <strong>brackets first, then NOT, then AND, then OR</strong> — drawing one gate at a time.</p>
+    <div class="expr">Q = (A AND B) OR NOT C</div>
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 240" role="img" aria-label="Circuit for Q equals (A AND B) OR NOT C">
+        <line x1="40" y1="52.5" x2="218" y2="52.5" stroke="#60a5fa" stroke-width="2"/>
+        <line x1="40" y1="67.5" x2="218" y2="67.5" stroke="#60a5fa" stroke-width="2"/>
+        <text x="18" y="49" fill="#93c5fd" font-size="13" font-family="monospace">A</text>
+        <text x="18" y="71" fill="#93c5fd" font-size="13" font-family="monospace">B</text>
+        <use href="#g-and" width="50" height="40" transform="translate(210,30) scale(1.5)"/>
+        <line x1="267" y1="60" x2="380" y2="60" stroke="#60a5fa" stroke-width="2"/>
+        <line x1="380" y1="60" x2="380" y2="92.5" stroke="#60a5fa" stroke-width="2"/>
+        <line x1="380" y1="92.5" x2="438" y2="92.5" stroke="#60a5fa" stroke-width="2"/>
+        <text x="384" y="56" fill="#8ba3c2" font-size="11" font-family="monospace">X</text>
+        <line x1="40" y1="170" x2="218" y2="170" stroke="#60a5fa" stroke-width="2"/>
+        <text x="18" y="167" fill="#93c5fd" font-size="13" font-family="monospace">C</text>
+        <use href="#g-not" width="50" height="40" transform="translate(210,140) scale(1.5)"/>
+        <line x1="267" y1="170" x2="395" y2="170" stroke="#60a5fa" stroke-width="2"/>
+        <line x1="395" y1="170" x2="395" y2="107.5" stroke="#60a5fa" stroke-width="2"/>
+        <line x1="395" y1="107.5" x2="438" y2="107.5" stroke="#60a5fa" stroke-width="2"/>
+        <text x="399" y="166" fill="#8ba3c2" font-size="11" font-family="monospace">Y</text>
+        <use href="#g-or" width="50" height="40" transform="translate(430,70) scale(1.5)"/>
+        <line x1="480" y1="100" x2="560" y2="100" stroke="#60a5fa" stroke-width="2"/>
+        <text x="580" y="105" fill="#93c5fd" font-size="15" font-weight="bold" font-family="monospace">Q</text>
+      </svg>
+      <div class="diagram-caption">Brackets first: A AND B (gate 1) → NOT C (gate 2) → OR the results (gate 3)</div>
+    </div>
+    <div class="callout info"><strong>Check the number of gates:</strong> two AND/OR/NOT operations inside brackets, one NOT, one final OR = exactly the complexity of the expression. Do not simplify.</div>
+    <div class="slide-footer"><span class="section-label">10.2 · Building Logic Circuits</span><span class="slide-number">14 / 23</span></div>
+  </div>
+
+  <!-- ============ SLIDE 15 – TRUTH TABLE TO CIRCUIT ============ -->
+  <div class="slide" data-slide="15">
+    <span class="section-badge sec-102">10.2</span>
+    <h2>From a Truth Table to a Circuit</h2>
+    <p class="text-small" style="margin-bottom:6px;"><strong>Process:</strong> identify which rows produce an output of <strong>1</strong>, then determine what combination of gates reproduces that pattern.</p>
+    <div class="worked-example">
+      <span class="we-label">Worked example — Q is 1 when (A AND B) OR C</span>
+      <table class="tt" style="min-width:45%;">
+        <tr><th>A</th><th>B</th><th>C</th><th>Q</th></tr>
+        <tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td>0</td><td>0</td><td>1</td><td class="hl">1</td></tr>
+        <tr><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+        <tr><td>0</td><td>1</td><td>1</td><td class="hl">1</td></tr>
+        <tr><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td>1</td><td>0</td><td>1</td><td class="hl">1</td></tr>
+        <tr><td>1</td><td>1</td><td>0</td><td class="hl">1</td></tr>
+        <tr><td>1</td><td>1</td><td>1</td><td class="hl">1</td></tr>
+      </table>
+      <p class="text-small" style="margin-top:4px;">Looking at the 1-rows: Q = 1 when <span class="inline-code">C = 1</span>, <em>or</em> when <span class="inline-code">A AND B = 1</span>. So the circuit is an AND gate feeding an OR gate with C.</p>
+      <div class="diagram-box" style="margin-top:8px;">
+        <svg viewBox="0 0 720 240" role="img" aria-label="Circuit derived from truth table">
+          <line x1="40" y1="52.5" x2="218" y2="52.5" stroke="#60a5fa" stroke-width="2"/>
+          <line x1="40" y1="67.5" x2="218" y2="67.5" stroke="#60a5fa" stroke-width="2"/>
+          <text x="18" y="49" fill="#93c5fd" font-size="13" font-family="monospace">A</text>
+          <text x="18" y="71" fill="#93c5fd" font-size="13" font-family="monospace">B</text>
+          <use href="#g-and" width="50" height="40" transform="translate(210,30) scale(1.5)"/>
+          <line x1="267" y1="60" x2="380" y2="60" stroke="#60a5fa" stroke-width="2"/>
+          <line x1="380" y1="60" x2="380" y2="92.5" stroke="#60a5fa" stroke-width="2"/>
+          <line x1="380" y1="92.5" x2="438" y2="92.5" stroke="#60a5fa" stroke-width="2"/>
+          <text x="384" y="56" fill="#8ba3c2" font-size="11" font-family="monospace">X</text>
+          <line x1="40" y1="170" x2="395" y2="170" stroke="#60a5fa" stroke-width="2"/>
+          <line x1="395" y1="170" x2="395" y2="107.5" stroke="#60a5fa" stroke-width="2"/>
+          <line x1="395" y1="107.5" x2="438" y2="107.5" stroke="#60a5fa" stroke-width="2"/>
+          <text x="18" y="167" fill="#93c5fd" font-size="13" font-family="monospace">C</text>
+          <use href="#g-or" width="50" height="40" transform="translate(430,70) scale(1.5)"/>
+          <line x1="480" y1="100" x2="560" y2="100" stroke="#60a5fa" stroke-width="2"/>
+          <text x="580" y="105" fill="#93c5fd" font-size="15" font-weight="bold" font-family="monospace">Q</text>
+        </svg>
+        <div class="diagram-caption">Derived circuit: Q = (A AND B) OR C</div>
+      </div>
+    </div>
+    <div class="exam-tip"><span class="tip-icon">💡</span><span class="tip-text"><strong>Exam Tip:</strong> always <strong>label your inputs (A, B, C) and output (Q)</strong> clearly on your circuit diagram, and check the number of gates matches the complexity of the given expression or statement — <strong>do not simplify</strong>.</span></div>
+    <div class="slide-footer"><span class="section-label">10.2 · Building Logic Circuits</span><span class="slide-number">15 / 23</span></div>
+  </div>
+
+  <!-- ============ SLIDE 16 – QUIZ 10.2 ============ -->
+  <div class="slide" data-slide="16">
+    <span class="section-badge quiz">10.2 · Recap</span>
+    <h2>Quick Check — Building Logic Circuits</h2>
+    <div class="reveal-container">
+      <p><strong>Q4.</strong> Draw a logic circuit for the expression <span class="inline-code">Q = A OR (B AND NOT C)</span>.</p>
+      <button class="reveal-btn" data-target="q4">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q4"><strong>Answer:</strong> NOT C → AND with B → OR with A:
+        <svg viewBox="0 0 720 250" style="margin-top:6px;">
+          <line x1="40" y1="82.5" x2="548" y2="82.5" stroke="#60a5fa" stroke-width="2"/>
+          <text x="18" y="79" fill="#93c5fd" font-size="13" font-family="monospace">A</text>
+          <use href="#g-or" width="50" height="40" transform="translate(540,60) scale(1.5)"/>
+          <line x1="590" y1="90" x2="660" y2="90" stroke="#60a5fa" stroke-width="2"/>
+          <text x="678" y="95" fill="#93c5fd" font-size="15" font-weight="bold" font-family="monospace">Q</text>
+          <line x1="40" y1="132.5" x2="378" y2="132.5" stroke="#60a5fa" stroke-width="2"/>
+          <text x="18" y="129" fill="#93c5fd" font-size="13" font-family="monospace">B</text>
+          <use href="#g-and" width="50" height="40" transform="translate(370,110) scale(1.5)"/>
+          <line x1="427" y1="140" x2="500" y2="140" stroke="#60a5fa" stroke-width="2"/>
+          <line x1="500" y1="140" x2="500" y2="97.5" stroke="#60a5fa" stroke-width="2"/>
+          <line x1="500" y1="97.5" x2="548" y2="97.5" stroke="#60a5fa" stroke-width="2"/>
+          <line x1="40" y1="180" x2="208" y2="180" stroke="#60a5fa" stroke-width="2"/>
+          <text x="18" y="177" fill="#93c5fd" font-size="13" font-family="monospace">C</text>
+          <use href="#g-not" width="50" height="40" transform="translate(200,150) scale(1.5)"/>
+          <line x1="257" y1="180" x2="340" y2="180" stroke="#60a5fa" stroke-width="2"/>
+          <line x1="340" y1="180" x2="340" y2="147.5" stroke="#60a5fa" stroke-width="2"/>
+          <line x1="340" y1="147.5" x2="378" y2="147.5" stroke="#60a5fa" stroke-width="2"/>
+        </svg>
+      </div>
+    </div>
+    <div class="reveal-container">
+      <p><strong>Q5.</strong> Draw a logic circuit for the statement: "A light turns on if switch 1 (S1) is on AND switch 2 (S2) is off".</p>
+      <button class="reveal-btn" data-target="q5">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q5"><strong>Answer:</strong> NOT S2 → AND with S1:
+        <svg viewBox="0 0 720 230" style="margin-top:6px;">
+          <line x1="40" y1="102.5" x2="408" y2="102.5" stroke="#60a5fa" stroke-width="2"/>
+          <text x="18" y="99" fill="#93c5fd" font-size="13" font-family="monospace">S1</text>
+          <use href="#g-and" width="50" height="40" transform="translate(400,80) scale(1.5)"/>
+          <line x1="457" y1="110" x2="540" y2="110" stroke="#60a5fa" stroke-width="2"/>
+          <text x="560" y="115" fill="#93c5fd" font-size="15" font-weight="bold" font-family="monospace">Q</text>
+          <line x1="40" y1="170" x2="218" y2="170" stroke="#60a5fa" stroke-width="2"/>
+          <text x="18" y="167" fill="#93c5fd" font-size="13" font-family="monospace">S2</text>
+          <use href="#g-not" width="50" height="40" transform="translate(210,140) scale(1.5)"/>
+          <line x1="267" y1="170" x2="360" y2="170" stroke="#60a5fa" stroke-width="2"/>
+          <line x1="360" y1="170" x2="360" y2="117.5" stroke="#60a5fa" stroke-width="2"/>
+          <line x1="360" y1="117.5" x2="408" y2="117.5" stroke="#60a5fa" stroke-width="2"/>
+        </svg>
+      </div>
+    </div>
+    <div class="slide-footer"><span class="section-label">10.2 · Building Logic Circuits</span><span class="slide-number">16 / 23</span></div>
+  </div>
+
+  <!-- ============ SLIDE 17 – OBJECTIVES 10.3 ============ -->
+  <div class="slide" data-slide="17">
+    <span class="section-badge sec-103">10.3</span>
+    <h2>Learning Objectives — Completing Truth Tables</h2>
+    <p class="text-small" style="margin-bottom:12px;">By the end of this section you should be able to:</p>
+    <ul class="objectives-list">
+      <li><strong>Complete a truth table</strong> from a problem statement</li>
+      <li><strong>Complete a truth table</strong> from a logic expression</li>
+      <li><strong>Complete a truth table</strong> from a logic circuit</li>
+    </ul>
+    <div class="slide-footer"><span class="section-label">10.3 · Completing Truth Tables</span><span class="slide-number">17 / 23</span></div>
+  </div>
+
+  <!-- ============ SLIDE 18 – SETTING UP A TRUTH TABLE ============ -->
+  <div class="slide" data-slide="18">
+    <span class="section-badge sec-103">10.3</span>
+    <h2>Setting Up a Truth Table</h2>
+    <p>A <strong>truth table</strong> lists <strong>every possible combination</strong> of binary inputs (0 or 1) and shows the resulting output for each one.</p>
+    <div class="grid-2" style="margin-top:6px;">
+      <div class="card"><h4>🔢 How many rows?</h4><p class="text-small">A table with <strong>n inputs</strong> has <span class="inline-code">2ⁿ</span> rows. Two inputs → 4 rows; three inputs → 8 rows.</p></div>
+      <div class="card"><h4>📋 Order matters</h4><p class="text-small">List inputs in a <strong>consistent order</strong> (counting in binary), starting at <span class="inline-code">000…</span> and ending at <span class="inline-code">111…</span>.</p></div>
+    </div>
+    <table class="tt" style="margin-top:10px;">
+      <tr><th>A</th><th>B</th><th>C</th><th>Q (to complete)</th></tr>
+      <tr><td>0</td><td>0</td><td>0</td><td></td></tr>
+      <tr><td>0</td><td>0</td><td>1</td><td></td></tr>
+      <tr><td>0</td><td>1</td><td>0</td><td></td></tr>
+      <tr><td>0</td><td>1</td><td>1</td><td></td></tr>
+      <tr><td>1</td><td>0</td><td>0</td><td></td></tr>
+      <tr><td>1</td><td>0</td><td>1</td><td></td></tr>
+      <tr><td>1</td><td>1</td><td>0</td><td></td></tr>
+      <tr><td>1</td><td>1</td><td>1</td><td></td></tr>
+    </table>
+    <div class="callout info"><strong>Reference structure:</strong> three inputs, all 8 combinations in binary-count order — 000, 001, 010, 011, 100, 101, 110, 111.</div>
+    <div class="slide-footer"><span class="section-label">10.3 · Completing Truth Tables</span><span class="slide-number">18 / 23</span></div>
+  </div>
+
+  <!-- ============ SLIDE 19 – WORKED: FROM A CIRCUIT ============ -->
+  <div class="slide" data-slide="19">
+    <span class="section-badge sec-103">10.3</span>
+    <h2>Worked Example: Completing a Truth Table from a Logic Circuit</h2>
+    <p class="text-small" style="margin-bottom:6px;"><strong>Circuit:</strong> <span class="inline-code">X = A AND B</span>, then <span class="inline-code">Q = X OR C</span>. Complete the Q column.</p>
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 150" role="img" aria-label="Compact circuit for X equals A AND B, Q equals X OR C">
+        <line x1="40" y1="45" x2="158" y2="45" stroke="#60a5fa" stroke-width="2"/>
+        <line x1="40" y1="70" x2="158" y2="70" stroke="#60a5fa" stroke-width="2"/>
+        <text x="20" y="42" fill="#93c5fd" font-size="12" font-family="monospace">A</text>
+        <text x="20" y="74" fill="#93c5fd" font-size="12" font-family="monospace">B</text>
+        <use href="#g-and" width="50" height="40" transform="translate(150,25) scale(1.2)"/>
+        <line x1="195.6" y1="52" x2="290" y2="52" stroke="#60a5fa" stroke-width="2"/>
+        <line x1="290" y1="52" x2="290" y2="82" stroke="#60a5fa" stroke-width="2"/>
+        <line x1="290" y1="82" x2="338" y2="82" stroke="#60a5fa" stroke-width="2"/>
+        <text x="240" y="46" fill="#8ba3c2" font-size="11" font-family="monospace">X</text>
+        <line x1="40" y1="120" x2="335" y2="120" stroke="#60a5fa" stroke-width="2"/>
+        <line x1="335" y1="120" x2="335" y2="95" stroke="#60a5fa" stroke-width="2"/>
+        <line x1="335" y1="95" x2="338" y2="95" stroke="#60a5fa" stroke-width="2"/>
+        <text x="20" y="124" fill="#93c5fd" font-size="12" font-family="monospace">C</text>
+        <use href="#g-or" width="50" height="40" transform="translate(330,60) scale(1.2)"/>
+        <line x1="369.6" y1="84" x2="430" y2="84" stroke="#60a5fa" stroke-width="2"/>
+        <text x="450" y="89" fill="#93c5fd" font-size="14" font-weight="bold" font-family="monospace">Q</text>
+      </svg>
+      <div class="diagram-caption">Work left to right: fill X first, then use X to fill Q</div>
+    </div>
+    <table class="tt">
+      <tr><th>A</th><th>B</th><th>C</th><th>X = A AND B</th><th>Q = X OR C</th></tr>
+      <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+      <tr><td>0</td><td>0</td><td>1</td><td>0</td><td class="hl">1</td></tr>
+      <tr><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+      <tr><td>0</td><td>1</td><td>1</td><td>0</td><td class="hl">1</td></tr>
+      <tr><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+      <tr><td>1</td><td>0</td><td>1</td><td>0</td><td class="hl">1</td></tr>
+      <tr><td>1</td><td>1</td><td>0</td><td class="hl">1</td><td class="hl">1</td></tr>
+      <tr><td>1</td><td>1</td><td>1</td><td class="hl">1</td><td class="hl">1</td></tr>
+    </table>
+    <div class="callout info"><strong>Technique:</strong> add an <strong>intermediate column</strong> (X) for each connection inside the circuit — it makes the final column easy to fill.</div>
+    <div class="slide-footer"><span class="section-label">10.3 · Completing Truth Tables</span><span class="slide-number">19 / 23</span></div>
+  </div>
+
+  <!-- ============ SLIDE 20 – WORKED: FROM AN EXPRESSION ============ -->
+  <div class="slide" data-slide="20">
+    <span class="section-badge sec-103">10.3</span>
+    <h2>Worked Example: Completing a Truth Table from a Logic Expression</h2>
+    <p class="text-small" style="margin-bottom:6px;"><strong>Expression:</strong> <span class="inline-code">Q = (A AND B) OR (NOT C)</span>. Complete the Q column.</p>
+    <div class="expr">Q = (A AND B) OR (NOT C)</div>
+    <table class="tt">
+      <tr><th>A</th><th>B</th><th>C</th><th>NOT C</th><th>A AND B</th><th>Q</th></tr>
+      <tr><td>0</td><td>0</td><td>0</td><td class="hl">1</td><td>0</td><td class="hl">1</td></tr>
+      <tr><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+      <tr><td>0</td><td>1</td><td>0</td><td class="hl">1</td><td>0</td><td class="hl">1</td></tr>
+      <tr><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+      <tr><td>1</td><td>0</td><td>0</td><td class="hl">1</td><td>0</td><td class="hl">1</td></tr>
+      <tr><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+      <tr><td>1</td><td>1</td><td>0</td><td class="hl">1</td><td class="hl">1</td><td class="hl">1</td></tr>
+      <tr><td>1</td><td>1</td><td>1</td><td>0</td><td class="hl">1</td><td class="hl">1</td></tr>
+    </table>
+    <div class="callout info"><strong>Technique:</strong> tackle the expression in order of precedence — fill <span class="inline-code">NOT C</span> first, then <span class="inline-code">A AND B</span>, then combine them with OR.</div>
+    <div class="slide-footer"><span class="section-label">10.3 · Completing Truth Tables</span><span class="slide-number">20 / 23</span></div>
+  </div>
+
+  <!-- ============ SLIDE 21 – WORKED: FROM A STATEMENT ============ -->
+  <div class="slide" data-slide="21">
+    <span class="section-badge sec-103">10.3</span>
+    <h2>Worked Example: Completing a Truth Table from a Problem Statement</h2>
+    <p class="text-small" style="margin-bottom:6px;"><strong>Statement:</strong> "A light turns on (Q) when the motion sensor detects movement (M) AND the room is dark (D)." The room is dark when the light sensor gives NOT Light (L).</p>
+    <div class="expr">Q = M AND (NOT L)</div>
+    <table class="tt">
+      <tr><th>M</th><th>L</th><th>NOT L</th><th>Q = M AND (NOT L)</th></tr>
+      <tr><td>0</td><td>0</td><td class="hl">1</td><td>0</td></tr>
+      <tr><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+      <tr><td>1</td><td>0</td><td class="hl">1</td><td class="hl">1</td></tr>
+      <tr><td>1</td><td>1</td><td>0</td><td>0</td></tr>
+    </table>
+    <div class="worked-example">
+      <span class="we-label">Reading the rows</span>
+      <ul class="text-small" style="padding-left:16px; margin-top:4px;">
+        <li>No movement → light stays <strong>off</strong> (rows 1–2), whatever the lighting.</li>
+        <li>Movement <strong>and</strong> dark → light turns <strong>on</strong> (row 3).</li>
+        <li>Movement but the room is bright → light stays <strong>off</strong> (row 4).</li>
+      </ul>
+    </div>
+    <div class="callout info"><strong>Technique:</strong> turn the statement into an expression first (<span class="inline-code">M AND NOT L</span>), then build the table exactly as for an expression.</div>
+    <div class="slide-footer"><span class="section-label">10.3 · Completing Truth Tables</span><span class="slide-number">21 / 23</span></div>
+  </div>
+
+  <!-- ============ SLIDE 22 – QUIZ 10.3 ============ -->
+  <div class="slide" data-slide="22">
+    <span class="section-badge quiz">10.3 · Recap</span>
+    <h2>Quick Check — Completing Truth Tables</h2>
+    <div class="reveal-container">
+      <p><strong>Q6.</strong> Complete the truth table for <span class="inline-code">Q = A AND B</span>.</p>
+      <button class="reveal-btn" data-target="q6">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q6"><strong>Answer:</strong> <table class="tt" style="min-width:50%; margin-top:4px;"><tr><th>A</th><th>B</th><th>Q</th></tr><tr><td>0</td><td>0</td><td class="hl">0</td></tr><tr><td>0</td><td>1</td><td class="hl">0</td></tr><tr><td>1</td><td>0</td><td class="hl">0</td></tr><tr><td>1</td><td>1</td><td class="hl">1</td></tr></table></div>
+    </div>
+    <div class="reveal-container">
+      <p><strong>Q7.</strong> Complete the truth table for <span class="inline-code">Q = NOT (A OR B)</span> (a NOR gate).</p>
+      <button class="reveal-btn" data-target="q7">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q7"><strong>Answer:</strong> <table class="tt" style="min-width:50%; margin-top:4px;"><tr><th>A</th><th>B</th><th>Q</th></tr><tr><td>0</td><td>0</td><td class="hl">1</td></tr><tr><td>0</td><td>1</td><td class="hl">0</td></tr><tr><td>1</td><td>0</td><td class="hl">0</td></tr><tr><td>1</td><td>1</td><td class="hl">0</td></tr></table></div>
+    </div>
+    <div class="reveal-container">
+      <p><strong>Q8.</strong> A three-input circuit has an output of 1 for the input combination <span class="inline-code">A=1, B=1, C=1</span>. State the output when the expression is <span class="inline-code">Q = A AND B AND C</span>.</p>
+      <button class="reveal-btn" data-target="q8">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q8"><strong>Answer:</strong> <span class="inline-code">1</span> — AND requires every input to be 1, and <span class="inline-code">1 AND 1 AND 1 = 1</span>.</div>
+    </div>
+    <div class="slide-footer"><span class="section-label">10.3 · Completing Truth Tables</span><span class="slide-number">22 / 23</span></div>
+  </div>
+
+  <!-- ============ SLIDE 23 – SUMMARY ============ -->
+  <div class="slide" data-slide="23">
+    <span class="section-badge">Topic 10</span>
+    <h2>Topic 10 Summary — Boolean Logic</h2>
+    <div class="diagram-box">
+      <svg viewBox="0 0 760 300" role="img" aria-label="Topic 10 mind-map summary">
+        <rect x="255" y="14" width="250" height="44" rx="10" fill="#1d4ed8" stroke="#60a5fa" stroke-width="1.8"/>
+        <text x="380" y="41" fill="#f0f6ff" font-size="15" font-weight="bold" text-anchor="middle" font-family="monospace">TOPIC 10</text>
+        <rect x="30" y="100" width="220" height="76" rx="9" fill="#0a1120" stroke="#60a5fa" stroke-width="1.5"/>
+        <text x="140" y="122" fill="#60a5fa" font-size="12" font-weight="bold" text-anchor="middle" font-family="monospace">10.1 GATES</text>
+        <text x="140" y="139" fill="#8ba3c2" font-size="10" text-anchor="middle" font-family="monospace">NOT · AND · OR</text>
+        <text x="140" y="153" fill="#8ba3c2" font-size="10" text-anchor="middle" font-family="monospace">NAND · NOR · XOR</text>
+        <text x="140" y="167" fill="#8ba3c2" font-size="10" text-anchor="middle" font-family="monospace">BS symbols · 0/1 tables</text>
+        <rect x="270" y="100" width="220" height="76" rx="9" fill="#0a1120" stroke="#60a5fa" stroke-width="1.5"/>
+        <text x="380" y="122" fill="#60a5fa" font-size="12" font-weight="bold" text-anchor="middle" font-family="monospace">10.2 CIRCUITS</text>
+        <text x="380" y="139" fill="#8ba3c2" font-size="10" text-anchor="middle" font-family="monospace">from statement</text>
+        <text x="380" y="153" fill="#8ba3c2" font-size="10" text-anchor="middle" font-family="monospace">from expression</text>
+        <text x="380" y="167" fill="#8ba3c2" font-size="10" text-anchor="middle" font-family="monospace">from truth table</text>
+        <rect x="510" y="100" width="220" height="76" rx="9" fill="#0a1120" stroke="#60a5fa" stroke-width="1.5"/>
+        <text x="620" y="122" fill="#60a5fa" font-size="12" font-weight="bold" text-anchor="middle" font-family="monospace">10.3 TRUTH TABLES</text>
+        <text x="620" y="139" fill="#8ba3c2" font-size="10" text-anchor="middle" font-family="monospace">2ⁿ rows</text>
+        <text x="620" y="153" fill="#8ba3c2" font-size="10" text-anchor="middle" font-family="monospace">intermediate columns</text>
+        <text x="620" y="167" fill="#8ba3c2" font-size="10" text-anchor="middle" font-family="monospace">binary-count order</text>
+        <line x1="380" y1="58" x2="140" y2="96" stroke="#60a5fa" stroke-width="1.5"/>
+        <line x1="380" y1="58" x2="380" y2="96" stroke="#60a5fa" stroke-width="1.5"/>
+        <line x1="380" y1="58" x2="620" y2="96" stroke="#60a5fa" stroke-width="1.5"/>
+        <rect x="180" y="215" width="400" height="44" rx="9" fill="#0a101d" stroke="#60a5fa" stroke-width="1.5"/>
+        <text x="380" y="233" fill="#60a5fa" font-size="11" font-weight="bold" text-anchor="middle" font-family="monospace">REMEMBER</text>
+        <text x="380" y="250" fill="#8ba3c2" font-size="10" text-anchor="middle" font-family="monospace">0/1 values · standard BS symbols · no simplification · ≤ 3 inputs</text>
+      </svg>
+      <div class="diagram-caption">Gate symbols → circuits → truth tables — one skill flows into the next</div>
+    </div>
+    <div class="callout info" style="margin-top:8px;"><strong>Exam-ready:</strong> sketch the six symbols from memory, build circuits without simplifying, and fill truth tables using intermediate columns in binary-count order.</div>
+    <div class="slide-footer"><span class="section-label">Topic 10 · Summary</span><span class="slide-number">23 / 23</span></div>
+  </div>
+
+</div>
+
+<!-- ===== NAV BAR ===== -->
+<div class="nav-bar">
+  <button id="prevBtn" aria-label="Previous slide" onclick="changeSlide(-1)">← Prev</button>
+  <div class="progress-dots" id="progressDots"></div>
+  <span class="slide-counter" id="slideCounter">1 / 23</span>
+  <button id="nextBtn" aria-label="Next slide" onclick="changeSlide(1)">Next →</button>
+</div>
+<div class="kbd-hint">← → arrows · Home / End to jump</div>
+
+<script>
+  (function() {
+    const TOTAL = 23;
+    let current = 0;
+    function renderDots() {
+      const container = document.getElementById('progressDots');
+      container.innerHTML = '';
+      for (let i = 0; i < TOTAL; i++) {
+        const dot = document.createElement('button');
+        dot.className = 'dot' + (i === current ? ' active' : '');
+        dot.setAttribute('aria-label', 'Go to slide ' + (i+1));
+        dot.onclick = function() { goToSlide(i); };
+        container.appendChild(dot);
+      }
+    }
+    function goToSlide(idx) {
+      document.querySelectorAll('.slide').forEach((s, i) => s.classList.toggle('active', i === idx));
+      current = idx;
+      updateUI();
+      const active = document.querySelector('.slide.active');
+      if (active) active.scrollTop = 0;
+    }
+    function changeSlide(delta) {
+      const next = current + delta;
+      if (next < 0 || next >= TOTAL) return;
+      goToSlide(next);
+    }
+    function updateUI() {
+      document.getElementById('prevBtn').disabled = (current === 0);
+      document.getElementById('nextBtn').disabled = (current === TOTAL - 1);
+      document.getElementById('slideCounter').textContent = (current + 1) + ' / ' + TOTAL;
+      document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
+    }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown') { changeSlide(1); e.preventDefault(); }
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') { changeSlide(-1); e.preventDefault(); }
+      else if (e.key === 'Home') { goToSlide(0); e.preventDefault(); }
+      else if (e.key === 'End') { goToSlide(TOTAL - 1); e.preventDefault(); }
+    });
+    renderDots();
+    updateUI();
+    window.changeSlide = changeSlide;
+    window.goToSlide = goToSlide;
+    document.querySelectorAll('.reveal-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const el = document.getElementById(this.getAttribute('data-target'));
+        if (el) {
+          el.classList.toggle('visible');
+          this.textContent = el.classList.contains('visible') ? '🙈 Hide Answer' : '📌 Reveal Answer';
+        }
+      });
+    });
+  })();
+</script>
+</body>
+</html>

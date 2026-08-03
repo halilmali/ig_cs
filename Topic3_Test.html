@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topic 3 Test — IGCSE 0478 Computer Science</title>
+<link rel="stylesheet" href="css/test-common.css">
+</head>
+<body>
+<div class="bg-grid"></div>
+<header class="header">
+  <a class="back" href="index.html">← Back to all topics</a>
+  <h1><span class="num">Topic 3</span> — Hardware</h1>
+  <p>Exam-style practice test • instant feedback • explanations for every answer</p>
+  <span class="chapter-tag">🔧 Von Neumann architecture &bull; FDE cycle &bull; Registers &amp; buses &bull; CPU performance &bull; Input / output &bull; Sensors &amp; actuators &bull; RAM vs ROM &bull; Storage &bull; Network hardware</span>
+</header>
+<div id="progressBarContainer"><div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div></div>
+<div class="main">
+  <div id="setupScreen">
+    <div class="setup-card">
+      <h2>⚙️ Test Settings</h2>
+      <div class="quiz-options">
+        <label>Questions: <select id="numQuestions"><option value="5">5</option><option value="10" selected>10</option><option value="14">14</option><option value="0">All</option></select></label>
+        <label>Type: <select id="questionType"><option value="all" selected>Mixed</option><option value="mcq">Multiple Choice</option><option value="truefalse">True / False</option></select></label>
+      </div>
+    </div>
+    <div class="center"><button class="btn-primary" onclick="startTest()">🚀 Start Test</button></div>
+  </div>
+  <div id="quizScreen" style="display:none;">
+    <div class="quiz-header">
+      <span class="quiz-progress">Question <strong id="currentQ">1</strong> of <strong id="totalQ">10</strong></span>
+      <span class="quiz-score">✅ <span id="scoreDisplay">0</span>/<span id="totalCorrect">0</span></span>
+    </div>
+    <div class="question-card">
+      <div class="question-number" id="qNum">Q1</div>
+      <div class="question-text" id="qText">Loading question...</div>
+      <div class="options-list" id="optionsList"></div>
+      <div class="feedback-area" id="feedbackArea"></div>
+      <div class="question-actions"><button class="btn-secondary" id="nextBtn" style="display:none;" onclick="nextQuestion()">Next →</button></div>
+    </div>
+  </div>
+  <div id="resultsScreen" style="display:none;">
+    <div class="results-card">
+      <div class="results-score" id="finalScore">0%</div>
+      <div class="results-label">Final Score</div>
+      <div class="results-details">
+        <div class="results-stat"><span class="num" id="rCorrect">0</span><div class="desc">Correct</div></div>
+        <div class="results-stat"><span class="num" id="rIncorrect">0</span><div class="desc">Incorrect</div></div>
+        <div class="results-stat"><span class="num" id="rTotal">0</span><div class="desc">Total</div></div>
+      </div>
+      <div class="results-msg" id="resultsMsg">Great job!</div>
+      <div class="review-list" id="reviewList"></div>
+      <div class="results-actions">
+        <button class="btn-primary" onclick="resetTest()">🔄 Try Again</button>
+        <button class="btn-secondary" onclick="showSetup()">⚙️ New Settings</button>
+        <button class="btn-secondary" onclick="location.href='index.html'">🌐 All Topics</button>
+      </div>
+    </div>
+  </div>
+</div>
+<footer class="footer">IGCSE 0478 Computer Science • 2026–2028 Syllabus • Topic 3 Practice Test</footer>
+<script>
+  var QUESTION_BANK = [{"q":"Which register holds the address of the next instruction to be fetched?","options":["MAR","PC","MDR","CIR"],"correct":1,"explain":"The Program Counter (PC) holds the address of the next instruction to be fetched."},{"q":"Which register holds the address of the memory location being read from or written to?","options":["PC","ACC","MAR","CIR"],"correct":2,"explain":"The Memory Address Register (MAR) holds the memory address currently being accessed."},{"q":"Which register temporarily holds data just read from memory, or about to be written to memory?","options":["MDR","PC","ACC","CIR"],"correct":0,"explain":"The Memory Data Register (MDR) carries data between the CPU and memory."},{"q":"The Accumulator (ACC) is used to:","options":["Hold the address of the next instruction","Temporarily store the results of ALU calculations","Decode instructions","Count FDE cycles"],"correct":1,"explain":"The ACC temporarily stores the results of arithmetic and logic operations from the ALU."},{"q":"Which bus carries memory addresses and is the ONLY unidirectional bus?","options":["Data bus","Address bus","Control bus","System bus"],"correct":1,"explain":"The address bus carries addresses from CPU to memory — it is unidirectional."},{"q":"During the Fetch stage of the FDE cycle, the Program Counter is:","options":["Cleared","Incremented by 1","Copied to the ALU","Left unchanged"],"correct":1,"explain":"After the instruction is fetched, the PC is incremented so it points to the next instruction."},{"q":"Which of the following would improve CPU performance?","options":["A lower clock speed","A larger cache","Fewer cores","Slower RAM"],"correct":1,"explain":"A larger cache stores more frequently used data close to the CPU, reducing slow trips to RAM."},{"q":"What is the difference between RAM and ROM?","options":["RAM is volatile, ROM is non-volatile","RAM is read-only, ROM is read-write","RAM is slower than ROM","RAM stores BIOS, ROM stores programs"],"correct":0,"explain":"RAM loses data on power-off and is read/write; ROM is non-volatile and read-only (stores the boot-up BIOS)."},{"q":"Which type of secondary storage has no moving parts?","options":["Hard disk drive (HDD)","Magnetic tape","Solid state drive (SSD)","Optical disc (DVD)"],"correct":2,"explain":"SSDs use flash memory with no moving parts — fast, quiet and shock-resistant."},{"q":"What is virtual memory?","options":["Faster RAM","A portion of secondary storage used as an extension of RAM","Cloud-based storage","Memory inside the GPU"],"correct":1,"explain":"When RAM is full, the OS uses a section of secondary storage as virtual memory to avoid crashing."},{"q":"Which type of touch screen responds to pressure, so it works with a gloved hand or stylus?","options":["Capacitive","Resistive","Infra-red","Optical"],"correct":1,"explain":"Resistive screens sense pressure from two layers touching. Capacitive needs skin contact."},{"q":"Which sensor would detect an obstacle behind a reversing car?","options":["Temperature sensor","Proximity sensor","Light sensor","Pressure sensor"],"correct":1,"explain":"A proximity sensor detects the presence or distance of nearby objects without contact."},{"q":"An IPv4 address is:","options":["32-bit, written as 4 denary numbers separated by dots","128-bit, written as 8 groups of hex","48-bit, written as 12 hex digits","16-bit, written as 2 numbers"],"correct":0,"explain":"IPv4 is 32-bit dotted decimal (e.g. 192.168.1.1). IPv6 is 128-bit colon-separated hex."},{"q":"A MAC address is best described as:","options":["A logical address allocated by the network","A unique physical address burned into the NIC at manufacture","An address that changes every session","The IP address of the router"],"correct":1,"explain":"MAC addresses are unique physical addresses burned into the NIC — they are permanent and 48-bit."},{"tf":true,"q":"The data bus is unidirectional.","correct":false,"explain":"The data bus is bidirectional — it carries data and instructions between CPU and memory both ways. Only the address bus is unidirectional."},{"tf":true,"q":"An embedded system is a general-purpose computer that can run any software.","correct":false,"explain":"An embedded system is dedicated to one specific function (e.g. a microwave or car ECU), not general purpose."},{"tf":true,"q":"IPv6 was introduced because IPv4 addresses were running out.","correct":true,"explain":"IPv6 (128-bit) provides vastly more addresses than the 4.3 billion available in IPv4 (32-bit)."}];
+  var state = { questions: [], currentIndex: 0, score: 0, answers: [], answered: false };
+  function startTest() {
+    var pool = QUESTION_BANK.slice();
+    var typeFilter = document.getElementById('questionType').value;
+    if (typeFilter !== 'all') { pool = pool.filter(function(q) { return q.type === typeFilter; }); }
+    if (pool.length === 0) { alert('No questions of this type available.'); return; }
+    for (var i = pool.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = pool[i]; pool[i] = pool[j]; pool[j] = t; }
+    var numQ = parseInt(document.getElementById('numQuestions').value);
+    if (numQ === 0 || numQ > pool.length) numQ = pool.length;
+    state.questions = pool.slice(0, numQ);
+    state.currentIndex = 0; state.score = 0; state.answers = []; state.answered = false;
+    showScreen('quizScreen'); renderQuestion();
+  }
+  function renderQuestion() {
+    var q = state.questions[state.currentIndex];
+    var total = state.questions.length; var idx = state.currentIndex;
+    document.getElementById('currentQ').textContent = idx + 1;
+    document.getElementById('totalQ').textContent = total;
+    document.getElementById('scoreDisplay').textContent = state.score;
+    document.getElementById('totalCorrect').textContent = total;
+    document.getElementById('progressFill').style.width = (idx / total * 100) + '%';
+    document.getElementById('qText').textContent = q.q;
+    document.getElementById('qNum').textContent = 'Q' + (idx + 1) + (q.tf ? ' (True / False)' : '');
+    var container = document.getElementById('optionsList'); container.innerHTML = '';
+    var options = q.tf ? ['True', 'False'] : q.options;
+    options.forEach(function(text, i) {
+      var btn = document.createElement('button');
+      btn.className = 'option-btn';
+      btn.setAttribute('data-index', i);
+      var letter = document.createElement('span');
+      letter.className = 'option-letter';
+      letter.textContent = q.tf ? (i === 0 ? 'T' : 'F') : ['A','B','C','D'][i];
+      btn.appendChild(letter);
+      btn.appendChild(document.createTextNode(text));
+      btn.addEventListener('click', function() { selectAnswer(i); });
+      container.appendChild(btn);
+    });
+    var fb = document.getElementById('feedbackArea');
+    fb.className = 'feedback-area'; fb.innerHTML = '';
+    document.getElementById('nextBtn').style.display = 'none';
+    state.answered = false;
+  }
+  function selectAnswer(index) {
+    if (state.answered) return;
+    state.answered = true;
+    var q = state.questions[state.currentIndex];
+    var correctIndex = q.tf ? (q.correct ? 0 : 1) : q.correct;
+    var isCorrect = (index === correctIndex);
+    var buttons = document.querySelectorAll('.option-btn');
+    buttons.forEach(function(btn, i) {
+      btn.classList.add('disabled');
+      if (i === correctIndex) btn.classList.add('correct');
+      if (i === index && !isCorrect) btn.classList.add('incorrect');
+      if (i === index) btn.classList.add('selected');
+    });
+    if (isCorrect) state.score++;
+    var fb = document.getElementById('feedbackArea');
+    fb.className = 'feedback-area ' + (isCorrect ? 'correct' : 'incorrect');
+    fb.innerHTML = '<span class="fb-label">' + (isCorrect ? '✅ Correct!' : '❌ Incorrect.') + '</span> ' + q.explain;
+    state.answers.push({ selected: index, correct: correctIndex, question: q, wasCorrect: isCorrect });
+    document.getElementById('scoreDisplay').textContent = state.score;
+    var nb = document.getElementById('nextBtn');
+    nb.style.display = 'inline-flex';
+    nb.textContent = (state.currentIndex === state.questions.length - 1) ? '📊 See Results' : 'Next →';
+  }
+  function nextQuestion() {
+    if (state.currentIndex >= state.questions.length - 1) { showResults(); return; }
+    state.currentIndex++; renderQuestion();
+  }
+  function showResults() {
+    showScreen('resultsScreen');
+    var total = state.questions.length; var correct = state.score; var pct = total > 0 ? Math.round(correct / total * 100) : 0;
+    document.getElementById('finalScore').textContent = pct + '%';
+    document.getElementById('rCorrect').textContent = correct;
+    document.getElementById('rIncorrect').textContent = total - correct;
+    document.getElementById('rTotal').textContent = total;
+    var msg = document.getElementById('resultsMsg');
+    msg.className = 'results-msg';
+    if (pct === 100) { msg.textContent = '🏆 Perfect score! You are a Computer Science master!'; msg.classList.add('perfect'); }
+    else if (pct >= 80) { msg.textContent = '🌟 Excellent! Strong understanding of this topic.'; msg.classList.add('great'); }
+    else if (pct >= 60) { msg.textContent = '👍 Good effort! Review the incorrect answers.'; msg.classList.add('good'); }
+    else { msg.textContent = '📚 Keep studying! Re-read the slides and try again.'; msg.classList.add('retry'); }
+    var rl = document.getElementById('reviewList');
+    rl.innerHTML = '<h3 style="font-size:0.95rem;color:#b8d4ff;margin-bottom:8px;">📋 Review Answers</h3>';
+    state.answers.forEach(function(a, i) {
+      var item = document.createElement('div');
+      item.className = 'review-item ' + (a.wasCorrect ? 'correct-review' : 'incorrect-review');
+      var q = a.question;
+      var letters = ['A','B','C','D'];
+      var yourAns = q.tf ? (a.selected === 0 ? 'True' : 'False') : letters[a.selected];
+      var corrAns = q.tf ? (a.correct === 0 ? 'True' : 'False') : letters[a.correct];
+      item.innerHTML = '<div class="review-q">' + (i+1) + '. ' + q.q + '</div>' +
+        '<div class="review-a">' + (a.wasCorrect ? '<span class="correct-answer">✅ Correct</span>' : '<span class="your-answer">❌ Your answer: ' + yourAns + '</span> — <span class="correct-answer">Correct: ' + corrAns + '</span>') + '</div>' +
+        '<div style="color:#7a9abd;font-size:0.78rem;margin-top:4px;">' + q.explain + '</div>';
+      rl.appendChild(item);
+    });
+  }
+  function resetTest() {
+    state.currentIndex = 0; state.score = 0; state.answers = []; state.answered = false;
+    var pool = state.questions;
+    for (var i = pool.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = pool[i]; pool[i] = pool[j]; pool[j] = t; }
+    showScreen('quizScreen'); renderQuestion();
+  }
+  function showSetup() { showScreen('setupScreen'); }
+  function showScreen(id) {
+    var screens = ['setupScreen', 'quizScreen', 'resultsScreen'];
+    screens.forEach(function(s) { document.getElementById(s).style.display = (s === id) ? 'block' : 'none'; });
+    document.getElementById('progressBarContainer').style.display = (id === 'quizScreen') ? 'block' : 'none';
+  }
+  showScreen('setupScreen');
+</script>
+</body>
+</html>

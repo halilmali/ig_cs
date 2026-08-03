@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topic 7: Algorithm Design and Problem-Solving — Cambridge IGCSE Computer Science</title>
+<link rel="stylesheet" href="css/topic-common.css">
+<style>
+/* ===== Topic-specific CSS ===== */
+
+
+  
+  .fc-strip {
+    position: fixed;
+    top: 0; right: 0; bottom: 0;
+    width: 190px;
+    font-family: 'JetBrains Mono', 'Cascadia Code', monospace;
+    font-size: 12px;
+    line-height: 1.9;
+    color: rgba(59, 130, 246, 0.13);
+    padding: 24px 16px;
+    white-space: pre;
+    pointer-events: none;
+    z-index: 0;
+    user-select: none;
+    text-align: right;
+  }
+
+
+  .bg-glow-2 {
+    position: fixed; bottom: -20%; right: -10%; width: 55%; height: 55%;
+    background: radial-gradient(circle, rgba(37, 99, 235, 0.11) 0%, transparent 70%);
+    z-index: 0; pointer-events: none;
+    animation: glowFloat 18s ease-in-out infinite alternate-reverse;
+  }
+
+
+  .code-block {
+    font-family: 'JetBrains Mono', 'Cascadia Code', Consolas, monospace;
+    background: #13102a; border: 1px solid #443b78; border-radius: 8px;
+    padding: 12px 16px; margin: 8px 0; font-size: 0.88rem; line-height: 1.6;
+    color: #c4b5fd; overflow-x: auto; white-space: pre-wrap;
+  }
+
+
+  .code-block .comment { color: #7dd3fc; }
+
+
+  .code-block .hl { color: #f0abfc; }
+
+
+  .code-block .op { color: #94a3b8; }
+
+
+  td.mono, th.mono { font-family: 'JetBrains Mono', Consolas, monospace; }
+
+
+  td.ok { color: #86efac; font-weight: 600; }
+
+
+  td.no { color: #fda4af; font-weight: 600; }
+
+
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+
+
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+
+  .section-badge.sec-72 { background: linear-gradient(135deg, #5b21b6, #7c3aed); border-color: #a78bfa; }
+
+
+  .section-badge.sec-73 { background: linear-gradient(135deg, #4c1d95, #6d28d9); border-color: #8b5cf6; }
+
+
+  .section-badge.sec-74 { background: linear-gradient(135deg, #3b1382, #5b21b6); border-color: #7c3aed; }
+
+
+  .section-badge.sec-75 { background: linear-gradient(135deg, #2e1065, #4c1d95); border-color: #6d28d9; }
+
+
+  .section-badge.quiz { background: linear-gradient(135deg, #1e3a5f, #2f5c8a); border-color: #3b82f6; color: #bfdbfe; }
+
+
+
+  
+  .step-list { list-style: none; padding: 0; counter-reset: step; }
+
+
+  .step-list li { counter-increment: step; padding: 5px 10px 5px 30px; position: relative; margin-bottom: 3px; }
+
+
+  .step-list li::before { content: counter(step) "."; position: absolute; left: 4px; color: #a78bfa; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+
+
+
+  
+  .flow-key { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-top: 8px; font-size: 0.8rem; color: #8d87b5; }
+
+
+  .flow-key span { display: inline-flex; align-items: center; gap: 6px; }
+
+
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+
+
+    .fc-strip { display: none; }
+</style>
+</head>
+<body>
+
+<div class="fc-strip">        ┌────────┐
+        │  START  │
+        └────┬────┘
+             │
+        ┌────▼────┐
+        │ PROCESS │
+        └────┬────┘
+             │
+        ┌────▼────┐
+        │DECISION │
+        └────┬────┘
+        ┌────┘ └────┐
+       ▼            ▼
+   ┌──────┐    ┌────────┐
+   │  A   │    │   B    │
+   └──────┘    └────────┘
+        │            │
+        └────┬───────┘
+             ▼
+        ┌────────┐
+        │  STOP  │
+        └────────┘
+             │
+        ┌────▼────┐
+        │  LOOP   │
+        │   ▲  │  │
+        │   └──┘  │
+        └────────┘
+        ◆─▶◆─▶◆─▶◆
+   x > y    n ← n + 1
+   total = total + n
+        ◇──────◇
+       /  sort  \
+      ◆──────────◆
+</div>
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+<div class="bg-glow-2"></div>
+
+<div class="presentation">
+
+  <!-- ============ SLIDE 1 – TITLE ============ -->
+  <div class="slide active" data-slide="1">
+    <div style="flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
+      <div class="section-badge" style="background:linear-gradient(135deg,#6d28d9,#8b5cf6);">Cambridge IGCSE · 0478 / 0984 / 0418</div>
+      <h1 style="font-size:3rem; margin-top:10px;">Topic 7: Algorithm Design<br>and Problem-Solving</h1>
+      <p style="color:#8d87b5; font-size:1.05rem; margin-top:8px;">Designing, testing, and tracing solutions — from analysis to error-free algorithms</p>
+      <div class="grid-3" style="max-width:680px; margin-top:34px; width:100%;">
+        <div class="icon-tile"><span class="ico">🔀</span><span class="ico-label">Flowcharts</span><span class="ico-sub">logic &amp; symbols</span></div>
+        <div class="icon-tile"><span class="ico">🔍🧩</span><span class="ico-label">Decomposition</span><span class="ico-sub">break it down</span></div>
+        <div class="icon-tile"><span class="ico">✅</span><span class="ico-label">Validation</span><span class="ico-sub">check &amp; test</span></div>
+      </div>
+      <p style="color:#6b648f; font-size:0.85rem; margin-top:32px;">Program Development Life Cycle · Standard Methods of Solution · Validation &amp; Verification · Test Data · Trace Tables</p>
+      <p style="color:#6b648f; font-size:0.8rem;">Press <span class="inline-code">→</span> or click the navigation to begin</p>
+    </div>
+    <div class="slide-footer"><span class="section-label">Topic 7 · Overview</span><span class="slide-number">1 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 2 – OBJECTIVES 7.1 ============ -->
+  <div class="slide" data-slide="2">
+    <span class="section-badge">7.1</span>
+    <h2>Learning Objectives — The Program Development Life Cycle</h2>
+    <p class="text-small" style="margin-bottom:12px;">By the end of this section you should be able to:</p>
+    <ul class="objectives-list">
+      <li><strong>Understand the program development life cycle:</strong> analysis → design → coding → testing</li>
+      <li><strong>Understand sub-systems:</strong> a computer system is made of sub-systems, made of further sub-systems</li>
+      <li><strong>Decompose problems:</strong> understand how a problem can be broken down into its component parts</li>
+      <li><strong>Design solutions:</strong> use different methods to design and construct a solution to a problem</li>
+      <li><strong>Explain algorithms:</strong> explain the purpose of a given algorithm</li>
+    </ul>
+    <div class="callout info" style="margin-top:12px;"><strong>Big idea:</strong> Writing good programs is a structured process — not just typing code. Every stage of the life cycle matters for exam marks.</div>
+    <div class="slide-footer"><span class="section-label">7.1 · Program Development Life Cycle</span><span class="slide-number">2 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 3 – PDLC ============ -->
+  <div class="slide" data-slide="3">
+    <span class="section-badge">7.1</span>
+    <h2>The Program Development Life Cycle</h2>
+    <p>All programs are created through <strong>four stages in a fixed order</strong>. The cycle is usually <strong>iterative</strong> — testing often feeds back into earlier stages when errors are found.</p>
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 200" role="img" aria-label="Four stages of the program development life cycle with a feedback loop">
+        <defs>
+          <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#a78bfa"/>
+          </marker>
+        </defs>
+        <rect x="20" y="30" width="150" height="56" rx="10" fill="#241d4d" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="95" y="54" fill="#c4b5fd" font-size="14" font-weight="bold" text-anchor="middle" font-family="monospace">1. ANALYSIS</text>
+        <text x="95" y="72" fill="#8d87b5" font-size="11" text-anchor="middle" font-family="monospace">what is needed?</text>
+        <rect x="200" y="30" width="150" height="56" rx="10" fill="#241d4d" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="275" y="54" fill="#c4b5fd" font-size="14" font-weight="bold" text-anchor="middle" font-family="monospace">2. DESIGN</text>
+        <text x="275" y="72" fill="#8d87b5" font-size="11" text-anchor="middle" font-family="monospace">plan the solution</text>
+        <rect x="380" y="30" width="150" height="56" rx="10" fill="#241d4d" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="455" y="54" fill="#c4b5fd" font-size="14" font-weight="bold" text-anchor="middle" font-family="monospace">3. CODING</text>
+        <text x="455" y="72" fill="#8d87b5" font-size="11" text-anchor="middle" font-family="monospace">write the program</text>
+        <rect x="560" y="30" width="140" height="56" rx="10" fill="#241d4d" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="630" y="54" fill="#c4b5fd" font-size="14" font-weight="bold" text-anchor="middle" font-family="monospace">4. TESTING</text>
+        <text x="630" y="72" fill="#8d87b5" font-size="11" text-anchor="middle" font-family="monospace">check it works</text>
+        <line x1="170" y1="58" x2="196" y2="58" stroke="#a78bfa" stroke-width="2" marker-end="url(#arr)"/>
+        <line x1="350" y1="58" x2="376" y2="58" stroke="#a78bfa" stroke-width="2" marker-end="url(#arr)"/>
+        <line x1="530" y1="58" x2="556" y2="58" stroke="#a78bfa" stroke-width="2" marker-end="url(#arr)"/>
+        <path d="M 630 86 L 630 140 L 95 140 L 95 90" fill="none" stroke="#f0abfc" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#arr)"/>
+        <text x="330" y="158" fill="#f0abfc" font-size="12" text-anchor="middle" font-family="monospace">feedback — errors found in testing are fixed by revisiting earlier stages</text>
+        <text x="655" y="126" fill="#f0abfc" font-size="11" font-family="monospace">if errors</text>
+      </svg>
+      <div class="diagram-caption">Analysis → Design → Coding → Testing — with testing feeding back into earlier stages (iterative cycle)</div>
+    </div>
+    <div class="callout info"><strong>Exam Tip:</strong> the four stages must be listed in this order. Mention that testing can cause a return to earlier stages (e.g., redesign or recode).</div>
+    <div class="slide-footer"><span class="section-label">7.1 · Program Development Life Cycle</span><span class="slide-number">3 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 4 – STAGE 1: ANALYSIS ============ -->
+  <div class="slide" data-slide="4">
+    <span class="section-badge">7.1</span>
+    <h2>Stage 1: Analysis</h2>
+    <p class="text-small" style="margin-bottom:10px;">The analyst works out <strong>what</strong> the program must do — before any code is written.</p>
+    <table>
+      <tr><th style="width:30%;">Task</th><th>Description</th></tr>
+      <tr><td><strong>Abstraction</strong></td><td>Removing unnecessary detail from a problem to focus only on what is essential.</td></tr>
+      <tr><td><strong>Decomposition of the problem</strong></td><td>Breaking the overall problem down into smaller, more manageable parts.</td></tr>
+      <tr><td><strong>Identification of the problem and requirements</strong></td><td>Clearly defining what the program needs to achieve — including its <strong>inputs, processes, outputs and storage</strong> needs.</td></tr>
+    </table>
+    <div class="exam-tip"><span class="tip-icon">💡</span><span class="tip-text"><strong>Exam Tip:</strong> if asked to describe the analysis stage, always mention identifying <strong>inputs, processes, outputs, and storage requirements</strong>.</span></div>
+    <div class="callout info" style="margin-top:8px;"><strong>Analogy:</strong> planning a school trip — decide where you're going, who's coming, what you need to take, and how you'll get there (the "what"), before booking anything (the "how").</div>
+    <div class="slide-footer"><span class="section-label">7.1 · Program Development Life Cycle</span><span class="slide-number">4 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 5 – STAGE 2: DESIGN ============ -->
+  <div class="slide" data-slide="5">
+    <span class="section-badge">7.1</span>
+    <h2>Stage 2: Design</h2>
+    <p class="text-small" style="margin-bottom:10px;">The designer plans <strong>how</strong> the solution will be built, using design tools before coding begins.</p>
+    <table>
+      <tr><th style="width:30%;">Task / Tool</th><th>Description</th></tr>
+      <tr><td><strong>Decomposition</strong></td><td>Further breaking the problem into sub-tasks, ready for solution design.</td></tr>
+      <tr><td><strong>Structure diagrams</strong></td><td>Show how a problem is split into modules / sub-modules in a hierarchical tree format.</td></tr>
+      <tr><td><strong>Flowcharts</strong></td><td>Show the logic and sequence of an algorithm using standard symbols.</td></tr>
+      <tr><td><strong>Pseudocode</strong></td><td>Shows the logic of an algorithm using structured, code-like statements in plain language.</td></tr>
+    </table>
+    <div class="callout info" style="margin-top:8px;"><strong>Remember:</strong> the design stage produces a <strong>plan</strong> — a structure diagram, flowchart, or pseudocode — that the programmer follows in Stage 3.</div>
+    <div class="slide-footer"><span class="section-label">7.1 · Program Development Life Cycle</span><span class="slide-number">5 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 6 – STAGE 3: CODING ============ -->
+  <div class="slide" data-slide="6">
+    <span class="section-badge">7.1</span>
+    <h2>Stage 3: Coding</h2>
+    <p>This stage involves <strong>writing the actual program code</strong>, based on the design produced in Stage 2.</p>
+    <div class="grid-2" style="margin-top:10px;">
+      <div class="card"><h4>✍️ Translating the design</h4><p class="text-small">The programmer converts the structure diagram / flowchart / pseudocode into a high-level language (e.g., Python, Java).</p></div>
+      <div class="card"><h4>🔄 Iterative testing</h4><p class="text-small">Code should be tested <strong>in small sections as it is written</strong> — not left until the entire program is complete. This finds errors early, when they are easier to fix.</p></div>
+    </div>
+    <div class="code-block" style="margin-top:12px;"># small sections are tested as they are written
+<span class="comment"># e.g. check one function works before writing the next</span>
+<span class="hl">def</span> add_scores(scores):        <span class="comment"># tested straight away</span>
+    total = <span class="op">0</span>
+    <span class="hl">for</span> s <span class="hl">in</span> scores:
+        total = total + s
+    <span class="hl">return</span> total</div>
+    <div class="callout warn"><strong>Exam Tip:</strong> "iterative testing" means testing while coding — say it, don't just describe testing at the end.</div>
+    <div class="slide-footer"><span class="section-label">7.1 · Program Development Life Cycle</span><span class="slide-number">6 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 7 – STAGE 4: TESTING ============ -->
+  <div class="slide" data-slide="7">
+    <span class="section-badge">7.1</span>
+    <h2>Stage 4: Testing</h2>
+    <p>Testing involves running the finished program with <strong>test data</strong> to check it behaves as expected and to <strong>identify and correct errors</strong> before the solution is complete.</p>
+    <div class="grid-2" style="margin-top:10px;">
+      <div class="card"><h4>✅ What is checked</h4><ul class="text-small" style="padding-left:16px;"><li>Correct outputs for valid (normal) data</li><li>Graceful rejection of invalid data</li><li>Edge cases — extreme &amp; boundary values</li><li>Programs never crash on unexpected input</li></ul></div>
+      <div class="card"><h4>🔍 How errors are handled</h4><ul class="text-small" style="padding-left:16px;"><li>Errors found are <strong>corrected</strong></li><li>The program is <strong>re-tested</strong></li><li>This may mean revisiting design or coding (the cycle loops)</li></ul></div>
+    </div>
+    <div class="callout info" style="margin-top:10px;"><strong>Note:</strong> detailed testing — the four types of test data (normal, abnormal, extreme, boundary) — is covered in Section 7.4.</div>
+    <div class="slide-footer"><span class="section-label">7.1 · Program Development Life Cycle</span><span class="slide-number">7 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 8 – INPUTS PROCESSES OUTPUTS STORAGE ============ -->
+  <div class="slide" data-slide="8">
+    <span class="section-badge">7.1</span>
+    <h2>Inputs, Processes, Outputs and Storage</h2>
+    <p class="text-small" style="margin-bottom:8px;">The four elements identified during analysis — illustrated with a program that calculates the <strong>average of exam scores</strong>:</p>
+    <table>
+      <tr><th style="width:18%;">Element</th><th>Definition</th><th>Example: average of exam scores</th></tr>
+      <tr><td><strong>Inputs</strong></td><td>Data entered into the system</td><td>A list of scores, e.g. <span class="inline-code">45, 78, 92</span></td></tr>
+      <tr><td><strong>Processes</strong></td><td>Actions performed on the data</td><td>Adding the scores together, then dividing by the count</td></tr>
+      <tr><td><strong>Outputs</strong></td><td>Results produced by the system</td><td>The average score displayed to the user</td></tr>
+      <tr><td><strong>Storage</strong></td><td>Where data is held during or after processing</td><td>Scores stored in an array / variable while calculating</td></tr>
+    </table>
+    <div class="diagram-box" style="margin-top:8px;">
+      <svg viewBox="0 0 720 90" role="img" aria-label="Inputs processes outputs storage flow">
+        <defs>
+          <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#a78bfa"/>
+          </marker>
+        </defs>
+        <rect x="20" y="20" width="140" height="50" rx="9" fill="#241d4d" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="90" y="41" fill="#c4b5fd" font-size="13" font-weight="bold" text-anchor="middle" font-family="monospace">INPUTS</text>
+        <text x="90" y="59" fill="#8d87b5" font-size="10" text-anchor="middle" font-family="monospace">scores</text>
+        <rect x="200" y="20" width="140" height="50" rx="9" fill="#241d4d" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="270" y="41" fill="#c4b5fd" font-size="13" font-weight="bold" text-anchor="middle" font-family="monospace">PROCESSES</text>
+        <text x="270" y="59" fill="#8d87b5" font-size="10" text-anchor="middle" font-family="monospace">total ÷ count</text>
+        <rect x="380" y="20" width="140" height="50" rx="9" fill="#241d4d" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="450" y="41" fill="#c4b5fd" font-size="13" font-weight="bold" text-anchor="middle" font-family="monospace">OUTPUTS</text>
+        <text x="450" y="59" fill="#8d87b5" font-size="10" text-anchor="middle" font-family="monospace">average shown</text>
+        <rect x="560" y="20" width="140" height="50" rx="9" fill="#241d4d" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="630" y="41" fill="#c4b5fd" font-size="13" font-weight="bold" text-anchor="middle" font-family="monospace">STORAGE</text>
+        <text x="630" y="59" fill="#8d87b5" font-size="10" text-anchor="middle" font-family="monospace">array / variable</text>
+        <line x1="160" y1="45" x2="196" y2="45" stroke="#a78bfa" stroke-width="2" marker-end="url(#arr2)"/>
+        <line x1="340" y1="45" x2="376" y2="45" stroke="#a78bfa" stroke-width="2" marker-end="url(#arr2)"/>
+        <line x1="520" y1="45" x2="556" y2="45" stroke="#a78bfa" stroke-width="2" marker-end="url(#arr2)"/>
+      </svg>
+      <div class="diagram-caption">Inputs → Processes → Outputs — with storage used throughout to hold data</div>
+    </div>
+    <div class="slide-footer"><span class="section-label">7.1 · Program Development Life Cycle</span><span class="slide-number">8 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 9 – SUB-SYSTEMS ============ -->
+  <div class="slide" data-slide="9">
+    <span class="section-badge">7.1</span>
+    <h2>Sub-Systems Within Sub-Systems</h2>
+    <p>Every computer system is made up of <strong>sub-systems</strong>, which are themselves made up of <strong>further sub-systems</strong>. Example: a school management system.</p>
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 230" role="img" aria-label="Hierarchy showing sub-systems within sub-systems">
+        <defs>
+          <marker id="arr3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#8d87b5"/>
+          </marker>
+        </defs>
+        <rect x="255" y="18" width="210" height="42" rx="9" fill="#6d28d9" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="360" y="36" fill="#ede9fe" font-size="13" font-weight="bold" text-anchor="middle" font-family="monospace">SCHOOL MANAGEMENT</text>
+        <text x="360" y="51" fill="#ddd6fe" font-size="10" text-anchor="middle" font-family="monospace">system</text>
+        <rect x="40" y="100" width="190" height="40" rx="8" fill="#241d4d" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="135" y="125" fill="#c4b5fd" font-size="12" font-weight="bold" text-anchor="middle" font-family="monospace">Student Records</text>
+        <rect x="265" y="100" width="190" height="40" rx="8" fill="#241d4d" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="360" y="125" fill="#c4b5fd" font-size="12" font-weight="bold" text-anchor="middle" font-family="monospace">Attendance</text>
+        <rect x="490" y="100" width="190" height="40" rx="8" fill="#241d4d" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="585" y="125" fill="#c4b5fd" font-size="12" font-weight="bold" text-anchor="middle" font-family="monospace">Timetabling</text>
+        <line x1="360" y1="60" x2="135" y2="96" stroke="#8d87b5" stroke-width="1.5" marker-end="url(#arr3)"/>
+        <line x1="360" y1="60" x2="360" y2="96" stroke="#8d87b5" stroke-width="1.5" marker-end="url(#arr3)"/>
+        <line x1="360" y1="60" x2="585" y2="96" stroke="#8d87b5" stroke-width="1.5" marker-end="url(#arr3)"/>
+        <rect x="25" y="170" width="90" height="34" rx="7" fill="#1e193e" stroke="#6d28d9" stroke-width="1.2"/>
+        <text x="70" y="191" fill="#ddd6fe" font-size="11" text-anchor="middle" font-family="monospace">Enrolment</text>
+        <rect x="125" y="170" width="90" height="34" rx="7" fill="#1e193e" stroke="#6d28d9" stroke-width="1.2"/>
+        <text x="170" y="191" fill="#ddd6fe" font-size="11" text-anchor="middle" font-family="monospace">Grades</text>
+        <rect x="250" y="170" width="90" height="34" rx="7" fill="#1e193e" stroke="#6d28d9" stroke-width="1.2"/>
+        <text x="295" y="191" fill="#ddd6fe" font-size="11" text-anchor="middle" font-family="monospace">Registration</text>
+        <rect x="350" y="170" width="90" height="34" rx="7" fill="#1e193e" stroke="#6d28d9" stroke-width="1.2"/>
+        <text x="395" y="191" fill="#ddd6fe" font-size="11" text-anchor="middle" font-family="monospace">Monitoring</text>
+        <rect x="475" y="170" width="90" height="34" rx="7" fill="#1e193e" stroke="#6d28d9" stroke-width="1.2"/>
+        <text x="520" y="191" fill="#ddd6fe" font-size="11" text-anchor="middle" font-family="monospace">Generation</text>
+        <rect x="575" y="170" width="90" height="34" rx="7" fill="#1e193e" stroke="#6d28d9" stroke-width="1.2"/>
+        <text x="620" y="191" fill="#ddd6fe" font-size="11" text-anchor="middle" font-family="monospace">Rooms</text>
+        <line x1="135" y1="140" x2="70" y2="166" stroke="#8d87b5" stroke-width="1.2" marker-end="url(#arr3)"/>
+        <line x1="135" y1="140" x2="170" y2="166" stroke="#8d87b5" stroke-width="1.2" marker-end="url(#arr3)"/>
+        <line x1="360" y1="140" x2="295" y2="166" stroke="#8d87b5" stroke-width="1.2" marker-end="url(#arr3)"/>
+        <line x1="360" y1="140" x2="395" y2="166" stroke="#8d87b5" stroke-width="1.2" marker-end="url(#arr3)"/>
+        <line x1="585" y1="140" x2="520" y2="166" stroke="#8d87b5" stroke-width="1.2" marker-end="url(#arr3)"/>
+        <line x1="585" y1="140" x2="620" y2="166" stroke="#8d87b5" stroke-width="1.2" marker-end="url(#arr3)"/>
+      </svg>
+      <div class="diagram-caption">Each sub-system can itself be broken down further — e.g. "Grades" into marking, reporting, and analysis modules</div>
+    </div>
+    <div class="slide-footer"><span class="section-label">7.1 · Program Development Life Cycle</span><span class="slide-number">9 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 10 – DECOMPOSING A PROBLEM ============ -->
+  <div class="slide" data-slide="10">
+    <span class="section-badge">7.1</span>
+    <h2>Decomposing a Problem</h2>
+    <p><strong>Decomposition</strong> is the process of breaking a large, complex problem down into <strong>smaller, simpler parts</strong> (sub-problems) that are easier to understand, design, and solve individually.</p>
+    <div class="grid-3" style="margin-top:10px;">
+      <div class="card"><h4>🎯 Smaller = clearer</h4><p class="text-small">Each sub-problem has a single, focused task — much easier to design and code.</p></div>
+      <div class="card"><h4>🧩 Teamwork</h4><p class="text-small">Different parts can be built separately and later combined into the whole solution.</p></div>
+      <div class="card"><h4>🛠️ Easier testing</h4><p class="text-small">Each sub-problem can be tested independently before integration.</p></div>
+    </div>
+    <div class="worked-example" style="margin-top:12px;">
+      <span class="we-label">Worked example</span>
+      <h4>Decomposing "plan a birthday party"</h4>
+      <div class="grid-2">
+        <ul class="text-small" style="padding-left:16px;">
+          <li><strong>Guests</strong> — create the list, send invitations, track replies</li>
+          <li><strong>Food</strong> — choose menu, order supplies, arrange cooking</li>
+        </ul>
+        <ul class="text-small" style="padding-left:16px;">
+          <li><strong>Venue</strong> — book the hall, arrange chairs and tables</li>
+          <li><strong>Entertainment</strong> — book music, plan games, arrange prizes</li>
+        </ul>
+      </div>
+      <p class="text-small" style="margin-top:6px;">Each of these can be broken down further — e.g. "track replies" needs recording who said yes, who said no, and who hasn't replied.</p>
+    </div>
+    <div class="slide-footer"><span class="section-label">7.1 · Program Development Life Cycle</span><span class="slide-number">10 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 11 – WORKED EXAMPLE DECOMPOSITION ============ -->
+  <div class="slide" data-slide="11">
+    <span class="section-badge">7.1</span>
+    <h2>Worked Example: Decomposition</h2>
+    <p class="text-small" style="margin-bottom:8px;"><strong>Problem:</strong> "A program to manage a library's book loans." Decompose it into component sub-tasks.</p>
+    <div class="worked-example">
+      <span class="we-label">Step-by-step decomposition</span>
+      <ol class="step-list" style="margin-top:6px;">
+        <li><strong>Add a new book</strong> — enter book details (title, author, ISBN) into the catalogue</li>
+        <li><strong>Register a member</strong> — capture member details and issue a library card number</li>
+        <li><strong>Issue a loan</strong> — record which member has borrowed which book and when</li>
+        <li><strong>Return a book</strong> — remove the loan record and update the book's availability</li>
+        <li><strong>Calculate overdue fines</strong> — compare return dates, compute fines for late returns</li>
+      </ol>
+    </div>
+    <div class="callout info"><strong>Why decompose?</strong> Each sub-task above is a manageable module that can be designed, coded and tested separately — then combined into the complete library system.</div>
+    <div class="slide-footer"><span class="section-label">7.1 · Program Development Life Cycle</span><span class="slide-number">11 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 12 – STRUCTURE DIAGRAMS ============ -->
+  <div class="slide" data-slide="12">
+    <span class="section-badge">7.1</span>
+    <h2>Designing a Solution: Structure Diagrams</h2>
+    <p>A <strong>structure diagram</strong> is a hierarchical tree diagram showing how a problem is split into <strong>modules and sub-modules</strong> — here using the library example:</p>
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 240" role="img" aria-label="Structure diagram for the library loan system">
+        <defs>
+          <marker id="arr4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#8d87b5"/>
+          </marker>
+        </defs>
+        <rect x="245" y="15" width="230" height="40" rx="9" fill="#6d28d9" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="360" y="40" fill="#ede9fe" font-size="13" font-weight="bold" text-anchor="middle" font-family="monospace">Library Loan System</text>
+        <rect x="40" y="90" width="170" height="38" rx="8" fill="#241d4d" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="125" y="113" fill="#c4b5fd" font-size="12" font-weight="bold" text-anchor="middle" font-family="monospace">Manage Books</text>
+        <rect x="275" y="90" width="170" height="38" rx="8" fill="#241d4d" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="360" y="113" fill="#c4b5fd" font-size="12" font-weight="bold" text-anchor="middle" font-family="monospace">Manage Members</text>
+        <rect x="510" y="90" width="170" height="38" rx="8" fill="#241d4d" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="595" y="113" fill="#c4b5fd" font-size="12" font-weight="bold" text-anchor="middle" font-family="monospace">Manage Loans</text>
+        <line x1="360" y1="55" x2="125" y2="86" stroke="#8d87b5" stroke-width="1.5" marker-end="url(#arr4)"/>
+        <line x1="360" y1="55" x2="360" y2="86" stroke="#8d87b5" stroke-width="1.5" marker-end="url(#arr4)"/>
+        <line x1="360" y1="55" x2="595" y2="86" stroke="#8d87b5" stroke-width="1.5" marker-end="url(#arr4)"/>
+        <rect x="25" y="165" width="95" height="34" rx="7" fill="#1e193e" stroke="#6d28d9" stroke-width="1.2"/>
+        <text x="72" y="186" fill="#ddd6fe" font-size="11" text-anchor="middle" font-family="monospace">Add book</text>
+        <rect x="130" y="165" width="95" height="34" rx="7" fill="#1e193e" stroke="#6d28d9" stroke-width="1.2"/>
+        <text x="177" y="186" fill="#ddd6fe" font-size="11" text-anchor="middle" font-family="monospace">Remove book</text>
+        <rect x="275" y="165" width="95" height="34" rx="7" fill="#1e193e" stroke="#6d28d9" stroke-width="1.2"/>
+        <text x="322" y="186" fill="#ddd6fe" font-size="11" text-anchor="middle" font-family="monospace">Register</text>
+        <rect x="380" y="165" width="95" height="34" rx="7" fill="#1e193e" stroke="#6d28d9" stroke-width="1.2"/>
+        <text x="427" y="186" fill="#ddd6fe" font-size="11" text-anchor="middle" font-family="monospace">Update</text>
+        <rect x="480" y="165" width="80" height="34" rx="7" fill="#1e193e" stroke="#6d28d9" stroke-width="1.2"/>
+        <text x="520" y="186" fill="#ddd6fe" font-size="11" text-anchor="middle" font-family="monospace">Issue loan</text>
+        <rect x="570" y="165" width="80" height="34" rx="7" fill="#1e193e" stroke="#6d28d9" stroke-width="1.2"/>
+        <text x="610" y="186" fill="#ddd6fe" font-size="11" text-anchor="middle" font-family="monospace">Return</text>
+        <rect x="640" y="165" width="70" height="34" rx="7" fill="#1e193e" stroke="#6d28d9" stroke-width="1.2"/>
+        <text x="675" y="180" fill="#ddd6fe" font-size="10" text-anchor="middle" font-family="monospace">Calc.</text>
+        <text x="675" y="193" fill="#ddd6fe" font-size="10" text-anchor="middle" font-family="monospace">fine</text>
+        <line x1="125" y1="128" x2="72" y2="161" stroke="#8d87b5" stroke-width="1.2" marker-end="url(#arr4)"/>
+        <line x1="125" y1="128" x2="177" y2="161" stroke="#8d87b5" stroke-width="1.2" marker-end="url(#arr4)"/>
+        <line x1="360" y1="128" x2="322" y2="161" stroke="#8d87b5" stroke-width="1.2" marker-end="url(#arr4)"/>
+        <line x1="360" y1="128" x2="427" y2="161" stroke="#8d87b5" stroke-width="1.2" marker-end="url(#arr4)"/>
+        <line x1="595" y1="128" x2="520" y2="161" stroke="#8d87b5" stroke-width="1.2" marker-end="url(#arr4)"/>
+        <line x1="595" y1="128" x2="610" y2="161" stroke="#8d87b5" stroke-width="1.2" marker-end="url(#arr4)"/>
+        <line x1="595" y1="128" x2="675" y2="161" stroke="#8d87b5" stroke-width="1.2" marker-end="url(#arr4)"/>
+      </svg>
+      <div class="diagram-caption">Top-down tree: the system is split into modules, each split into sub-modules</div>
+    </div>
+    <div class="slide-footer"><span class="section-label">7.1 · Program Development Life Cycle</span><span class="slide-number">12 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 13 – FLOWCHARTS AND PSEUDOCODE ============ -->
+  <div class="slide" data-slide="13">
+    <span class="section-badge">7.1</span>
+    <h2>Designing a Solution: Flowcharts and Pseudocode</h2>
+    <p>As well as structure diagrams, the design stage uses <strong>flowcharts</strong> and <strong>pseudocode</strong> to plan the <strong>logic</strong> of a solution before coding begins.</p>
+    <div class="grid-2" style="margin-top:10px;">
+      <div class="card"><h4>📐 Flowcharts</h4><p class="text-small">Standard symbols connected by arrows showing the sequence and decisions of an algorithm:</p>
+        <div class="flow-key">
+          <span>🟩 <span class="inline-code">START / STOP</span></span>
+          <span>⬜ <span class="inline-code">PROCESS</span></span>
+          <span>◆ <span class="inline-code">DECISION</span></span>
+          <span>▨ <span class="inline-code">INPUT / OUTPUT</span></span>
+        </div>
+        <p class="text-small" style="margin-top:6px;">Flowchart symbols are covered in detail in Section 4 (and 8) of the syllabus.</p>
+      </div>
+      <div class="card"><h4>📝 Pseudocode</h4><p class="text-small">Structured, code-like statements in plain English — describing logic without worrying about exact language syntax:</p>
+        <div class="code-block" style="margin-top:8px;"><span class="hl">IF</span> score &gt;= <span class="op">50</span> <span class="hl">THEN</span>
+    OUTPUT <span class="hl">"Pass"</span>
+<span class="hl">ELSE</span>
+    OUTPUT <span class="hl">"Fail"</span>
+<span class="hl">ENDIF</span></div>
+      </div>
+    </div>
+    <div class="callout info" style="margin-top:10px;"><strong>Remember:</strong> flowcharts, pseudocode and structure diagrams are all <strong>design tools</strong> — used to plan before writing real program code.</div>
+    <div class="slide-footer"><span class="section-label">7.1 · Program Development Life Cycle</span><span class="slide-number">13 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 14 – EXPLAINING PURPOSE ============ -->
+  <div class="slide" data-slide="14">
+    <span class="section-badge">7.1</span>
+    <h2>Explaining the Purpose of an Algorithm</h2>
+    <p class="text-small" style="margin-bottom:8px;">How to answer "explain the purpose of a given algorithm" exam questions:</p>
+    <table>
+      <tr><th style="width:26%;">Part of answer</th><th>What to do</th></tr>
+      <tr><td><strong>State the overall purpose</strong></td><td>What the algorithm is designed to achieve — e.g. "this algorithm calculates the average of a list of numbers".</td></tr>
+      <tr><td><strong>Describe the processes involved</strong></td><td>What the algorithm actually does, step by step — e.g. "it totals all the values in a loop, counts them, then divides the total by the count".</td></tr>
+    </table>
+    <div class="worked-example" style="margin-top:10px;">
+      <span class="we-label">Worked example</span>
+      <h4>Explain the purpose of this algorithm</h4>
+      <div class="code-block"><span class="hl">total</span> = <span class="op">0</span>
+<span class="hl">count</span> = <span class="op">0</span>
+<span class="hl">INPUT</span> n
+<span class="hl">WHILE</span> n &lt;&gt; <span class="op">-1</span> <span class="hl">DO</span>
+    <span class="hl">total</span> = total + n
+    <span class="hl">count</span> = count + <span class="op">1</span>
+    <span class="hl">INPUT</span> n
+<span class="hl">ENDWHILE</span>
+<span class="hl">OUTPUT</span> total / count</div>
+      <p class="text-small"><strong>Purpose:</strong> reads numbers until <span class="inline-code">-1</span> is entered (the <em>sentinel value</em>), totals them, counts how many were entered, then outputs the <strong>average</strong>.</p>
+    </div>
+    <div class="exam-tip"><span class="tip-icon">💡</span><span class="tip-text"><strong>Exam Tip:</strong> read the algorithm carefully <strong>line by line</strong> before answering — identify what each variable represents and how it changes as the algorithm runs.</span></div>
+    <div class="slide-footer"><span class="section-label">7.1 · Program Development Life Cycle</span><span class="slide-number">14 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 15 – QUIZ 7.1 ============ -->
+  <div class="slide" data-slide="15">
+    <span class="section-badge quiz">7.1 · Recap</span>
+    <h2>Quick Check — Program Development Life Cycle</h2>
+    <div class="reveal-container">
+      <p><strong>Q1.</strong> State the four stages of the program development life cycle, in order.</p>
+      <button class="reveal-btn" data-target="q1">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q1"><strong>Answer:</strong> Analysis → Design → Coding → Testing. (The cycle is often iterative — testing may feed back into earlier stages.)</div>
+    </div>
+    <div class="reveal-container">
+      <p><strong>Q2.</strong> Describe what is meant by decomposition.</p>
+      <button class="reveal-btn" data-target="q2">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q2"><strong>Answer:</strong> Breaking a large, complex problem down into smaller, simpler sub-problems (component parts) that are easier to understand, design, code, and test individually.</div>
+    </div>
+    <div class="reveal-container">
+      <p><strong>Q3.</strong> Give one example of a design tool used at the design stage.</p>
+      <button class="reveal-btn" data-target="q3">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q3"><strong>Answer:</strong> Any one of: structure diagram, flowchart, or pseudocode.</div>
+    </div>
+    <div class="slide-footer"><span class="section-label">7.1 · Program Development Life Cycle</span><span class="slide-number">15 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 16 – OBJECTIVES 7.2 ============ -->
+  <div class="slide" data-slide="16">
+    <span class="section-badge sec-72">7.2</span>
+    <h2>Learning Objectives — Standard Methods of Solution</h2>
+    <p class="text-small" style="margin-bottom:12px;">By the end of this section you should be able to:</p>
+    <ul class="objectives-list">
+      <li><strong>Linear search:</strong> understand how to find an item by checking each element in order</li>
+      <li><strong>Bubble sort:</strong> understand how to sort a list by repeatedly swapping adjacent items</li>
+      <li><strong>Totalling:</strong> build up a running total using a loop</li>
+      <li><strong>Counting:</strong> count occurrences using a counter variable</li>
+      <li><strong>Finding maximum, minimum and average</strong> values in a list</li>
+    </ul>
+    <div class="callout info" style="margin-top:12px;"><strong>Why it matters:</strong> these standard techniques appear again and again in exam algorithms — and in questions where you must <em>write</em> or <em>amend</em> algorithms (Section 7.5).</div>
+    <div class="slide-footer"><span class="section-label">7.2 · Standard Methods of Solution</span><span class="slide-number">16 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 17 – LINEAR SEARCH ============ -->
+  <div class="slide" data-slide="17">
+    <span class="section-badge sec-72">7.2</span>
+    <h2>Linear Search</h2>
+    <p>A <strong>linear search</strong> checks each item in a list <strong>one by one, in order, from the beginning</strong>, until the required item is found or the end of the list is reached.</p>
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 120" role="img" aria-label="Linear search scanning a list of numbers">
+        <defs>
+          <marker id="arr5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#a78bfa"/>
+          </marker>
+        </defs>
+        <text x="20" y="25" fill="#8d87b5" font-size="12" font-family="monospace">search for 42</text>
+        <text x="107" y="95" fill="#8d87b5" font-size="10" text-anchor="middle" font-family="monospace">1</text>
+        <rect x="80" y="40" width="54" height="40" rx="7" fill="#1e193e" stroke="#443b78" stroke-width="1.3"/>
+        <text x="107" y="66" fill="#ddd6fe" font-size="15" font-weight="bold" text-anchor="middle" font-family="monospace">12</text>
+        <text x="191" y="95" fill="#8d87b5" font-size="10" text-anchor="middle" font-family="monospace">2</text>
+        <rect x="164" y="40" width="54" height="40" rx="7" fill="#1e193e" stroke="#443b78" stroke-width="1.3"/>
+        <text x="191" y="66" fill="#ddd6fe" font-size="15" font-weight="bold" text-anchor="middle" font-family="monospace">5</text>
+        <text x="275" y="95" fill="#8d87b5" font-size="10" text-anchor="middle" font-family="monospace">3</text>
+        <rect x="248" y="40" width="54" height="40" rx="7" fill="#6d28d9" stroke="#a78bfa" stroke-width="2"/>
+        <text x="275" y="66" fill="#ede9fe" font-size="15" font-weight="bold" text-anchor="middle" font-family="monospace">42</text>
+        <text x="359" y="95" fill="#8d87b5" font-size="10" text-anchor="middle" font-family="monospace">4</text>
+        <rect x="332" y="40" width="54" height="40" rx="7" fill="#1e193e" stroke="#443b78" stroke-width="1.3"/>
+        <text x="359" y="66" fill="#ddd6fe" font-size="15" font-weight="bold" text-anchor="middle" font-family="monospace">8</text>
+        <text x="443" y="95" fill="#8d87b5" font-size="10" text-anchor="middle" font-family="monospace">5</text>
+        <rect x="416" y="40" width="54" height="40" rx="7" fill="#1e193e" stroke="#443b78" stroke-width="1.3"/>
+        <text x="443" y="66" fill="#ddd6fe" font-size="15" font-weight="bold" text-anchor="middle" font-family="monospace">33</text>
+        <path d="M 40 60 L 74 60" stroke="#a78bfa" stroke-width="2" marker-end="url(#arr5)"/>
+        <text x="490" y="64" fill="#f0abfc" font-size="12" font-family="monospace">found at position 3</text>
+      </svg>
+      <div class="diagram-caption">Check 12 ✗ → check 5 ✗ → check 42 ✓ — found at position 3</div>
+    </div>
+    <div class="callout info"><strong>When to use it:</strong> simple to implement and works on unsorted lists — but slow for very large lists because items may have to be checked one at a time.</div>
+    <div class="slide-footer"><span class="section-label">7.2 · Standard Methods of Solution</span><span class="slide-number">17 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 18 – BUBBLE SORT ============ -->
+  <div class="slide" data-slide="18">
+    <span class="section-badge sec-72">7.2</span>
+    <h2>Bubble Sort</h2>
+    <p><strong>Bubble sort</strong> compares each <strong>pair of adjacent items</strong>, swapping them if they are in the wrong order, and repeats passes through the list until <strong>no more swaps</strong> are needed.</p>
+    <div class="worked-example">
+      <span class="we-label">Worked example — sort [5, 1, 4, 2] ascending</span>
+      <div class="code-block" style="margin-top:6px;">Start:  [<span class="op">5</span>, <span class="op">1</span>, <span class="op">4</span>, <span class="op">2</span>]
+<span class="comment">Pass 1 — compare adjacent pairs, swap if out of order:</span>
+  5&gt;1 → swap → [1, 5, 4, 2]
+  5&gt;4 → swap → [1, 4, 5, 2]
+  5&gt;2 → swap → [1, 4, 2, 5]
+<span class="comment">Pass 2 — repeat from the start:</span>
+  1&lt;4 → keep → [1, 4, 2, 5]
+  4&gt;2 → swap → [1, 2, 4, 5]
+  4&lt;5 → keep → [1, 2, 4, 5]
+<span class="comment">Pass 3 — no swaps needed → list is sorted:</span>
+  [<span class="op">1</span>, <span class="op">2</span>, <span class="op">4</span>, <span class="op">5</span>]</div>
+    </div>
+    <div class="callout info"><strong>Key points:</strong> each pass moves the largest remaining value to its final position; the process stops early when a complete pass produces <strong>no swaps</strong>.</div>
+    <div class="slide-footer"><span class="section-label">7.2 · Standard Methods of Solution</span><span class="slide-number">18 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 19 – TOTALLING AND COUNTING ============ -->
+  <div class="slide" data-slide="19">
+    <span class="section-badge sec-72">7.2</span>
+    <h2>Totalling and Counting</h2>
+    <p class="text-small" style="margin-bottom:8px;">Two closely related techniques that use a variable updated inside a loop:</p>
+    <table>
+      <tr><th style="width:24%;">Technique</th><th>How it works</th><th>Example</th></tr>
+      <tr><td><strong>Totalling</strong></td><td>A variable (a "running total") is increased by <strong>adding a value</strong> to it each time a loop repeats, building up a sum.</td><td>Total of all sales entered during the day</td></tr>
+      <tr><td><strong>Counting</strong></td><td>A variable (a "counter") is increased <strong>by 1</strong> each time a loop repeats, counting how many times something occurs.</td><td>Counting how many valid entries were submitted</td></tr>
+    </table>
+    <div class="grid-2" style="margin-top:10px;">
+      <div class="card"><h4>➕ Totalling pattern</h4>
+        <div class="code-block"><span class="hl">total</span> = <span class="op">0</span>
+<span class="hl">FOR</span> each value <span class="hl">DO</span>
+    <span class="hl">total</span> = total + value
+<span class="hl">ENDFOR</span></div>
+      </div>
+      <div class="card"><h4>🔢 Counting pattern</h4>
+        <div class="code-block"><span class="hl">count</span> = <span class="op">0</span>
+<span class="hl">FOR</span> each item <span class="hl">DO</span>
+    <span class="hl">IF</span> condition <span class="hl">THEN</span>
+        <span class="hl">count</span> = count + <span class="op">1</span>
+    <span class="hl">ENDIF</span>
+<span class="hl">ENDFOR</span></div>
+      </div>
+    </div>
+    <div class="callout warn"><strong>Exam Tip:</strong> never forget to <strong>initialise</strong> the total/counter to 0 before the loop — a classic lost mark!</div>
+    <div class="slide-footer"><span class="section-label">7.2 · Standard Methods of Solution</span><span class="slide-number">19 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 20 – MAX AND MIN ============ -->
+  <div class="slide" data-slide="20">
+    <span class="section-badge sec-72">7.2</span>
+    <h2>Finding Maximum and Minimum Values</h2>
+    <p><strong>Process:</strong> set a variable to the <strong>first value</strong> in the list, then compare each subsequent value against it — replacing the stored value whenever a <strong>larger</strong> (for maximum) or <strong>smaller</strong> (for minimum) value is found.</p>
+    <div class="grid-2" style="margin-top:10px;">
+      <div class="worked-example" style="margin:0;">
+        <span class="we-label">Finding the maximum</span>
+        <div class="code-block" style="margin-top:6px;"><span class="hl">max</span> = first value
+<span class="hl">FOR</span> each next value <span class="hl">DO</span>
+    <span class="hl">IF</span> value &gt; <span class="hl">max</span> <span class="hl">THEN</span>
+        <span class="hl">max</span> = value
+    <span class="hl">ENDIF</span>
+<span class="hl">ENDFOR</span>
+<span class="hl">OUTPUT</span> max</div>
+      </div>
+      <div class="worked-example" style="margin:0;">
+        <span class="we-label">Finding the minimum</span>
+        <div class="code-block" style="margin-top:6px;"><span class="hl">min</span> = first value
+<span class="hl">FOR</span> each next value <span class="hl">DO</span>
+    <span class="hl">IF</span> value &lt; <span class="hl">min</span> <span class="hl">THEN</span>
+        <span class="hl">min</span> = value
+    <span class="hl">ENDIF</span>
+<span class="hl">ENDFOR</span>
+<span class="hl">OUTPUT</span> min</div>
+      </div>
+    </div>
+    <div class="callout info" style="margin-top:10px;"><strong>Only difference:</strong> the comparison operator — <span class="inline-code">&gt;</span> for maximum, <span class="inline-code">&lt;</span> for minimum. Everything else is identical.</div>
+    <div class="slide-footer"><span class="section-label">7.2 · Standard Methods of Solution</span><span class="slide-number">20 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 21 – AVERAGE ============ -->
+  <div class="slide" data-slide="21">
+    <span class="section-badge sec-72">7.2</span>
+    <h2>Finding the Average Value</h2>
+    <p>The average combines the two techniques from earlier slides:</p>
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 120" role="img" aria-label="Average equals total divided by count">
+        <defs>
+          <marker id="arr6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#a78bfa"/>
+          </marker>
+        </defs>
+        <rect x="20" y="35" width="200" height="52" rx="9" fill="#241d4d" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="120" y="56" fill="#c4b5fd" font-size="13" font-weight="bold" text-anchor="middle" font-family="monospace">1. TOTALLING</text>
+        <text x="120" y="74" fill="#8d87b5" font-size="11" text-anchor="middle" font-family="monospace">add up all the values</text>
+        <rect x="260" y="35" width="200" height="52" rx="9" fill="#241d4d" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="360" y="56" fill="#c4b5fd" font-size="13" font-weight="bold" text-anchor="middle" font-family="monospace">2. COUNTING</text>
+        <text x="360" y="74" fill="#8d87b5" font-size="11" text-anchor="middle" font-family="monospace">count how many values</text>
+        <rect x="500" y="35" width="200" height="52" rx="9" fill="#6d28d9" stroke="#a78bfa" stroke-width="2"/>
+        <text x="600" y="56" fill="#ede9fe" font-size="13" font-weight="bold" text-anchor="middle" font-family="monospace">3. DIVIDE</text>
+        <text x="600" y="74" fill="#ddd6fe" font-size="11" text-anchor="middle" font-family="monospace">average = total ÷ count</text>
+        <line x1="220" y1="61" x2="256" y2="61" stroke="#a78bfa" stroke-width="2" marker-end="url(#arr6)"/>
+        <line x1="460" y1="61" x2="496" y2="61" stroke="#a78bfa" stroke-width="2" marker-end="url(#arr6)"/>
+      </svg>
+      <div class="diagram-caption">Use totalling to add up all values, counting to find how many there are, then divide total by count</div>
+    </div>
+    <div class="worked-example">
+      <span class="we-label">Worked example</span>
+      <h4>Scores: 45, 78, 92</h4>
+      <p class="text-small"><strong>Total</strong> = 45 + 78 + 92 = 215 &nbsp;·&nbsp; <strong>Count</strong> = 3 &nbsp;·&nbsp; <strong>Average</strong> = 215 ÷ 3 = <strong>71.67</strong> (to 2 d.p.)</p>
+    </div>
+    <div class="callout warn"><strong>Watch out:</strong> if you divide before the loop finishes, or count zero items, the answer will be wrong — divide <em>after</em> the loop completes.</div>
+    <div class="slide-footer"><span class="section-label">7.2 · Standard Methods of Solution</span><span class="slide-number">21 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 22 – QUIZ 7.2 ============ -->
+  <div class="slide" data-slide="22">
+    <span class="section-badge quiz">7.2 · Recap</span>
+    <h2>Quick Check — Standard Methods of Solution</h2>
+    <div class="reveal-container">
+      <p><strong>Q4.</strong> Describe how a linear search works.</p>
+      <button class="reveal-btn" data-target="q4">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q4"><strong>Answer:</strong> Each item in the list is checked one by one, in order, from the beginning, until the required item is found or the end of the list is reached.</div>
+    </div>
+    <div class="reveal-container">
+      <p><strong>Q5.</strong> Describe the steps of a bubble sort.</p>
+      <button class="reveal-btn" data-target="q5">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q5"><strong>Answer:</strong> Adjacent pairs of items are compared and swapped if they are in the wrong order. This is repeated in passes through the list until a complete pass produces no swaps — the list is then sorted.</div>
+    </div>
+    <div class="reveal-container">
+      <p><strong>Q6.</strong> Explain how a program can find the maximum value in a list of numbers.</p>
+      <button class="reveal-btn" data-target="q6">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q6"><strong>Answer:</strong> Set a variable to the first value. For each subsequent value, if it is greater than the stored variable, replace it with the new value. After checking all values, the variable holds the maximum.</div>
+    </div>
+    <div class="slide-footer"><span class="section-label">7.2 · Standard Methods of Solution</span><span class="slide-number">22 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 23 – OBJECTIVES 7.3 ============ -->
+  <div class="slide" data-slide="23">
+    <span class="section-badge sec-73">7.3</span>
+    <h2>Learning Objectives — Validation and Verification</h2>
+    <p class="text-small" style="margin-bottom:12px;">By the end of this section you should be able to:</p>
+    <ul class="objectives-list">
+      <li><strong>Validation:</strong> understand the need for validation checks on input data and their types</li>
+      <li><strong>Verification:</strong> understand the need for verification checks on input data and their types</li>
+      <li>Know <strong>which check to apply</strong> for a given piece of data</li>
+      <li>Know the <strong>difference</strong> between validation and verification</li>
+    </ul>
+    <div class="callout info" style="margin-top:12px;"><strong>Common confusion:</strong> students mix these up. Remember — <span class="inline-code">validation = is it sensible?</span> and <span class="inline-code">verification = was it copied accurately?</span></div>
+    <div class="slide-footer"><span class="section-label">7.3 · Validation and Verification</span><span class="slide-number">23 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 24 – WHY VALIDATE ============ -->
+  <div class="slide" data-slide="24">
+    <span class="section-badge sec-73">7.3</span>
+    <h2>Why Validate Data?</h2>
+    <p><strong>Validation</strong> is an automated check performed by the computer to ensure that input data is <strong>sensible, reasonable, and meets pre-set criteria</strong> before it is accepted — helping to maintain data integrity.</p>
+    <div class="grid-3" style="margin-top:10px;">
+      <div class="card"><h4>🧮 Range</h4><p class="text-small">Age 0–120, percentage 0–100</p></div>
+      <div class="card"><h4>📏 Length</h4><p class="text-small">Password ≥ 8 characters</p></div>
+      <div class="card"><h4>🔤 Type</h4><p class="text-small">Age must be an integer, not text</p></div>
+    </div>
+    <div class="callout warn" style="margin-top:10px;"><strong>Critical limitation:</strong> validation cannot check if data is actually <em>correct</em> or <em>true</em> — only that it is <strong>reasonable</strong>. A valid age of "25" could still be a typing error for "52".</div>
+    <div class="worked-example" style="margin-top:10px;">
+      <span class="we-label">Example</span>
+      <h4>A booking form accepts a date</h4>
+      <p class="text-small">A date of <span class="inline-code">31/02/2025</span> can pass a format check (it looks like a date) but is not a real date — a range check on the day of the month helps catch it. Validation makes the data <em>more likely</em> to be right, but never guarantees it.</p>
+    </div>
+    <div class="slide-footer"><span class="section-label">7.3 · Validation and Verification</span><span class="slide-number">24 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 25 – VALIDATION PART 1 ============ -->
+  <div class="slide" data-slide="25">
+    <span class="section-badge sec-73">7.3</span>
+    <h2>Types of Validation Check — Part 1</h2>
+    <table>
+      <tr><th style="width:22%;">Check</th><th>Definition</th><th>Example</th></tr>
+      <tr><td><strong>Range check</strong></td><td>Ensures data falls between a set minimum and maximum value.</td><td>Age must be between 0 and 120</td></tr>
+      <tr><td><strong>Length check</strong></td><td>Ensures data contains a specific number of characters.</td><td>A password must be at least 8 characters</td></tr>
+      <tr><td><strong>Type check</strong></td><td>Ensures data is of the correct data type.</td><td>Age must be an integer, not text</td></tr>
+    </table>
+    <div class="grid-2" style="margin-top:10px;">
+      <div class="worked-example" style="margin:0;">
+        <span class="we-label">Range check</span>
+        <div class="code-block" style="margin-top:6px;"><span class="hl">IF</span> age &gt;= <span class="op">0</span> <span class="hl">AND</span> age &lt;= <span class="op">120</span> <span class="hl">THEN</span>
+    accept
+<span class="hl">ELSE</span>
+    error message
+<span class="hl">ENDIF</span></div>
+      </div>
+      <div class="worked-example" style="margin:0;">
+        <span class="we-label">Type check</span>
+        <div class="code-block" style="margin-top:6px;"><span class="hl">IF</span> age <span class="hl">IS</span> integer <span class="hl">THEN</span>
+    accept
+<span class="hl">ELSE</span>
+    error message
+<span class="hl">ENDIF</span></div>
+      </div>
+    </div>
+    <div class="slide-footer"><span class="section-label">7.3 · Validation and Verification</span><span class="slide-number">25 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 26 – VALIDATION PART 2 ============ -->
+  <div class="slide" data-slide="26">
+    <span class="section-badge sec-73">7.3</span>
+    <h2>Types of Validation Check — Part 2</h2>
+    <table>
+      <tr><th style="width:22%;">Check</th><th>Definition</th><th>Example</th></tr>
+      <tr><td><strong>Presence check</strong></td><td>Ensures data has actually been entered into a required field, not left blank.</td><td>The "name" field must not be empty</td></tr>
+      <tr><td><strong>Format check</strong></td><td>Ensures data follows a specific, pre-defined pattern.</td><td>An email address must contain an <span class="inline-code">@</span> symbol</td></tr>
+      <tr><td><strong>Check digit</strong></td><td>An extra digit calculated from the other digits in a number, used to detect if data has been entered or transmitted incorrectly.</td><td>The final digit of a barcode or ISBN number</td></tr>
+    </table>
+    <div class="worked-example" style="margin-top:10px;">
+      <span class="we-label">Format check example</span>
+      <h4>Telephone number: <span class="inline-code">07123 456789</span></h4>
+      <p class="text-small">A format check can require 11 digits starting with <span class="inline-code">07</span> — any entry not matching this pattern is rejected.</p>
+    </div>
+    <div class="callout info"><strong>Remember:</strong> check digits also appeared in Topic 2 (error detection) — the same idea protects both transmission <em>and</em> data entry.</div>
+    <div class="slide-footer"><span class="section-label">7.3 · Validation and Verification</span><span class="slide-number">26 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 27 – WHY VERIFY ============ -->
+  <div class="slide" data-slide="27">
+    <span class="section-badge sec-73">7.3</span>
+    <h2>Why Verify Data?</h2>
+    <p><strong>Verification</strong> is the process of checking that data has been <strong>copied or transferred accurately</strong> from one location/source to another — without being changed or corrupted.</p>
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 110" role="img" aria-label="Data copied from source to system then checked">
+        <defs>
+          <marker id="arr7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#a78bfa"/>
+          </marker>
+        </defs>
+        <rect x="20" y="30" width="180" height="52" rx="9" fill="#241d4d" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="110" y="51" fill="#c4b5fd" font-size="13" font-weight="bold" text-anchor="middle" font-family="monospace">SOURCE</text>
+        <text x="110" y="69" fill="#8d87b5" font-size="10" text-anchor="middle" font-family="monospace">original document</text>
+        <rect x="270" y="30" width="180" height="52" rx="9" fill="#241d4d" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="360" y="51" fill="#c4b5fd" font-size="13" font-weight="bold" text-anchor="middle" font-family="monospace">DATA ENTRY</text>
+        <text x="360" y="69" fill="#8d87b5" font-size="10" text-anchor="middle" font-family="monospace">typed / transferred</text>
+        <rect x="520" y="30" width="180" height="52" rx="9" fill="#6d28d9" stroke="#a78bfa" stroke-width="2"/>
+        <text x="610" y="51" fill="#ede9fe" font-size="13" font-weight="bold" text-anchor="middle" font-family="monospace">CHECK ✓</text>
+        <text x="610" y="69" fill="#ddd6fe" font-size="10" text-anchor="middle" font-family="monospace">compare against source</text>
+        <line x1="200" y1="56" x2="266" y2="56" stroke="#a78bfa" stroke-width="2" marker-end="url(#arr7)"/>
+        <line x1="450" y1="56" x2="516" y2="56" stroke="#a78bfa" stroke-width="2" marker-end="url(#arr7)"/>
+      </svg>
+      <div class="diagram-caption">Verification compares the entered data against the original source to catch transcription errors</div>
+    </div>
+    <div class="callout info"><strong>Example:</strong> a data-entry clerk types names from a paper form into a computer — verification checks the typed names <strong>match the paper form exactly</strong>.</div>
+    <div class="slide-footer"><span class="section-label">7.3 · Validation and Verification</span><span class="slide-number">27 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 28 – VERIFICATION TYPES ============ -->
+  <div class="slide" data-slide="28">
+    <span class="section-badge sec-73">7.3</span>
+    <h2>Types of Verification Check</h2>
+    <table>
+      <tr><th style="width:24%;">Check</th><th>Definition</th><th>Example</th></tr>
+      <tr><td><strong>Visual check</strong></td><td>The user manually compares the data displayed on screen against the original source document to check it matches.</td><td>Reading a form and comparing it with what was typed on screen</td></tr>
+      <tr><td><strong>Double entry check</strong></td><td>The data is entered twice — often by two different people or in two separate stages — and the two entries are automatically compared; if they do not match, an error is flagged.</td><td>Entering a new password twice when registering</td></tr>
+    </table>
+    <div class="exam-tip" style="margin-top:10px;"><span class="tip-icon">💡</span><span class="tip-text"><strong>Exam Tip:</strong> remember — <strong>validation</strong> checks data is <em>sensible</em>; <strong>verification</strong> checks data is <em>accurate / unchanged</em> compared to its original source.</span></div>
+    <div class="slide-footer"><span class="section-label">7.3 · Validation and Verification</span><span class="slide-number">28 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 29 – VALIDATION VS VERIFICATION TABLE ============ -->
+  <div class="slide" data-slide="29">
+    <span class="section-badge sec-73">7.3</span>
+    <h2>Validation vs. Verification — Summary</h2>
+    <table>
+      <tr><th style="width:24%;"></th><th>✅ Validation</th><th>🔍 Verification</th></tr>
+      <tr><td><strong>Key question</strong></td><td>Is the data <strong>sensible / reasonable</strong>?</td><td>Is the data <strong>accurate / unchanged</strong> from its source?</td></tr>
+      <tr><td><strong>Purpose</strong></td><td>Checks data meets pre-set criteria before being accepted.</td><td>Checks data was copied or transferred without error.</td></tr>
+      <tr><td><strong>Performed by</strong></td><td>The <strong>computer</strong> automatically.</td><td>Can be done by the <strong>user</strong> (visual) or <strong>computer</strong> (double entry).</td></tr>
+      <tr><td><strong>Example methods</strong></td><td>Range, length, type, presence, format, check digit.</td><td>Visual check, double entry check.</td></tr>
+      <tr><td><strong>Limitation</strong></td><td>Cannot check if data is actually correct — only reasonable.</td><td>Cannot guarantee the original source itself is correct.</td></tr>
+    </table>
+    <div class="callout info" style="margin-top:8px;"><strong>Memory hook:</strong> validation asks "does this make sense?"; verification asks "is this what was typed in the first place?"</div>
+    <div class="slide-footer"><span class="section-label">7.3 · Validation and Verification</span><span class="slide-number">29 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 30 – QUIZ 7.3 ============ -->
+  <div class="slide" data-slide="30">
+    <span class="section-badge quiz">7.3 · Recap</span>
+    <h2>Quick Check — Validation and Verification</h2>
+    <div class="reveal-container">
+      <p><strong>Q7.</strong> Describe what is meant by a presence check.</p>
+      <button class="reveal-btn" data-target="q7">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q7"><strong>Answer:</strong> A validation check that ensures data has actually been entered into a required field — i.e. it has not been left blank.</div>
+    </div>
+    <div class="reveal-container">
+      <p><strong>Q8.</strong> Explain the difference between a visual check and a double entry check.</p>
+      <button class="reveal-btn" data-target="q8">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q8"><strong>Answer:</strong> A visual check is manual — the user compares the on-screen data against the original source. A double entry check is automatic — data is entered twice and the computer compares both entries, flagging an error if they differ.</div>
+    </div>
+    <div class="reveal-container">
+      <p><strong>Q9.</strong> State one validation check suitable for checking an entered telephone number.</p>
+      <button class="reveal-btn" data-target="q9">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q9"><strong>Answer:</strong> Any one of: a format check (e.g. must be 11 digits starting with 07), a length check, or a type check (digits only).</div>
+    </div>
+    <div class="slide-footer"><span class="section-label">7.3 · Validation and Verification</span><span class="slide-number">30 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 31 – OBJECTIVES 7.4 ============ -->
+  <div class="slide" data-slide="31">
+    <span class="section-badge sec-74">7.4</span>
+    <h2>Learning Objectives — Test Data</h2>
+    <p class="text-small" style="margin-bottom:12px;">By the end of this section you should be able to:</p>
+    <ul class="objectives-list">
+      <li><strong>Suggest and apply suitable test data</strong> for a given program</li>
+      <li><strong>Understand the four types of test data:</strong> normal, abnormal, extreme, and boundary</li>
+      <li>State whether each data item should be <strong>accepted or rejected</strong> by the program</li>
+    </ul>
+    <div class="callout info" style="margin-top:12px;"><strong>Why it matters:</strong> examiners love test data questions — they are quick marks if you remember the four types and choose sensible example values.</div>
+    <div class="slide-footer"><span class="section-label">7.4 · Test Data</span><span class="slide-number">31 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 32 – WHY DIFFERENT DATA TYPES ============ -->
+  <div class="slide" data-slide="32">
+    <span class="section-badge sec-74">7.4</span>
+    <h2>Why Test With Different Data Types?</h2>
+    <p>A range of test data types is used to <strong>thoroughly check</strong> that a program works correctly under all circumstances — including data that <strong>should be accepted</strong> and data that <strong>should be rejected</strong>.</p>
+    <div class="grid-4" style="margin-top:12px;">
+      <div class="card"><h4>✅ Normal</h4><p class="text-small">Typical valid data the program should accept.</p></div>
+      <div class="card"><h4>❌ Abnormal</h4><p class="text-small">Invalid data the program should reject.</p></div>
+      <div class="card"><h4>⚡ Extreme</h4><p class="text-small">The largest / smallest values that should still be accepted.</p></div>
+      <div class="card"><h4>🎯 Boundary</h4><p class="text-small">The value just inside AND just outside each limit of the accepted range.</p></div>
+    </div>
+    <div class="worked-example" style="margin-top:12px;">
+      <span class="we-label">Why bother?</span>
+      <h4>Testing only "normal" data hides bugs</h4>
+      <p class="text-small">A program accepting ages might crash on <span class="inline-code">-3</span> or accept <span class="inline-code">999</span> if only sensible values are tested. Testing with abnormal, extreme and boundary data reveals these faults.</p>
+    </div>
+    <div class="callout info"><strong>Link to 7.1:</strong> choosing good test data is part of the <em>testing</em> stage of the program development life cycle.</div>
+    <div class="slide-footer"><span class="section-label">7.4 · Test Data</span><span class="slide-number">32 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 33 – FOUR TYPES TABLE ============ -->
+  <div class="slide" data-slide="33">
+    <span class="section-badge sec-74">7.4</span>
+    <h2>The Four Types of Test Data</h2>
+    <p class="text-small" style="margin-bottom:6px;">Running example: a program that accepts <strong>ages from 1 to 100</strong>.</p>
+    <table>
+      <tr><th style="width:18%;">Type</th><th>Definition</th><th>Example (age 1–100)</th><th>Accepted?</th></tr>
+      <tr><td><strong>Normal</strong></td><td>Sensible data that should be accepted without error.</td><td class="mono">45</td><td class="ok">Yes</td></tr>
+      <tr><td><strong>Abnormal</strong></td><td>Data that is invalid and should be rejected.</td><td class="mono">"abc" or -5</td><td class="no">No</td></tr>
+      <tr><td><strong>Extreme</strong></td><td>The largest / smallest data value that should still be accepted.</td><td class="mono">1 or 100</td><td class="ok">Yes</td></tr>
+      <tr><td><strong>Boundary</strong></td><td>The largest / smallest acceptable value <em>and</em> the corresponding rejected value immediately beyond it.</td><td class="mono">1 and 0 · 100 and 101</td><td class="ok">Yes / No</td></tr>
+    </table>
+    <div class="exam-tip" style="margin-top:10px;"><span class="tip-icon">💡</span><span class="tip-text"><strong>Exam Tip:</strong> boundary data always comes in a <strong>pair</strong> — one accepted value and one rejected value that sit right next to each other on the number line.</span></div>
+    <div class="slide-footer"><span class="section-label">7.4 · Test Data</span><span class="slide-number">33 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 34 – WORKED EXAMPLE TEST DATA ============ -->
+  <div class="slide" data-slide="34">
+    <span class="section-badge sec-74">7.4</span>
+    <h2>Worked Example: Selecting Test Data</h2>
+    <p class="text-small" style="margin-bottom:6px;"><strong>Scenario:</strong> a program accepts a percentage score from <strong>0 to 100</strong>. Suggest test data for each type, stating whether each is accepted or rejected.</p>
+    <div class="worked-example">
+      <span class="we-label">Suggested test data</span>
+      <table style="margin-top:6px;">
+        <tr><th style="width:22%;">Type</th><th>Test data</th><th>Accepted?</th></tr>
+        <tr><td><strong>Normal</strong></td><td class="mono">67</td><td class="ok">Yes — a typical valid score</td></tr>
+        <tr><td><strong>Normal</strong></td><td class="mono">42</td><td class="ok">Yes — another typical valid score</td></tr>
+        <tr><td><strong>Abnormal</strong></td><td class="mono">"abc"</td><td class="no">No — not a number (type error)</td></tr>
+        <tr><td><strong>Abnormal</strong></td><td class="mono">150</td><td class="no">No — outside the accepted range</td></tr>
+        <tr><td><strong>Extreme</strong></td><td class="mono">0</td><td class="ok">Yes — smallest acceptable value</td></tr>
+        <tr><td><strong>Extreme</strong></td><td class="mono">100</td><td class="ok">Yes — largest acceptable value</td></tr>
+        <tr><td><strong>Boundary</strong></td><td class="mono">0 and -1</td><td class="ok">Yes / No — 0 accepted, -1 rejected</td></tr>
+        <tr><td><strong>Boundary</strong></td><td class="mono">100 and 101</td><td class="ok">Yes / No — 100 accepted, 101 rejected</td></tr>
+      </table>
+    </div>
+    <div class="callout info"><strong>Note:</strong> multiple examples of normal and abnormal data are fine — test data questions usually ask for "one example" of each type, so pick the simplest.</div>
+    <div class="slide-footer"><span class="section-label">7.4 · Test Data</span><span class="slide-number">34 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 35 – QUIZ 7.4 ============ -->
+  <div class="slide" data-slide="35">
+    <span class="section-badge quiz">7.4 · Recap</span>
+    <h2>Quick Check — Test Data</h2>
+    <div class="reveal-container">
+      <p><strong>Q10.</strong> A program accepts a month number from 1 to 12. State a suitable item of boundary data.</p>
+      <button class="reveal-btn" data-target="q10">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q10"><strong>Answer:</strong> Boundary data is a pair of values — one accepted and one rejected, next to each other. For months 1–12: <strong>1 and 0</strong>, or <strong>12 and 13</strong>. (Note: 1 and 2 is <em>not</em> a boundary pair — both are accepted.)</div>
+    </div>
+    <div class="reveal-container">
+      <p><strong>Q11.</strong> Explain the difference between extreme data and boundary data.</p>
+      <button class="reveal-btn" data-target="q11">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q11"><strong>Answer:</strong> Extreme data is the largest / smallest value that should still be <em>accepted</em> (e.g. 1 and 100). Boundary data is a <em>pair</em> of values — the limit value and the value immediately beyond it (e.g. 1 and 0), i.e. one accepted and one rejected.</div>
+    </div>
+    <div class="slide-footer"><span class="section-label">7.4 · Test Data</span><span class="slide-number">35 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 36 – OBJECTIVES 7.5 ============ -->
+  <div class="slide" data-slide="36">
+    <span class="section-badge sec-75">7.5</span>
+    <h2>Learning Objectives — Trace Tables and Error Identification</h2>
+    <p class="text-small" style="margin-bottom:12px;">By the end of this section you should be able to:</p>
+    <ul class="objectives-list">
+      <li><strong>Trace tables:</strong> complete a trace table to document a dry-run of an algorithm</li>
+      <li><strong>Error identification:</strong> identify errors in given algorithms and suggest ways of correcting them</li>
+      <li><strong>Write and amend algorithms</strong> for given problems or scenarios, using pseudocode, program code, and flowcharts</li>
+    </ul>
+    <div class="callout info" style="margin-top:12px;"><strong>Skills to build:</strong> careful, line-by-line "dry running" and precise written answers — these are high-scoring questions on real exams.</div>
+    <div class="slide-footer"><span class="section-label">7.5 · Trace Tables &amp; Errors</span><span class="slide-number">36 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 37 – WHAT IS A TRACE TABLE ============ -->
+  <div class="slide" data-slide="37">
+    <span class="section-badge sec-75">7.5</span>
+    <h2>What is a Trace Table?</h2>
+    <p>A trace table is used to perform a <strong>"dry run"</strong> of an algorithm — manually following its logic <strong>step by step, without running it on a computer</strong> — recording the values of variables, outputs, and user prompts at each stage.</p>
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 130" role="img" aria-label="Dry run means following an algorithm by hand without a computer">
+        <rect x="20" y="30" width="200" height="56" rx="9" fill="#241d4d" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="120" y="51" fill="#c4b5fd" font-size="13" font-weight="bold" text-anchor="middle" font-family="monospace">ALGORITHM</text>
+        <text x="120" y="69" fill="#8d87b5" font-size="10" text-anchor="middle" font-family="monospace">pseudocode / code</text>
+        <rect x="260" y="30" width="200" height="56" rx="9" fill="#6d28d9" stroke="#a78bfa" stroke-width="2"/>
+        <text x="360" y="51" fill="#ede9fe" font-size="13" font-weight="bold" text-anchor="middle" font-family="monospace">DRY RUN (by hand)</text>
+        <text x="360" y="69" fill="#ddd6fe" font-size="10" text-anchor="middle" font-family="monospace">follow each line in order</text>
+        <rect x="500" y="30" width="200" height="56" rx="9" fill="#241d4d" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="600" y="51" fill="#c4b5fd" font-size="13" font-weight="bold" text-anchor="middle" font-family="monospace">TRACE TABLE</text>
+        <text x="600" y="69" fill="#8d87b5" font-size="10" text-anchor="middle" font-family="monospace">record variables row by row</text>
+        <path d="M 220 58 L 256 58" stroke="#a78bfa" stroke-width="2" marker-end="url(#arr)"/>
+        <path d="M 460 58 L 496 58" stroke="#a78bfa" stroke-width="2" marker-end="url(#arr)"/>
+        <text x="360" y="112" fill="#8d87b5" font-size="11" text-anchor="middle" font-family="monospace">each row of the table = one change in a variable, an input prompt, or an output</text>
+      </svg>
+      <div class="diagram-caption">A trace table documents what happens to every variable as the algorithm runs, line by line</div>
+    </div>
+    <div class="callout info"><strong>Why trace tables?</strong> They reveal logic errors (e.g. a loop running one too many times) that might be invisible when just reading the code.</div>
+    <div class="slide-footer"><span class="section-label">7.5 · Trace Tables &amp; Errors</span><span class="slide-number">37 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 38 – HOW TO SET UP ============ -->
+  <div class="slide" data-slide="38">
+    <span class="section-badge sec-75">7.5</span>
+    <h2>How to Set Up a Trace Table</h2>
+    <ol class="step-list">
+      <li><strong>Identify every variable</strong> used in the algorithm and create a column for each.</li>
+      <li><strong>Add extra columns</strong> for any <strong>outputs</strong> produced and any <strong>user prompts / inputs</strong>.</li>
+      <li><strong>Work through the algorithm one line / step at a time</strong>, in order.</li>
+      <li><strong>Record a new row</strong> each time a variable's value changes.</li>
+    </ol>
+    <div class="worked-example" style="margin-top:10px;">
+      <span class="we-label">Example columns for a simple loop</span>
+      <table style="margin-top:6px;">
+        <tr><th>n</th><th>total</th><th>OUTPUT</th></tr>
+        <tr><td class="mono">3</td><td class="mono">0</td><td></td></tr>
+        <tr><td class="mono">3</td><td class="mono">3</td><td></td></tr>
+        <tr><td class="mono">5</td><td class="mono">8</td><td></td></tr>
+        <tr><td class="mono"></td><td class="mono">8</td><td class="mono">8</td></tr>
+      </table>
+      <p class="text-small" style="margin-top:6px;">Each column = one variable. New row only when a value changes — unchanged variables are left with their previous value (or blank if not yet set).</p>
+    </div>
+    <div class="exam-tip"><span class="tip-icon">💡</span><span class="tip-text"><strong>Exam Tip:</strong> precision matters — write <strong>exact values</strong> in each cell. Leave a cell <strong>blank</strong> if a variable has not yet been given a value at that point.</span></div>
+    <div class="slide-footer"><span class="section-label">7.5 · Trace Tables &amp; Errors</span><span class="slide-number">38 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 39 – WORKED TRACE TABLE ============ -->
+  <div class="slide" data-slide="39">
+    <span class="section-badge sec-75">7.5</span>
+    <h2>Worked Example: Completing a Trace Table</h2>
+    <p class="text-small" style="margin-bottom:6px;"><strong>Algorithm:</strong> total three entered numbers and output the total. <strong>Test data:</strong> 5, 8, 3.</p>
+    <div class="grid-2">
+      <div>
+        <div class="worked-example" style="margin:0;">
+          <span class="we-label">Pseudocode</span>
+          <div class="code-block" style="margin-top:6px;"><span class="hl">total</span> = <span class="op">0</span>
+<span class="hl">FOR</span> count = <span class="op">1</span> <span class="hl">TO</span> <span class="op">3</span>
+    <span class="hl">INPUT</span> number
+    <span class="hl">total</span> = total + number
+<span class="hl">ENDFOR</span>
+<span class="hl">OUTPUT</span> total</div>
+        </div>
+      </div>
+      <div>
+        <div class="worked-example" style="margin:0;">
+          <span class="we-label">Completed trace table</span>
+          <table style="margin-top:6px;">
+            <tr><th>count</th><th>number</th><th>total</th><th>OUTPUT</th></tr>
+            <tr><td class="mono">1</td><td class="mono">5</td><td class="mono">0 → 5</td><td></td></tr>
+            <tr><td class="mono">2</td><td class="mono">8</td><td class="mono">5 → 13</td><td></td></tr>
+            <tr><td class="mono">3</td><td class="mono">3</td><td class="mono">13 → 16</td><td></td></tr>
+            <tr><td class="mono">4</td><td></td><td class="mono">16</td><td class="mono">16</td></tr>
+          </table>
+          <p class="text-small" style="margin-top:6px;">After <span class="inline-code">count = 4</span> the loop ends (<span class="inline-code">4 &gt; 3</span>) and the final <span class="inline-code">OUTPUT total</span> runs.</p>
+        </div>
+      </div>
+    </div>
+    <div class="callout info" style="margin-top:10px;"><strong>Reading the trace:</strong> "5 → 13" shows the total <em>before → after</em> updating. In an exam table you would write just the new value (13) or follow the layout requested in the question.</div>
+    <div class="slide-footer"><span class="section-label">7.5 · Trace Tables &amp; Errors</span><span class="slide-number">39 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 40 – ERROR IDENTIFICATION ============ -->
+  <div class="slide" data-slide="40">
+    <span class="section-badge sec-75">7.5</span>
+    <h2>Identifying and Correcting Errors</h2>
+    <p class="text-small" style="margin-bottom:8px;">How to approach "identify the error" exam questions:</p>
+    <ol class="step-list">
+      <li><strong>Perform a dry run</strong> using a trace table — see where the output does not match the expected result.</li>
+      <li><strong>Check for common logic errors:</strong> incorrect comparison operators, incorrect loop boundaries, or variables not being reset / initialised.</li>
+      <li><strong>Suggest a specific correction</strong> — e.g. changing <span class="inline-code">x &gt; y</span> to <span class="inline-code">x &gt;= y</span> — rather than a vague description of the problem.</li>
+    </ol>
+    <div class="worked-example" style="margin-top:10px;">
+      <span class="we-label">Worked example — find the error</span>
+      <div class="code-block" style="margin-top:6px;"><span class="hl">total</span> = <span class="op">0</span>
+<span class="hl">FOR</span> i = <span class="op">1</span> <span class="hl">TO</span> <span class="op">5</span>
+    <span class="hl">total</span> = total + i   <span class="comment"># expected total 15</span>
+<span class="hl">ENDFOR</span></div>
+      <p class="text-small"><strong>Trace shows:</strong> 1+2+3+4+5 = 15 ✓ … but wait — what if the code was <span class="inline-code">i &lt; 5</span> in the loop condition? Then it runs 1..4 = 10 — <strong>incorrect</strong>. Correction: change <span class="inline-code">i &lt; 5</span> to <span class="inline-code">i &lt;= 5</span> (or <span class="inline-code">i &lt; 6</span>).</p>
+    </div>
+    <div class="exam-tip"><span class="tip-icon">💡</span><span class="tip-text"><strong>Exam Tip:</strong> precision is required — writing <span class="inline-code">x &gt; y</span> is acceptable, but writing <em>"x is greater than y"</em> is <strong>not</strong> an acceptable way to express algorithm logic.</span></div>
+    <div class="slide-footer"><span class="section-label">7.5 · Trace Tables &amp; Errors</span><span class="slide-number">40 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 41 – WRITING AND AMENDING ============ -->
+  <div class="slide" data-slide="41">
+    <span class="section-badge sec-75">7.5</span>
+    <h2>Writing and Amending Algorithms</h2>
+    <p>Algorithms for given problems must be written or amended using the <strong>three required representations</strong>: <strong>pseudocode</strong>, <strong>program code</strong>, and <strong>flowcharts</strong>.</p>
+    <div class="grid-3" style="margin-top:10px;">
+      <div class="card"><h4>📝 Pseudocode</h4><p class="text-small">Structured plain-language logic. Detail and syntax covered in Section 4 / 8.</p></div>
+      <div class="card"><h4>💻 Program code</h4><p class="text-small">Real code in a high-level language (e.g. Python, Java, VB).</p></div>
+      <div class="card"><h4>📐 Flowcharts</h4><p class="text-small">Standard symbols (terminator, process, decision, input/output) linked by arrows.</p></div>
+    </div>
+    <div class="worked-example" style="margin-top:10px;">
+      <span class="we-label">Amend example</span>
+      <h4>"Amend the algorithm so it also outputs the average"</h4>
+      <div class="code-block" style="margin-top:6px;"><span class="comment"># original:</span>
+<span class="hl">total</span> = total + number        <span class="comment"># inside loop</span>
+<span class="comment"># amended — add after the loop:</span>
+<span class="hl">average</span> = total / count
+<span class="hl">OUTPUT</span> average</div>
+    </div>
+    <div class="callout info"><strong>Strategy:</strong> draw on the <strong>standard methods of solution</strong> from Section 7.2 (totalling, counting, max/min, average, linear search, bubble sort) — most questions reuse these patterns.</div>
+    <div class="slide-footer"><span class="section-label">7.5 · Trace Tables &amp; Errors</span><span class="slide-number">41 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 42 – QUIZ 7.5 ============ -->
+  <div class="slide" data-slide="42">
+    <span class="section-badge quiz">7.5 · Recap</span>
+    <h2>Quick Check — Trace Tables and Errors</h2>
+    <div class="reveal-container">
+      <p><strong>Q12.</strong> Complete a trace table for this algorithm using the test data provided:</p>
+      <div class="code-block" style="margin:6px 0;"><span class="hl">x</span> = <span class="op">0</span>
+<span class="hl">WHILE</span> x &lt; <span class="op">3</span>
+    <span class="hl">x</span> = x + <span class="op">1</span>
+    <span class="hl">OUTPUT</span> x
+<span class="hl">ENDWHILE</span></div>
+      <button class="reveal-btn" data-target="q12">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q12"><strong>Answer:</strong> <table style="margin:4px 0; font-size:0.8rem;"><tr><th>x</th><th>OUTPUT</th></tr><tr><td class="mono">0</td><td></td></tr><tr><td class="mono">1</td><td class="mono">1</td></tr><tr><td class="mono">2</td><td class="mono">2</td></tr><tr><td class="mono">3</td><td class="mono">3</td></tr><tr><td class="mono">4 (loop ends: 4 &gt; 3)</td><td></td></tr></table>Outputs: 1, 2, 3</div>
+    </div>
+    <div class="reveal-container">
+      <p><strong>Q13.</strong> The algorithm below should output 6 (2+2+2) but outputs 4. Identify the error and suggest a correction.</p>
+      <div class="code-block" style="margin:6px 0;"><span class="hl">total</span> = <span class="op">0</span>
+<span class="hl">FOR</span> i = <span class="op">1</span> <span class="hl">TO</span> <span class="op">2</span>
+    <span class="hl">total</span> = total + <span class="op">2</span>
+<span class="hl">ENDFOR</span>
+<span class="hl">OUTPUT</span> total</div>
+      <button class="reveal-btn" data-target="q13">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q13"><strong>Answer:</strong> Error: the loop only runs 2 times (<span class="inline-code">i = 1</span> and <span class="inline-code">i = 2</span>), adding 2 twice = 4. Correction: change <span class="inline-code">FOR i = 1 TO 2</span> to <span class="inline-code">FOR i = 1 TO 3</span> so the loop runs three times → 6.</div>
+    </div>
+    <div class="slide-footer"><span class="section-label">7.5 · Trace Tables &amp; Errors</span><span class="slide-number">42 / 43</span></div>
+  </div>
+
+  <!-- ============ SLIDE 43 – SUMMARY ============ -->
+  <div class="slide" data-slide="43">
+    <span class="section-badge">Topic 7</span>
+    <h2>Topic 7 Summary — Algorithm Design and Problem-Solving</h2>
+    <div class="diagram-box">
+      <svg viewBox="0 0 760 330" role="img" aria-label="Topic 7 mind-map summary">
+        <defs>
+          <marker id="arrs" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#8d87b5"/>
+          </marker>
+        </defs>
+        <rect x="255" y="14" width="250" height="44" rx="10" fill="#6d28d9" stroke="#a78bfa" stroke-width="1.8"/>
+        <text x="380" y="41" fill="#ede9fe" font-size="15" font-weight="bold" text-anchor="middle" font-family="monospace">TOPIC 7</text>
+        <rect x="40" y="100" width="210" height="60" rx="9" fill="#241d4d" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="145" y="122" fill="#c4b5fd" font-size="12" font-weight="bold" text-anchor="middle" font-family="monospace">7.1 LIFE CYCLE</text>
+        <text x="145" y="138" fill="#8d87b5" font-size="10" text-anchor="middle" font-family="monospace">analysis → design → coding →</text>
+        <text x="145" y="151" fill="#8d87b5" font-size="10" text-anchor="middle" font-family="monospace">testing · decomposition</text>
+        <rect x="275" y="100" width="210" height="60" rx="9" fill="#241d4d" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="380" y="122" fill="#c4b5fd" font-size="12" font-weight="bold" text-anchor="middle" font-family="monospace">7.2 SOLUTIONS</text>
+        <text x="380" y="138" fill="#8d87b5" font-size="10" text-anchor="middle" font-family="monospace">linear search · bubble sort</text>
+        <text x="380" y="151" fill="#8d87b5" font-size="10" text-anchor="middle" font-family="monospace">totals · counts · max/min/avg</text>
+        <rect x="510" y="100" width="210" height="60" rx="9" fill="#241d4d" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="615" y="122" fill="#c4b5fd" font-size="12" font-weight="bold" text-anchor="middle" font-family="monospace">7.3 VALIDATION</text>
+        <text x="615" y="138" fill="#8d87b5" font-size="10" text-anchor="middle" font-family="monospace">range, length, type, presence,</text>
+        <text x="615" y="151" fill="#8d87b5" font-size="10" text-anchor="middle" font-family="monospace">format, check digit · verify</text>
+        <line x1="380" y1="58" x2="145" y2="96" stroke="#8d87b5" stroke-width="1.5" marker-end="url(#arrs)"/>
+        <line x1="380" y1="58" x2="380" y2="96" stroke="#8d87b5" stroke-width="1.5" marker-end="url(#arrs)"/>
+        <line x1="380" y1="58" x2="615" y2="96" stroke="#8d87b5" stroke-width="1.5" marker-end="url(#arrs)"/>
+        <rect x="40" y="205" width="210" height="60" rx="9" fill="#241d4d" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="145" y="227" fill="#c4b5fd" font-size="12" font-weight="bold" text-anchor="middle" font-family="monospace">7.4 TEST DATA</text>
+        <text x="145" y="243" fill="#8d87b5" font-size="10" text-anchor="middle" font-family="monospace">normal · abnormal · extreme</text>
+        <text x="145" y="256" fill="#8d87b5" font-size="10" text-anchor="middle" font-family="monospace">boundary (pairs!)</text>
+        <rect x="275" y="205" width="210" height="60" rx="9" fill="#241d4d" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="380" y="227" fill="#c4b5fd" font-size="12" font-weight="bold" text-anchor="middle" font-family="monospace">7.5 TRACE TABLES</text>
+        <text x="380" y="243" fill="#8d87b5" font-size="10" text-anchor="middle" font-family="monospace">dry runs · find &amp; correct</text>
+        <text x="380" y="256" fill="#8d87b5" font-size="10" text-anchor="middle" font-family="monospace">errors · write algorithms</text>
+        <rect x="510" y="205" width="210" height="60" rx="9" fill="#241d4d" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="615" y="227" fill="#c4b5fd" font-size="12" font-weight="bold" text-anchor="middle" font-family="monospace">DESIGN TOOLS</text>
+        <text x="615" y="243" fill="#8d87b5" font-size="10" text-anchor="middle" font-family="monospace">flowcharts · pseudocode</text>
+        <text x="615" y="256" fill="#8d87b5" font-size="10" text-anchor="middle" font-family="monospace">structure diagrams</text>
+        <line x1="145" y1="160" x2="145" y2="201" stroke="#8d87b5" stroke-width="1.5" marker-end="url(#arrs)"/>
+        <line x1="380" y1="160" x2="380" y2="201" stroke="#8d87b5" stroke-width="1.5" marker-end="url(#arrs)"/>
+        <line x1="615" y1="160" x2="615" y2="201" stroke="#8d87b5" stroke-width="1.5" marker-end="url(#arrs)"/>
+        <rect x="230" y="290" width="300" height="30" rx="8" fill="#1e193e" stroke="#f0abfc" stroke-width="1.2"/>
+        <text x="380" y="310" fill="#f0abfc" font-size="11" text-anchor="middle" font-family="monospace">Every solution: analyse → design → code → test → trace</text>
+      </svg>
+      <div class="diagram-caption">Life cycle → standard methods → validation &amp; verification → test data → trace tables &amp; errors</div>
+    </div>
+    <div class="slide-footer"><span class="section-label">Topic 7 · Summary</span><span class="slide-number">43 / 43</span></div>
+  </div>
+
+</div>
+
+<!-- ===== NAV BAR ===== -->
+<div class="nav-bar">
+  <button id="prevBtn" aria-label="Previous slide" onclick="changeSlide(-1)">← Prev</button>
+  <div class="progress-dots" id="progressDots"></div>
+  <span class="slide-counter" id="slideCounter">1 / 43</span>
+  <button id="nextBtn" aria-label="Next slide" onclick="changeSlide(1)">Next →</button>
+</div>
+<div class="kbd-hint">← → arrows · Home / End to jump</div>
+
+<script>
+  (function() {
+    const TOTAL = 43;
+    let current = 0;
+    function renderDots() {
+      const container = document.getElementById('progressDots');
+      container.innerHTML = '';
+      for (let i = 0; i < TOTAL; i++) {
+        const dot = document.createElement('button');
+        dot.className = 'dot' + (i === current ? ' active' : '');
+        dot.setAttribute('aria-label', 'Go to slide ' + (i+1));
+        dot.onclick = function() { goToSlide(i); };
+        container.appendChild(dot);
+      }
+    }
+    function goToSlide(idx) {
+      document.querySelectorAll('.slide').forEach((s, i) => s.classList.toggle('active', i === idx));
+      current = idx;
+      updateUI();
+      const active = document.querySelector('.slide.active');
+      if (active) active.scrollTop = 0;
+    }
+    function changeSlide(delta) {
+      const next = current + delta;
+      if (next < 0 || next >= TOTAL) return;
+      goToSlide(next);
+    }
+    function updateUI() {
+      document.getElementById('prevBtn').disabled = (current === 0);
+      document.getElementById('nextBtn').disabled = (current === TOTAL - 1);
+      document.getElementById('slideCounter').textContent = (current + 1) + ' / ' + TOTAL;
+      document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
+    }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown') { changeSlide(1); e.preventDefault(); }
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') { changeSlide(-1); e.preventDefault(); }
+      else if (e.key === 'Home') { goToSlide(0); e.preventDefault(); }
+      else if (e.key === 'End') { goToSlide(TOTAL - 1); e.preventDefault(); }
+    });
+    renderDots();
+    updateUI();
+    window.changeSlide = changeSlide;
+    window.goToSlide = goToSlide;
+    document.querySelectorAll('.reveal-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const el = document.getElementById(this.getAttribute('data-target'));
+        if (el) {
+          el.classList.toggle('visible');
+          this.textContent = el.classList.contains('visible') ? '🙈 Hide Answer' : '📌 Reveal Answer';
+        }
+      });
+    });
+  })();
+</script>
+</body>
+</html>

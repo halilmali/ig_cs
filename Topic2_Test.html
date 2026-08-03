@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topic 2 Test — IGCSE 0478 Computer Science</title>
+<link rel="stylesheet" href="css/test-common.css">
+</head>
+<body>
+<div class="bg-grid"></div>
+<header class="header">
+  <a class="back" href="index.html">← Back to all topics</a>
+  <h1><span class="num">Topic 2</span> — Data Transmission</h1>
+  <p>Exam-style practice test • instant feedback • explanations for every answer</p>
+  <span class="chapter-tag">📡 Packets &amp; packet switching &bull; Serial vs parallel &bull; USB &bull; Simplex / half / full duplex &bull; Parity &amp; checksums &bull; ARQ &bull; Encryption</span>
+</header>
+<div id="progressBarContainer"><div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div></div>
+<div class="main">
+  <div id="setupScreen">
+    <div class="setup-card">
+      <h2>⚙️ Test Settings</h2>
+      <div class="quiz-options">
+        <label>Questions: <select id="numQuestions"><option value="5">5</option><option value="10" selected>10</option><option value="14">14</option><option value="0">All</option></select></label>
+        <label>Type: <select id="questionType"><option value="all" selected>Mixed</option><option value="mcq">Multiple Choice</option><option value="truefalse">True / False</option></select></label>
+      </div>
+    </div>
+    <div class="center"><button class="btn-primary" onclick="startTest()">🚀 Start Test</button></div>
+  </div>
+  <div id="quizScreen" style="display:none;">
+    <div class="quiz-header">
+      <span class="quiz-progress">Question <strong id="currentQ">1</strong> of <strong id="totalQ">10</strong></span>
+      <span class="quiz-score">✅ <span id="scoreDisplay">0</span>/<span id="totalCorrect">0</span></span>
+    </div>
+    <div class="question-card">
+      <div class="question-number" id="qNum">Q1</div>
+      <div class="question-text" id="qText">Loading question...</div>
+      <div class="options-list" id="optionsList"></div>
+      <div class="feedback-area" id="feedbackArea"></div>
+      <div class="question-actions"><button class="btn-secondary" id="nextBtn" style="display:none;" onclick="nextQuestion()">Next →</button></div>
+    </div>
+  </div>
+  <div id="resultsScreen" style="display:none;">
+    <div class="results-card">
+      <div class="results-score" id="finalScore">0%</div>
+      <div class="results-label">Final Score</div>
+      <div class="results-details">
+        <div class="results-stat"><span class="num" id="rCorrect">0</span><div class="desc">Correct</div></div>
+        <div class="results-stat"><span class="num" id="rIncorrect">0</span><div class="desc">Incorrect</div></div>
+        <div class="results-stat"><span class="num" id="rTotal">0</span><div class="desc">Total</div></div>
+      </div>
+      <div class="results-msg" id="resultsMsg">Great job!</div>
+      <div class="review-list" id="reviewList"></div>
+      <div class="results-actions">
+        <button class="btn-primary" onclick="resetTest()">🔄 Try Again</button>
+        <button class="btn-secondary" onclick="showSetup()">⚙️ New Settings</button>
+        <button class="btn-secondary" onclick="location.href='index.html'">🌐 All Topics</button>
+      </div>
+    </div>
+  </div>
+</div>
+<footer class="footer">IGCSE 0478 Computer Science • 2026–2028 Syllabus • Topic 2 Practice Test</footer>
+<script>
+  var QUESTION_BANK = [{"q":"What are the three parts of a data packet?","options":["Header, Payload, Trailer","Head, Body, Tail","Address, Data, Check","Start, Middle, End"],"correct":0,"explain":"A packet contains a Header (routing info), a Payload (the data) and a Trailer (error-checking data)."},{"q":"Packets can arrive out of order. How are they put back in the right order?","options":["By the router","By the sequence number in the header","By the packet size","By the sender's IP address"],"correct":1,"explain":"Each packet header carries a sequence number which the receiver uses to reorder the packets."},{"q":"Which statement best describes serial transmission?","options":["Multiple bits sent at once over several wires","One bit sent at a time over a single wire","Data sent in both directions only","Data sent without any wires"],"correct":1,"explain":"Serial sends one bit at a time along a single wire — accurate over long distances."},{"q":"Parallel transmission is best suited to:","options":["Long distances such as the internet","Very short distances such as the CPU–RAM bus","Wireless connections","Keyboards connecting to computers"],"correct":1,"explain":"Parallel is fast but bits can skew over distance, so it suits short internal connections."},{"q":"A walkie-talkie conversation is an example of which transmission mode?","options":["Simplex","Half-duplex","Full-duplex","Serial"],"correct":1,"explain":"Both sides can speak, but not at the same time — that is half-duplex."},{"q":"A telephone call is an example of which transmission mode?","options":["Simplex","Half-duplex","Full-duplex","Parallel"],"correct":2,"explain":"Both people talk and listen simultaneously — full-duplex."},{"q":"Data from a keyboard to a computer flows in one direction only. This is:","options":["Simplex","Half-duplex","Full-duplex","Duplex"],"correct":0,"explain":"Keyboard → computer is one-way only, so it is simplex transmission."},{"q":"What does ARQ stand for?","options":["Automatic Repeat Query","Automatic Request Queue","Advanced Repeat Query","Automatic Retransmission Query"],"correct":0,"explain":"ARQ uses ACK/NAK signals and a timeout to automatically request retransmission of lost or corrupted data."},{"q":"Using even parity, what parity bit should be added to the byte 1011011?","options":["0","1","It cannot be determined","The byte is already even"],"correct":1,"explain":"1011011 has five 1s (odd), so an even-parity bit of 1 is added to make six 1s (even)."},{"q":"A single parity bit is unable to detect:","options":["A single flipped bit","Two flipped bits","A lost packet","A checksum error"],"correct":1,"explain":"If an even number of bits flips, the count of 1s is unchanged, so parity cannot detect it."},{"q":"A check digit is designed to detect:","options":["Errors during data transmission","Human data-entry errors","File corruption","Network congestion"],"correct":1,"explain":"Check digits (ISBNs, barcodes, credit cards) detect human typing errors such as digit transposition."},{"q":"A checksum is designed to detect:","options":["Human data-entry errors","Transmission errors in a block of data","Viruses","Incorrect passwords"],"correct":1,"explain":"The sender calculates a checksum from the data; the receiver recalculates it — a mismatch means a transmission error."},{"q":"In asymmetric encryption, the sender encrypts data using:","options":["The sender's private key","The receiver's public key","The receiver's private key","A shared secret key"],"correct":1,"explain":"The sender encrypts with the receiver's public key; only the receiver's private key can decrypt it."},{"q":"Why is asymmetric encryption more secure than symmetric encryption?","options":["It uses a longer key","The private key is never shared or transmitted","It has no keys at all","It is faster than symmetric encryption"],"correct":1,"explain":"The private key is never shared, so it cannot be intercepted during transmission."},{"tf":true,"q":"USB is an example of serial transmission.","correct":true,"explain":"USB (Universal Serial Bus) sends one bit at a time over a single connection."},{"tf":true,"q":"An echo check is an efficient way to verify large data transfers.","correct":false,"explain":"Echo checks double the data sent (send + echo back), so they are inefficient for large transfers."},{"tf":true,"q":"In packet switching, if one route fails the network can still deliver the data via other routes.","correct":true,"explain":"Each packet finds its own route, so the network keeps working even if one path fails."}];
+  var state = { questions: [], currentIndex: 0, score: 0, answers: [], answered: false };
+  function startTest() {
+    var pool = QUESTION_BANK.slice();
+    var typeFilter = document.getElementById('questionType').value;
+    if (typeFilter !== 'all') { pool = pool.filter(function(q) { return q.type === typeFilter; }); }
+    if (pool.length === 0) { alert('No questions of this type available.'); return; }
+    for (var i = pool.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = pool[i]; pool[i] = pool[j]; pool[j] = t; }
+    var numQ = parseInt(document.getElementById('numQuestions').value);
+    if (numQ === 0 || numQ > pool.length) numQ = pool.length;
+    state.questions = pool.slice(0, numQ);
+    state.currentIndex = 0; state.score = 0; state.answers = []; state.answered = false;
+    showScreen('quizScreen'); renderQuestion();
+  }
+  function renderQuestion() {
+    var q = state.questions[state.currentIndex];
+    var total = state.questions.length; var idx = state.currentIndex;
+    document.getElementById('currentQ').textContent = idx + 1;
+    document.getElementById('totalQ').textContent = total;
+    document.getElementById('scoreDisplay').textContent = state.score;
+    document.getElementById('totalCorrect').textContent = total;
+    document.getElementById('progressFill').style.width = (idx / total * 100) + '%';
+    document.getElementById('qText').textContent = q.q;
+    document.getElementById('qNum').textContent = 'Q' + (idx + 1) + (q.tf ? ' (True / False)' : '');
+    var container = document.getElementById('optionsList'); container.innerHTML = '';
+    var options = q.tf ? ['True', 'False'] : q.options;
+    options.forEach(function(text, i) {
+      var btn = document.createElement('button');
+      btn.className = 'option-btn';
+      btn.setAttribute('data-index', i);
+      var letter = document.createElement('span');
+      letter.className = 'option-letter';
+      letter.textContent = q.tf ? (i === 0 ? 'T' : 'F') : ['A','B','C','D'][i];
+      btn.appendChild(letter);
+      btn.appendChild(document.createTextNode(text));
+      btn.addEventListener('click', function() { selectAnswer(i); });
+      container.appendChild(btn);
+    });
+    var fb = document.getElementById('feedbackArea');
+    fb.className = 'feedback-area'; fb.innerHTML = '';
+    document.getElementById('nextBtn').style.display = 'none';
+    state.answered = false;
+  }
+  function selectAnswer(index) {
+    if (state.answered) return;
+    state.answered = true;
+    var q = state.questions[state.currentIndex];
+    var correctIndex = q.tf ? (q.correct ? 0 : 1) : q.correct;
+    var isCorrect = (index === correctIndex);
+    var buttons = document.querySelectorAll('.option-btn');
+    buttons.forEach(function(btn, i) {
+      btn.classList.add('disabled');
+      if (i === correctIndex) btn.classList.add('correct');
+      if (i === index && !isCorrect) btn.classList.add('incorrect');
+      if (i === index) btn.classList.add('selected');
+    });
+    if (isCorrect) state.score++;
+    var fb = document.getElementById('feedbackArea');
+    fb.className = 'feedback-area ' + (isCorrect ? 'correct' : 'incorrect');
+    fb.innerHTML = '<span class="fb-label">' + (isCorrect ? '✅ Correct!' : '❌ Incorrect.') + '</span> ' + q.explain;
+    state.answers.push({ selected: index, correct: correctIndex, question: q, wasCorrect: isCorrect });
+    document.getElementById('scoreDisplay').textContent = state.score;
+    var nb = document.getElementById('nextBtn');
+    nb.style.display = 'inline-flex';
+    nb.textContent = (state.currentIndex === state.questions.length - 1) ? '📊 See Results' : 'Next →';
+  }
+  function nextQuestion() {
+    if (state.currentIndex >= state.questions.length - 1) { showResults(); return; }
+    state.currentIndex++; renderQuestion();
+  }
+  function showResults() {
+    showScreen('resultsScreen');
+    var total = state.questions.length; var correct = state.score; var pct = total > 0 ? Math.round(correct / total * 100) : 0;
+    document.getElementById('finalScore').textContent = pct + '%';
+    document.getElementById('rCorrect').textContent = correct;
+    document.getElementById('rIncorrect').textContent = total - correct;
+    document.getElementById('rTotal').textContent = total;
+    var msg = document.getElementById('resultsMsg');
+    msg.className = 'results-msg';
+    if (pct === 100) { msg.textContent = '🏆 Perfect score! You are a Computer Science master!'; msg.classList.add('perfect'); }
+    else if (pct >= 80) { msg.textContent = '🌟 Excellent! Strong understanding of this topic.'; msg.classList.add('great'); }
+    else if (pct >= 60) { msg.textContent = '👍 Good effort! Review the incorrect answers.'; msg.classList.add('good'); }
+    else { msg.textContent = '📚 Keep studying! Re-read the slides and try again.'; msg.classList.add('retry'); }
+    var rl = document.getElementById('reviewList');
+    rl.innerHTML = '<h3 style="font-size:0.95rem;color:#b8d4ff;margin-bottom:8px;">📋 Review Answers</h3>';
+    state.answers.forEach(function(a, i) {
+      var item = document.createElement('div');
+      item.className = 'review-item ' + (a.wasCorrect ? 'correct-review' : 'incorrect-review');
+      var q = a.question;
+      var letters = ['A','B','C','D'];
+      var yourAns = q.tf ? (a.selected === 0 ? 'True' : 'False') : letters[a.selected];
+      var corrAns = q.tf ? (a.correct === 0 ? 'True' : 'False') : letters[a.correct];
+      item.innerHTML = '<div class="review-q">' + (i+1) + '. ' + q.q + '</div>' +
+        '<div class="review-a">' + (a.wasCorrect ? '<span class="correct-answer">✅ Correct</span>' : '<span class="your-answer">❌ Your answer: ' + yourAns + '</span> — <span class="correct-answer">Correct: ' + corrAns + '</span>') + '</div>' +
+        '<div style="color:#7a9abd;font-size:0.78rem;margin-top:4px;">' + q.explain + '</div>';
+      rl.appendChild(item);
+    });
+  }
+  function resetTest() {
+    state.currentIndex = 0; state.score = 0; state.answers = []; state.answered = false;
+    var pool = state.questions;
+    for (var i = pool.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = pool[i]; pool[i] = pool[j]; pool[j] = t; }
+    showScreen('quizScreen'); renderQuestion();
+  }
+  function showSetup() { showScreen('setupScreen'); }
+  function showScreen(id) {
+    var screens = ['setupScreen', 'quizScreen', 'resultsScreen'];
+    screens.forEach(function(s) { document.getElementById(s).style.display = (s === id) ? 'block' : 'none'; });
+    document.getElementById('progressBarContainer').style.display = (id === 'quizScreen') ? 'block' : 'none';
+  }
+  showScreen('setupScreen');
+</script>
+</body>
+</html>

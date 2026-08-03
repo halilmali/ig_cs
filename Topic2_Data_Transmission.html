@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topic 2: Data Transmission — Cambridge IGCSE Computer Science</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/topic-common.css">
+<style>
+/* ===== Topic-specific CSS ===== */
+
+
+  
+  .hex-strip {
+    position: fixed;
+    top: 0; right: 0; bottom: 0;
+    width: 170px;
+    font-family: 'JetBrains Mono', 'Cascadia Code', monospace;
+    font-size: 12px;
+    line-height: 1.9;
+    color: rgba(59, 130, 246, 0.13);
+    padding: 24px 16px;
+    white-space: pre;
+    pointer-events: none;
+    z-index: 0;
+    user-select: none;
+    text-align: right;
+  }
+
+
+
+  
+  .code-block {
+    font-family: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', Consolas, monospace;
+    background: #0a1215;
+    border: 1px solid #1f4a52; border-radius: 8px;
+    padding: 12px 16px; font-size: 0.88rem; line-height: 1.6;
+    color: #d4e8e4; overflow-x: auto; margin: 8px 0; white-space: pre-wrap;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.3);
+  }
+
+
+  .code-block .comment { color: #5b7280; font-style: italic; }
+
+
+  .code-block .hl { background: rgba(244, 163, 96, 0.18); color: #ffd3a8; border-radius: 3px; }
+
+
+  .code-block .hl-teal { background: rgba(20, 184, 166, 0.2); color: #8ee6d8; border-radius: 3px; }
+
+
+  .code-block .hl-green { background: rgba(139, 195, 74, 0.18); color: #c3e88d; border-radius: 3px; }
+
+
+  .code-block .op { color: #7ee8da; }
+
+
+  .formula {
+    font-family: 'JetBrains Mono', 'Cascadia Code', Consolas, monospace;
+    background: #0a1215; border: 1px solid #1f4a52; border-radius: 8px;
+    padding: 10px 16px; font-size: 0.95rem; color: #d4e8e4; text-align: center; margin: 6px 0;
+  }
+
+
+  .formula .highlight { color: #f4a360; font-weight: 700; }
+
+
+  td.mono, th.mono { font-family: 'JetBrains Mono', Consolas, monospace; }
+
+
+
+  
+  .flex-row { display: flex; flex-direction: row; gap: 18px; }
+
+
+  .flex-col { display: flex; flex-direction: column; gap: 8px; }
+
+
+  .flex-1 { flex: 1; }
+
+
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+
+
+  .mt-6 { margin-top: 6px; }
+
+ .mt-8 { margin-top: 8px; }
+
+ .mt-10 { margin-top: 10px; }
+
+
+  .mt-12 { margin-top: 12px; }
+
+ .mt-16 { margin-top: 16px; }
+
+
+  .mb-6 { margin-bottom: 6px; }
+
+ .mb-8 { margin-bottom: 8px; }
+
+ .mb-10 { margin-bottom: 10px; }
+
+ .mb-12 { margin-bottom: 12px; }
+
+
+  .text-center { text-align: center; }
+
+
+  .tag {
+    display: inline-block; background: #0f2830; color: #7ae0cc;
+    padding: 2px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 600;
+    border: 1px solid #1f4a52; margin-right: 3px;
+  }
+
+
+  .section-badge.sec-22 { background: linear-gradient(135deg, #1e2a36, #2a3f52); border-color: #3f6a8a; color: #9fc8e8; }
+
+
+  .section-badge.sec-23 { background: linear-gradient(135deg, #103a33, #14574a); border-color: #1f8a70; color: #7ae0c8; }
+
+
+  .section-badge.quiz { background: linear-gradient(135deg, #4a3a1a, #6a522a); border-color: #8a723a; color: #ffd54f; }
+
+
+
+  
+  .bits { display: flex; gap: 3px; flex-wrap: wrap; margin: 6px 0; }
+
+
+  .bit {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px; background: #0a1215; border: 1px solid #1f4a52; border-radius: 4px;
+    font-family: 'JetBrains Mono', 'Cascadia Code', monospace; font-size: 0.9rem;
+    color: #7ae0cc; font-weight: 700;
+  }
+
+
+  .bit.on { background: #0f3a2f; border-color: #1f8a5a; color: #8bc34a; }
+
+
+  .bit.off { background: #1a2025; border-color: #3a454c; color: #6a7a82; }
+
+
+  .bit.highlight { border-color: #f4a360; box-shadow: 0 0 8px rgba(244,163,96,0.35); }
+
+
+  .bit.par { border-color: #14b8a6; background: #0f2830; }
+
+
+  .bit-label { font-size: 0.7rem; color: #6a8a94; text-align: center; margin-top: 2px; font-family: 'JetBrains Mono', monospace; }
+
+
+  .callout.success { border-left-color: #8bc34a; }
+
+
+
+  
+  .step-list { list-style: none; padding: 0; counter-reset: step; }
+
+
+  .step-list li { counter-increment: step; padding: 5px 10px 5px 30px; position: relative; margin-bottom: 3px; }
+
+
+  .step-list li::before { content: counter(step) "."; position: absolute; left: 4px; color: #14b8a6; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+
+
+
+  .comparison-good { color: #8bc34a; }
+
+
+  .comparison-bad { color: #f48a8a; }
+
+
+  .comparison-neutral { color: #ffb74d; }
+
+
+
+  
+  .parity-grid { border-collapse: separate; border-spacing: 2px; margin: 6px auto; }
+
+
+  .parity-grid td {
+    width: 30px; height: 26px; text-align: center; vertical-align: middle;
+    background: #0a1215; border: 1px solid #1f4a52; border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; color: #7ae0cc; font-weight: 600;
+    padding: 0;
+  }
+
+
+  .parity-grid td.on { background: #0f3a2f; border-color: #1f8a5a; color: #8bc34a; }
+
+
+  .parity-grid td.off { background: #1a2025; border-color: #3a454c; color: #6a7a82; }
+
+
+  .parity-grid td.par { background: #0f2830; border-color: #14b8a6; color: #7ae0cc; }
+
+
+  .parity-grid td.err { background: rgba(244, 106, 106, 0.2); border-color: #f46a6a; color: #ff9c9c; }
+
+
+  .parity-grid td.rhead { background: transparent; border: none; color: #5a7a84; font-size: 0.7rem; font-family: 'Inter', sans-serif; font-weight: 600; }
+
+
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+
+
+    .flex-row { flex-direction: column; }
+
+
+    .bit { width: 28px; height: 28px; font-size: 0.75rem; }
+
+
+    .hex-strip { display: none; }
+</style>
+</head>
+<body>
+
+<div class="hex-strip" aria-hidden="true">45 00 00 3C 1C 46 40 00 40 06 B1 E6 C0 A8 01 01
+C0 A8 01 02 04 01 00 35 00 00 00 00 00 00 00 00
+50 02 20 00 00 00 00 00 68 65 6C 6C 6F 20 77 6F
+72 6C 64 21 20 54 68 69 73 20 69 73 20 61 20 64
+61 74 61 20 70 61 63 6B 65 74 20 68 65 61 64 65
+72 20 66 6F 6C 6C 6F 77 65 64 20 62 79 20 74 68
+65 20 70 61 79 6C 6F 61 64 20 61 6E 64 20 74 68
+65 20 74 72 61 69 6C 65 72 20 77 69 74 68 20 63
+68 65 63 6B 73 75 6D 20 64 61 74 61 2E 20 50 61
+72 69 74 79 20 62 69 74 73 20 66 6C 69 70 20 77
+68 65 6E 20 6E 6F 69 73 65 20 69 6E 74 65 72 66
+65 72 65 73 2E 20 41 43 4B 20 4E 41 4B 20 52 65
+73 65 6E 64 20 54 69 6D 65 6F 75 74 20 50 75 62
+6C 69 63 20 4B 65 79 20 50 72 69 76 61 74 65 20
+4B 65 79 20 45 6E 63 72 79 70 74 20 44 65 63 72
+79 70 74 20 43 69 70 68 65 72 74 65 78 74 20 50
+6C 61 69 6E 74 65 78 74 20 45 76 65 6E 20 4F 64
+64 20 50 61 72 69 74 79 20 43 68 65 63 6B 73 75
+6D 20 49 53 42 4E 20 42 61 72 63 6F 64 65 20 55
+53 42 20 53 65 72 69 61 6C 20 50 61 72 61 6C 6C</div>
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+
+<div class="presentation" id="presentation">
+
+<!-- ============ SLIDE 1 – TITLE ============ -->
+<div class="slide active" data-slide="1">
+  <div style="flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
+    <div class="section-badge" style="margin-bottom:16px; font-size:0.9rem;">Cambridge IGCSE Computer Science</div>
+    <h1 style="font-size:3rem; margin-bottom:8px;">Topic 2</h1>
+    <h1 style="font-size:2.6rem; margin-bottom:8px; color:#8ee6d8;">Data Transmission</h1>
+    <p style="font-size:1.1rem; color:#8aa0ac; margin-bottom:4px;">Syllabus 0478 · 0984 · 0418</p>
+    <div style="width:80px; height:3px; background:#14b8a6; border-radius:2px; margin:16px 0 20px;"></div>
+    <div class="grid-3" style="max-width:640px; width:100%;">
+      <div class="icon-tile"><span class="ico">📦</span><span class="ico-label">Data Packets</span><span class="ico-sub">header · payload · trailer</span></div>
+      <div class="icon-tile"><span class="ico">🔌</span><span class="ico-label">Cables</span><span class="ico-sub">serial · parallel · USB</span></div>
+      <div class="icon-tile"><span class="ico">🔐</span><span class="ico-label">Encryption</span><span class="ico-sub">public · private keys</span></div>
+    </div>
+    <p style="color:#4a6a74; font-size:0.85rem; margin-top:32px;">Types &amp; Methods &middot; Error Detection &middot; Encryption</p>
+    <p style="color:#4a6a74; font-size:0.8rem;">Press <span class="inline-code">→</span> or click the navigation to begin</p>
+  </div>
+  <div class="slide-footer"><span class="section-label">Topic 2 &middot; Overview</span><span class="slide-number">1 / 24</span></div>
+</div>
+
+<!-- ============ SLIDE 2 – LEARNING OBJECTIVES 2.1 ============ -->
+<div class="slide" data-slide="2">
+  <div class="section-badge">Section 2.1 &middot; Types &amp; Methods</div>
+  <h1>Learning Objectives</h1>
+  <div style="width:60px; height:3px; background:#14b8a6; border-radius:2px; margin-bottom:14px;"></div>
+  <p style="margin-bottom:12px;">By the end of this section you will be able to:</p>
+  <div class="grid-2">
+    <div>
+      <ul class="objectives-list">
+        <li>Understand how data is broken down into <strong>packets</strong></li>
+        <li>Describe the <strong>structure of a packet</strong> (header, payload, trailer)</li>
+        <li>Describe the process of <strong>packet switching</strong></li>
+        <li>Compare <strong>serial</strong> and <strong>parallel</strong> transmission</li>
+      </ul>
+    </div>
+    <div>
+      <ul class="objectives-list">
+        <li>Compare <strong>simplex, half-duplex, full-duplex</strong></li>
+        <li>Explain the suitability of each method for given <strong>scenarios</strong></li>
+        <li>Understand the <strong>Universal Serial Bus (USB)</strong> — benefits &amp; drawbacks</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout info mt-8"><strong>Syllabus reference:</strong> IGCSE 0478 / 0984 / 0418 &middot; Section 2.1 — Types and methods of data transmission.</div>
+  <div class="slide-footer"><span class="section-label">2.1 Types &amp; Methods</span><span class="slide-number">2 / 24</span></div>
+</div>
+
+<!-- ============ SLIDE 3 – WHAT IS A PACKET? ============ -->
+<div class="slide" data-slide="3">
+  <div class="section-badge">2.1 &middot; Types &amp; Methods</div>
+  <h2>What Is a Packet?</h2>
+  <div style="width:60px; height:3px; background:#14b8a6; border-radius:2px; margin-bottom:10px;"></div>
+  <p style="margin-bottom:8px;">Data sent over a network is broken down into smaller units called <strong>packets</strong>. Each packet has three parts:</p>
+  <div class="diagram-box">
+    <svg viewBox="0 0 760 190" style="width:100%; max-width:760px;">
+      <defs>
+        <marker id="arrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7ee8da"/></marker>
+      </defs>
+      <!-- packet bar -->
+      <rect x="40" y="55" width="680" height="60" rx="6" fill="#0a1215" stroke="#1f4a52" stroke-width="1.5"/>
+      <!-- header -->
+      <rect x="42" y="57" width="180" height="56" rx="4" fill="rgba(20,184,166,0.18)" stroke="#14b8a6" stroke-width="1.5"/>
+      <text x="132" y="78" fill="#8ee6d8" font-size="12" font-weight="bold" text-anchor="middle" font-family="sans-serif">HEADER</text>
+      <text x="132" y="96" fill="#9fc8d8" font-size="9" text-anchor="middle" font-family="sans-serif">routing information</text>
+      <!-- payload -->
+      <rect x="224" y="57" width="330" height="56" rx="4" fill="rgba(139,195,74,0.14)" stroke="#8bc34a" stroke-width="1.5"/>
+      <text x="389" y="78" fill="#c3e88d" font-size="12" font-weight="bold" text-anchor="middle" font-family="sans-serif">PAYLOAD</text>
+      <text x="389" y="96" fill="#b8ccd8" font-size="9" text-anchor="middle" font-family="sans-serif">the actual data being sent</text>
+      <!-- trailer -->
+      <rect x="556" y="57" width="162" height="56" rx="4" fill="rgba(244,163,96,0.15)" stroke="#f4a360" stroke-width="1.5"/>
+      <text x="637" y="78" fill="#ffd3a8" font-size="12" font-weight="bold" text-anchor="middle" font-family="sans-serif">TRAILER</text>
+      <text x="637" y="96" fill="#b8ccd8" font-size="9" text-anchor="middle" font-family="sans-serif">error-checking + end marker</text>
+      <!-- labels below -->
+      <text x="132" y="140" fill="#9fc8d8" font-size="10" text-anchor="middle" font-family="sans-serif">Destination address</text>
+      <text x="132" y="156" fill="#9fc8d8" font-size="10" text-anchor="middle" font-family="sans-serif">Packet number · Sender address</text>
+      <text x="389" y="140" fill="#9fc8d8" font-size="10" text-anchor="middle" font-family="sans-serif">Data split into pieces,</text>
+      <text x="389" y="156" fill="#9fc8d8" font-size="10" text-anchor="middle" font-family="sans-serif">each carried by one packet</text>
+      <text x="637" y="140" fill="#9fc8d8" font-size="10" text-anchor="middle" font-family="sans-serif">Checksum (error check)</text>
+      <text x="637" y="156" fill="#9fc8d8" font-size="10" text-anchor="middle" font-family="sans-serif">End-of-packet marker</text>
+    </svg>
+    <div class="diagram-caption">A packet = Header + Payload + Trailer</div>
+  </div>
+  <div class="grid-3 mt-8">
+    <div class="card"><h4>1. Header</h4><p style="font-size:0.85rem;">Destination address, packet number, originator's address.</p></div>
+    <div class="card"><h4>2. Payload</h4><p style="font-size:0.85rem;">The actual data being transmitted.</p></div>
+    <div class="card"><h4>3. Trailer</h4><p style="font-size:0.85rem;">Error-checking data (e.g. checksum) and end-of-packet marker.</p></div>
+  </div>
+  <div class="slide-footer"><span class="section-label">2.1 Types &amp; Methods</span><span class="slide-number">3 / 24</span></div>
+</div>
+
+<!-- ============ SLIDE 4 – PACKET SWITCHING ============ -->
+<div class="slide" data-slide="4">
+  <div class="section-badge">2.1 &middot; Types &amp; Methods</div>
+  <h2>Packet Switching Process</h2>
+  <div style="width:60px; height:3px; background:#14b8a6; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="grid-2">
+    <div>
+      <ol class="step-list">
+        <li><strong>Data is broken down</strong> into packets.</li>
+        <li>Each packet is sent <strong>individually</strong> across the network.</li>
+        <li><strong>Routers</strong> control the route — packets may take <strong>different paths</strong>.</li>
+        <li>Packets may arrive <strong>out of order</strong> at the destination.</li>
+        <li>Once the last packet arrives, they are <strong>reordered</strong> using packet numbers.</li>
+      </ol>
+      <div class="callout info mt-8"><strong>Key point:</strong> because each packet finds its own route, the network keeps working even if one path fails.</div>
+    </div>
+    <div>
+      <div class="diagram-box">
+        <svg viewBox="0 0 560 260" style="width:100%; max-width:560px;">
+          <defs>
+            <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#f4a360"/></marker>
+            <marker id="arrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#8bc34a"/></marker>
+            <marker id="arrC" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#4a9ee8"/></marker>
+          </defs>
+          <!-- nodes -->
+          <rect x="10" y="110" width="70" height="40" rx="8" fill="#0f2830" stroke="#14b8a6" stroke-width="1.5"/>
+          <text x="45" y="134" fill="#8ee6d8" font-size="11" text-anchor="middle" font-family="sans-serif">Sender</text>
+          <rect x="180" y="30" width="70" height="40" rx="8" fill="#0f1a20" stroke="#1f4a52" stroke-width="1.5"/>
+          <text x="215" y="54" fill="#9fc8d8" font-size="11" text-anchor="middle" font-family="sans-serif">Router 1</text>
+          <rect x="180" y="190" width="70" height="40" rx="8" fill="#0f1a20" stroke="#1f4a52" stroke-width="1.5"/>
+          <text x="215" y="214" fill="#9fc8d8" font-size="11" text-anchor="middle" font-family="sans-serif">Router 2</text>
+          <rect x="350" y="110" width="70" height="40" rx="8" fill="#0f1a20" stroke="#1f4a52" stroke-width="1.5"/>
+          <text x="385" y="134" fill="#9fc8d8" font-size="11" text-anchor="middle" font-family="sans-serif">Router 3</text>
+          <rect x="480" y="110" width="70" height="40" rx="8" fill="#0f2830" stroke="#8bc34a" stroke-width="1.5"/>
+          <text x="515" y="134" fill="#c3e88d" font-size="11" text-anchor="middle" font-family="sans-serif">Receiver</text>
+          <!-- links -->
+          <line x1="80" y1="125" x2="178" y2="55" stroke="#3a4a55" stroke-width="1.5"/>
+          <line x1="80" y1="135" x2="178" y2="205" stroke="#3a4a55" stroke-width="1.5"/>
+          <line x1="250" y1="62" x2="348" y2="128" stroke="#3a4a55" stroke-width="1.5"/>
+          <line x1="250" y1="200" x2="348" y2="136" stroke="#3a4a55" stroke-width="1.5"/>
+          <line x1="420" y1="128" x2="478" y2="126" stroke="#3a4a55" stroke-width="1.5"/>
+          <!-- packet P1 -->
+          <path d="M 85 122 L 175 58 L 245 66 L 343 132 L 415 128" fill="none" stroke="#f4a360" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrA)"/>
+          <text x="150" y="50" fill="#f4a360" font-size="10" font-family="monospace">P1</text>
+          <!-- packet P2 -->
+          <path d="M 85 132 L 175 200 L 245 195 L 343 133 L 415 130" fill="none" stroke="#8bc34a" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrB)"/>
+          <text x="150" y="222" fill="#8bc34a" font-size="10" font-family="monospace">P2</text>
+          <!-- packet P3 -->
+          <path d="M 85 128 L 175 62 L 245 70 L 343 136 L 415 132" fill="none" stroke="#4a9ee8" stroke-width="2" stroke-dasharray="3 5" marker-end="url(#arrC)"/>
+          <text x="300" y="40" fill="#4a9ee8" font-size="10" font-family="monospace">P3</text>
+          <text x="280" y="250" fill="#6a8a94" font-size="9" text-anchor="middle" font-family="sans-serif">Packets P1, P2, P3 take different routes through routers</text>
+        </svg>
+        <div class="diagram-caption">Each packet is routed independently — different packets, different paths</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="section-label">2.1 Types &amp; Methods</span><span class="slide-number">4 / 24</span></div>
+</div>
+
+<!-- ============ SLIDE 5 – SERIAL VS PARALLEL ============ -->
+<div class="slide" data-slide="5">
+  <div class="section-badge">2.1 &middot; Types &amp; Methods</div>
+  <h2>Serial vs. Parallel Transmission</h2>
+  <div style="width:60px; height:3px; background:#14b8a6; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="diagram-box">
+    <svg viewBox="0 0 760 220" style="width:100%; max-width:760px;">
+      <defs>
+        <marker id="arrS" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7ee8da"/></marker>
+      </defs>
+      <!-- SERIAL -->
+      <text x="20" y="24" fill="#8ee6d8" font-size="12" font-weight="bold" font-family="sans-serif">SERIAL — one bit at a time, one wire</text>
+      <rect x="20" y="40" width="60" height="30" rx="6" fill="#0f2830" stroke="#14b8a6"/>
+      <text x="50" y="59" fill="#8ee6d8" font-size="10" text-anchor="middle" font-family="sans-serif">Sender</text>
+      <line x1="80" y1="55" x2="700" y2="55" stroke="#7ee8da" stroke-width="3"/>
+      <text x="150" y="48" fill="#f4a360" font-size="11" font-family="monospace">1</text>
+      <text x="220" y="48" fill="#f4a360" font-size="11" font-family="monospace">0</text>
+      <text x="290" y="48" fill="#f4a360" font-size="11" font-family="monospace">1</text>
+      <text x="360" y="48" fill="#f4a360" font-size="11" font-family="monospace">1</text>
+      <text x="430" y="48" fill="#f4a360" font-size="11" font-family="monospace">0</text>
+      <text x="500" y="48" fill="#f4a360" font-size="11" font-family="monospace">1</text>
+      <text x="570" y="48" fill="#f4a360" font-size="11" font-family="monospace">0</text>
+      <text x="640" y="48" fill="#f4a360" font-size="11" font-family="monospace">1</text>
+      <path d="M 700 55 L 720 55" stroke="#7ee8da" stroke-width="3" marker-end="url(#arrS)"/>
+      <rect x="690" y="40" width="60" height="30" rx="6" fill="#0f2830" stroke="#14b8a6"/>
+      <text x="720" y="59" fill="#8ee6d8" font-size="10" text-anchor="middle" font-family="sans-serif">Receiver</text>
+      <!-- PARALLEL -->
+      <text x="20" y="110" fill="#c3e88d" font-size="12" font-weight="bold" font-family="sans-serif">PARALLEL — many bits at once, many wires</text>
+      <rect x="20" y="128" width="60" height="72" rx="6" fill="#0f2830" stroke="#8bc34a"/>
+      <text x="50" y="168" fill="#c3e88d" font-size="10" text-anchor="middle" font-family="sans-serif">Sender</text>
+      <g>
+        <line x1="80" y1="136" x2="700" y2="136" stroke="#8bc34a" stroke-width="2"/><text x="470" y="130" fill="#c3e88d" font-size="10" font-family="monospace">1</text>
+        <line x1="80" y1="146" x2="700" y2="146" stroke="#8bc34a" stroke-width="2"/><text x="470" y="140" fill="#c3e88d" font-size="10" font-family="monospace">0</text>
+        <line x1="80" y1="156" x2="700" y2="156" stroke="#8bc34a" stroke-width="2"/><text x="470" y="150" fill="#c3e88d" font-size="10" font-family="monospace">1</text>
+        <line x1="80" y1="166" x2="700" y2="166" stroke="#8bc34a" stroke-width="2"/><text x="470" y="160" fill="#c3e88d" font-size="10" font-family="monospace">1</text>
+        <line x1="80" y1="176" x2="700" y2="176" stroke="#8bc34a" stroke-width="2"/><text x="470" y="170" fill="#c3e88d" font-size="10" font-family="monospace">0</text>
+        <line x1="80" y1="186" x2="700" y2="186" stroke="#8bc34a" stroke-width="2"/><text x="470" y="180" fill="#c3e88d" font-size="10" font-family="monospace">1</text>
+        <line x1="80" y1="196" x2="700" y2="196" stroke="#8bc34a" stroke-width="2"/><text x="470" y="190" fill="#c3e88d" font-size="10" font-family="monospace">0</text>
+      </g>
+      <rect x="690" y="128" width="60" height="72" rx="6" fill="#0f2830" stroke="#8bc34a"/>
+      <text x="720" y="168" fill="#c3e88d" font-size="10" text-anchor="middle" font-family="sans-serif">Receiver</text>
+      <text x="380" y="214" fill="#6a8a94" font-size="9" text-anchor="middle" font-family="sans-serif">Serial sends 1 bit at a time · Parallel sends whole groups at once</text>
+    </svg>
+    <div class="diagram-caption">Serial = single lane, one bit after another · Parallel = many lanes at once</div>
+  </div>
+  <table style="margin-top:8px;">
+    <thead>
+      <tr><th>Feature</th><th>Serial</th><th>Parallel</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>How data is sent</strong></td><td>One bit at a time, over a <strong>single wire</strong></td><td>Multiple bits simultaneously, over <strong>multiple wires</strong></td></tr>
+      <tr><td><strong>Distance</strong></td><td class="comparison-good">Accurate over <strong>long</strong> distances</td><td class="comparison-bad">Bits can <strong>skew</strong> (arrive out of sync) over long distances</td></tr>
+      <tr><td><strong>Speed</strong></td><td class="comparison-bad">Slower</td><td class="comparison-good">Fast over <strong>short</strong> distances</td></tr>
+      <tr><td><strong>Cabling cost</strong></td><td class="comparison-good">Cheaper — fewer wires</td><td class="comparison-bad">Expensive — many wires</td></tr>
+    </tbody>
+  </table>
+  <div class="slide-footer"><span class="section-label">2.1 Types &amp; Methods</span><span class="slide-number">5 / 24</span></div>
+</div>
+
+<!-- ============ SLIDE 6 – TRANSMISSION DIRECTIONS ============ -->
+<div class="slide" data-slide="6">
+  <div class="section-badge">2.1 &middot; Types &amp; Methods</div>
+  <h2>Transmission Directions</h2>
+  <div style="width:60px; height:3px; background:#14b8a6; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="grid-3">
+    <div class="card">
+      <h4>🔽 Simplex</h4>
+      <p style="font-size:0.9rem;">Data travels in <strong>one direction only</strong>.</p>
+      <div class="diagram-box" style="padding:10px;">
+        <svg viewBox="0 0 200 80" style="width:100%; max-width:200px;">
+          <defs><marker id="arr1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7ee8da"/></marker></defs>
+          <rect x="10" y="25" width="55" height="30" rx="6" fill="#0f2830" stroke="#14b8a6"/><text x="37" y="44" fill="#8ee6d8" font-size="10" text-anchor="middle" font-family="sans-serif">A</text>
+          <rect x="135" y="25" width="55" height="30" rx="6" fill="#0f2830" stroke="#14b8a6"/><text x="162" y="44" fill="#8ee6d8" font-size="10" text-anchor="middle" font-family="sans-serif">B</text>
+          <line x1="65" y1="40" x2="133" y2="40" stroke="#7ee8da" stroke-width="2.5" marker-end="url(#arr1)"/>
+          <text x="100" y="20" fill="#6a8a94" font-size="9" text-anchor="middle" font-family="sans-serif">one way only</text>
+        </svg>
+      </div>
+      <p style="font-size:0.82rem;"><strong>Example:</strong> computer → monitor (display only).</p>
+    </div>
+    <div class="card">
+      <h4>⇄ Half-Duplex</h4>
+      <p style="font-size:0.9rem;">Both directions, but <strong>only one at a time</strong>.</p>
+      <div class="diagram-box" style="padding:10px;">
+        <svg viewBox="0 0 200 80" style="width:100%; max-width:200px;">
+          <defs>
+            <marker id="arr2a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#f4a360"/></marker>
+            <marker id="arr2b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#4a9ee8"/></marker>
+          </defs>
+          <rect x="10" y="15" width="55" height="30" rx="6" fill="#0f2830" stroke="#14b8a6"/><text x="37" y="34" fill="#8ee6d8" font-size="10" text-anchor="middle" font-family="sans-serif">A</text>
+          <rect x="135" y="15" width="55" height="30" rx="6" fill="#0f2830" stroke="#14b8a6"/><text x="162" y="34" fill="#8ee6d8" font-size="10" text-anchor="middle" font-family="sans-serif">B</text>
+          <line x1="65" y1="26" x2="133" y2="26" stroke="#f4a360" stroke-width="2.5" marker-end="url(#arr2a)"/>
+          <line x1="133" y1="38" x2="65" y2="38" stroke="#4a9ee8" stroke-width="2.5" marker-end="url(#arr2b)"/>
+          <text x="100" y="62" fill="#6a8a94" font-size="9" text-anchor="middle" font-family="sans-serif">one direction at a time</text>
+        </svg>
+      </div>
+      <p style="font-size:0.82rem;"><strong>Example:</strong> walkie-talkie — "over" to switch.</p>
+    </div>
+    <div class="card">
+      <h4>⇄ Full-Duplex</h4>
+      <p style="font-size:0.9rem;">Both directions <strong>simultaneously</strong>.</p>
+      <div class="diagram-box" style="padding:10px;">
+        <svg viewBox="0 0 200 80" style="width:100%; max-width:200px;">
+          <defs>
+            <marker id="arr3a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#8bc34a"/></marker>
+            <marker id="arr3b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#8bc34a"/></marker>
+          </defs>
+          <rect x="10" y="25" width="55" height="30" rx="6" fill="#0f2830" stroke="#8bc34a"/><text x="37" y="44" fill="#c3e88d" font-size="10" text-anchor="middle" font-family="sans-serif">A</text>
+          <rect x="135" y="25" width="55" height="30" rx="6" fill="#0f2830" stroke="#8bc34a"/><text x="162" y="44" fill="#c3e88d" font-size="10" text-anchor="middle" font-family="sans-serif">B</text>
+          <line x1="65" y1="32" x2="133" y2="32" stroke="#8bc34a" stroke-width="2.5" marker-end="url(#arr3a)"/>
+          <line x1="133" y1="48" x2="65" y2="48" stroke="#8bc34a" stroke-width="2.5" marker-end="url(#arr3b)"/>
+          <text x="100" y="20" fill="#6a8a94" font-size="9" text-anchor="middle" font-family="sans-serif">both ways at once</text>
+        </svg>
+      </div>
+      <p style="font-size:0.82rem;"><strong>Example:</strong> telephone call — both speak at once.</p>
+    </div>
+  </div>
+  <table style="margin-top:8px;">
+    <thead><tr><th>Mode</th><th>Direction of data</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Simplex</strong></td><td>One way only</td><td>Computer → monitor, keyboard → computer</td></tr>
+      <tr><td><strong>Half-Duplex</strong></td><td>Both ways, one at a time</td><td>Walkie-talkie, Wi-Fi</td></tr>
+      <tr><td><strong>Full-Duplex</strong></td><td>Both ways, simultaneously</td><td>Telephone call, video call</td></tr>
+    </tbody>
+  </table>
+  <div class="slide-footer"><span class="section-label">2.1 Types &amp; Methods</span><span class="slide-number">6 / 24</span></div>
+</div>
+
+<!-- ============ SLIDE 7 – SUITABILITY SCENARIOS ============ -->
+<div class="slide" data-slide="7">
+  <div class="section-badge">2.1 &middot; Types &amp; Methods</div>
+  <h2>Suitability Scenarios</h2>
+  <div style="width:60px; height:3px; background:#14b8a6; border-radius:2px; margin-bottom:10px;"></div>
+  <p style="margin-bottom:8px;">Exam questions love giving you a <strong>scenario</strong> and asking which method to use — and why.</p>
+  <table>
+    <thead>
+      <tr><th>Scenario</th><th>Best method</th><th>Why</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Internal computer buses</strong> (CPU → RAM)</td>
+        <td><span class="tag">Parallel</span></td>
+        <td>High speed is needed over <strong>very short</strong> distances — skewing is not a problem.</td>
+      </tr>
+      <tr>
+        <td><strong>Printer / external drive</strong> over a distance</td>
+        <td><span class="tag">Serial</span></td>
+        <td>Longer cables — parallel bits would <strong>skew</strong>; serial stays accurate.</td>
+      </tr>
+      <tr>
+        <td><strong>Internet connection</strong></td>
+        <td><span class="tag">Serial</span></td>
+        <td>Data travels long distances; serial avoids <strong>data skewing</strong>.</td>
+      </tr>
+      <tr>
+        <td><strong>Video conferencing</strong></td>
+        <td><span class="tag">Full-Duplex</span></td>
+        <td>Instant <strong>two-way</strong> communication is vital — both sides talk at once.</td>
+      </tr>
+      <tr>
+        <td><strong>Keyboard → computer</strong></td>
+        <td><span class="tag">Simplex</span></td>
+        <td>Data only ever flows <strong>one way</strong>.</td>
+      </tr>
+      <tr>
+        <td><strong>Walkie-talkie radio</strong></td>
+        <td><span class="tag">Half-Duplex</span></td>
+        <td>Both people need to speak, but <strong>not at the same time</strong>.</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="callout info mt-8"><strong>Exam tip:</strong> always justify your choice — "parallel is fast but only over short distances" and "serial is reliable over long distances" are the key phrases.</div>
+  <div class="slide-footer"><span class="section-label">2.1 Types &amp; Methods</span><span class="slide-number">7 / 24</span></div>
+</div>
+
+<!-- ============ SLIDE 8 – USB ============ -->
+<div class="slide" data-slide="8">
+  <div class="section-badge">2.1 &middot; Types &amp; Methods</div>
+  <h2>Universal Serial Bus (USB)</h2>
+  <div style="width:60px; height:3px; background:#14b8a6; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="callout info"><strong>USB is an asynchronous serial data transmission method</strong> — data is sent one bit at a time over a single connection.</div>
+  <div class="grid-2">
+    <div>
+      <div class="card">
+        <h4>✅ Benefits</h4>
+        <ul>
+          <li><strong>Automatically detects</strong> connected devices</li>
+          <li>Connector fits <strong>only one way</strong> — prevents incorrect connection</li>
+          <li>An <strong>industry standard</strong> — works across many devices</li>
+          <li>Supports different <strong>transmission speeds</strong></li>
+          <li>Can <strong>power devices</strong> (charge phones, run drives)</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="border-color:#f4a360;">
+        <h4>⚠ Drawbacks</h4>
+        <ul>
+          <li><strong>Cable length limited</strong> to ~5 metres</li>
+          <li>Transmission speed is <strong>slower than internal parallel buses</strong></li>
+        </ul>
+      </div>
+      <div class="diagram-box mt-8">
+        <svg viewBox="0 0 320 90" style="width:100%; max-width:320px;">
+          <rect x="10" y="25" width="70" height="36" rx="8" fill="#0f2830" stroke="#14b8a6"/>
+          <text x="45" y="47" fill="#8ee6d8" font-size="10" text-anchor="middle" font-family="sans-serif">Computer</text>
+          <line x1="80" y1="43" x2="140" y2="43" stroke="#7ee8da" stroke-width="3"/>
+          <rect x="140" y="33" width="40" height="20" rx="4" fill="#1a2a30" stroke="#3a5a6a" stroke-width="1.5"/>
+          <line x1="180" y1="43" x2="240" y2="43" stroke="#7ee8da" stroke-width="3"/>
+          <rect x="240" y="25" width="70" height="36" rx="8" fill="#0f2830" stroke="#8bc34a"/>
+          <text x="275" y="47" fill="#c3e88d" font-size="10" text-anchor="middle" font-family="sans-serif">Device</text>
+          <text x="110" y="20" fill="#6a8a94" font-size="9" text-anchor="middle" font-family="monospace">USB (serial)</text>
+          <text x="160" y="80" fill="#6a8a94" font-size="9" text-anchor="middle" font-family="sans-serif">One connection, one bit at a time</text>
+        </svg>
+        <div class="diagram-caption">USB connects computers to external devices using serial transmission</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="section-label">2.1 Types &amp; Methods</span><span class="slide-number">8 / 24</span></div>
+</div>
+
+<!-- ============ SLIDE 9 – RECAP 2.1 ============ -->
+<div class="slide" data-slide="9">
+  <div class="section-badge quiz">2.1 &middot; Quick Check</div>
+  <h2>Recap — Practice Questions</h2>
+  <div style="width:60px; height:3px; background:#ffd54f; border-radius:2px; margin-bottom:10px;"></div>
+  <p style="margin-bottom:10px;">Try each question, then reveal the answer.</p>
+  <div class="grid-2">
+    <div class="card" style="margin-bottom:10px;">
+      <h4>📝 Q1. State three items found in a packet header</h4>
+      <div class="reveal-container">
+        <button class="reveal-btn" data-target="q1">📌 Reveal Answer</button>
+        <div class="reveal-answer" id="q1">
+          <p>Any three of: <strong>destination address</strong>, <strong>packet number</strong>, <strong>originator's (sender's) address</strong>.</p>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:10px;">
+      <h4>📝 Q2. Why is parallel transmission unsuitable for long distances?</h4>
+      <div class="reveal-container">
+        <button class="reveal-btn" data-target="q2">📌 Reveal Answer</button>
+        <div class="reveal-answer" id="q2">
+          <p>Over long distances the bits can become <strong>unsynchronised / skewed</strong> — they arrive at slightly different times, corrupting the data. Serial is used instead.</p>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:10px;">
+      <h4>📝 Q3. A walkie-talkie uses which transmission direction?</h4>
+      <div class="reveal-container">
+        <button class="reveal-btn" data-target="q3">📌 Reveal Answer</button>
+        <div class="reveal-answer" id="q3">
+          <p><strong>Half-duplex</strong> — data flows both ways but only <strong>one direction at a time</strong> ("over"!).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="callout success mt-8"><strong>📖 Revision tip:</strong> packet questions appear often — memorise <em>header / payload / trailer</em> and what each contains.</div>
+  <div class="slide-footer"><span class="section-label">2.1 Types &amp; Methods</span><span class="slide-number">9 / 24</span></div>
+</div>
+
+<!-- ============ SLIDE 10 – LEARNING OBJECTIVES 2.2 ============ -->
+<div class="slide" data-slide="10">
+  <div class="section-badge sec-22">Section 2.2 &middot; Error Detection</div>
+  <h1>Learning Objectives</h1>
+  <div style="width:60px; height:3px; background:#4a9ee8; border-radius:2px; margin-bottom:14px;"></div>
+  <p style="margin-bottom:12px;">By the end of this section you will be able to:</p>
+  <div class="grid-2">
+    <div>
+      <ul class="objectives-list">
+        <li>Understand why transmission errors occur — <strong>interference, data loss / gain / change</strong></li>
+        <li>Describe <strong>parity checks</strong> (odd &amp; even, parity bytes, parity blocks)</li>
+        <li>Describe <strong>checksums</strong> and <strong>echo checks</strong></li>
+      </ul>
+    </div>
+    <div>
+      <ul class="objectives-list">
+        <li>Describe <strong>check digits</strong> (ISBN and barcodes)</li>
+        <li>Describe <strong>Automatic Repeat Query (ARQ)</strong></li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout info mt-8"><strong>Syllabus reference:</strong> IGCSE 0478 / 0984 / 0418 &middot; Section 2.2 — Methods of error detection.</div>
+  <div class="slide-footer"><span class="section-label">2.2 Error Detection</span><span class="slide-number">10 / 24</span></div>
+</div>
+
+<!-- ============ SLIDE 11 – WHY DO ERRORS OCCUR ============ -->
+<div class="slide" data-slide="11">
+  <div class="section-badge sec-22">2.2 &middot; Error Detection</div>
+  <h2>Why Do Errors Occur?</h2>
+  <div style="width:60px; height:3px; background:#4a9ee8; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="grid-2">
+    <div>
+      <div class="card">
+        <h4>🌩️ Causes of Errors</h4>
+        <p>During transmission, data can be corrupted by:</p>
+        <ul>
+          <li><strong>Electrical interference (noise)</strong> — nearby signals, power lines</li>
+          <li><strong>Distortion</strong> of the signal</li>
+          <li><strong>Wear and tear</strong> on cables</li>
+        </ul>
+        <div class="code-block" style="font-size:0.85rem; text-align:center;">
+          sent: <span class="hl-teal">0 1 1 0 0 1 0 1</span><br>
+          got:&nbsp;&nbsp;<span class="hl">0 1 1 1 0 1 0 1</span> &nbsp;← one bit flipped!
+        </div>
+      </div>
+      <div class="callout warn mt-8"><strong>Key idea:</strong> a flipped bit (<span class="inline-code">0 → 1</span> or <span class="inline-code">1 → 0</span>) changes the value — error detection methods catch this.</div>
+    </div>
+    <div>
+      <h4>📋 Three Types of Data Error</h4>
+      <table>
+        <thead><tr><th>Error</th><th>Meaning</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Data loss</strong></td><td>Some data never arrives</td><td class="mono">10110 → 100</td></tr>
+          <tr><td><strong>Data gain</strong></td><td>Extra (unwanted) data arrives</td><td class="mono">10110 → 101100</td></tr>
+          <tr><td><strong>Data change</strong></td><td>A bit arrives with a different value</td><td class="mono">10110 → 10010</td></tr>
+        </tbody>
+      </table>
+      <div class="card mt-8">
+        <h4>🔎 The Goal</h4>
+        <p style="font-size:0.9rem;">Error detection methods let the receiver <strong>notice</strong> that data was corrupted, and often <strong>request a resend</strong>.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="section-label">2.2 Error Detection</span><span class="slide-number">11 / 24</span></div>
+</div>
+
+<!-- ============ SLIDE 12 – PARITY CHECKS ============ -->
+<div class="slide" data-slide="12">
+  <div class="section-badge sec-22">2.2 &middot; Error Detection</div>
+  <h2>Parity Checks (Odd and Even)</h2>
+  <div style="width:60px; height:3px; background:#4a9ee8; border-radius:2px; margin-bottom:10px;"></div>
+  <p style="margin-bottom:8px;">A <strong>parity bit</strong> is added to a byte so that the total number of <strong>1s</strong> is either <strong>even</strong> (even parity) or <strong>odd</strong> (odd parity). Both sides agree the rule in advance.</p>
+  <div class="grid-2">
+    <div class="worked-example">
+      <div class="we-label">Worked Example — Even parity</div>
+      <h4>Byte 1011001 → add even parity bit</h4>
+      <div class="code-block" style="font-size:0.85rem;">
+        <span class="comment">// count the 1s in 1011001</span>
+        <span class="hl-teal">1</span> 0 <span class="hl-teal">1</span> <span class="hl-teal">1</span> 0 0 <span class="hl-teal">1</span> &nbsp;=&nbsp; <span class="hl">4 ones</span>
+        <span class="comment">// 4 is even → parity bit = 0</span>
+        sent: <span class="hl-green">1011001 0</span> &nbsp;(still 4 ones, even ✓)
+      </div>
+      <div class="bits" style="justify-content:center;">
+        <span class="bit on">1</span><span class="bit off">0</span><span class="bit on">1</span><span class="bit on">1</span><span class="bit off">0</span><span class="bit off">0</span><span class="bit on">1</span>
+        <span class="bit par">0</span>
+      </div>
+      <div class="bits" style="justify-content:center;"><span class="bit-label">data (7 bits)</span><span class="bit-label">parity</span></div>
+    </div>
+    <div class="worked-example">
+      <div class="we-label">Worked Example — Odd parity</div>
+      <h4>Byte 1011001 → add odd parity bit</h4>
+      <div class="code-block" style="font-size:0.85rem;">
+        <span class="comment">// count the 1s in 1011001</span>
+        <span class="hl-teal">1</span> 0 <span class="hl-teal">1</span> <span class="hl-teal">1</span> 0 0 <span class="hl-teal">1</span> &nbsp;=&nbsp; <span class="hl">4 ones</span>
+        <span class="comment">// 4 is even, we need ODD → parity bit = 1</span>
+        sent: <span class="hl-green">1011001 1</span> &nbsp;(5 ones, odd ✓)
+      </div>
+      <div class="bits" style="justify-content:center;">
+        <span class="bit on">1</span><span class="bit off">0</span><span class="bit on">1</span><span class="bit on">1</span><span class="bit off">0</span><span class="bit off">0</span><span class="bit on">1</span>
+        <span class="bit on" style="border-color:#f4a360; color:#ffd3a8;">1</span>
+      </div>
+      <div class="bits" style="justify-content:center;"><span class="bit-label">data (7 bits)</span><span class="bit-label">parity</span></div>
+    </div>
+  </div>
+  <div class="exam-tip">
+    <span class="tip-icon">💡</span>
+    <div class="tip-text"><strong>Exam Tip:</strong> Parity checks cannot detect if an <strong>even number of bits</strong> (e.g. two bits) flip during transmission — the count of 1s stays the same.</div>
+  </div>
+  <div class="slide-footer"><span class="section-label">2.2 Error Detection</span><span class="slide-number">12 / 24</span></div>
+</div>
+
+<!-- ============ SLIDE 13 – PARITY BLOCKS ============ -->
+<div class="slide" data-slide="13">
+  <div class="section-badge sec-22">2.2 &middot; Error Detection</div>
+  <h2>Parity Blocks</h2>
+  <div style="width:60px; height:3px; background:#4a9ee8; border-radius:2px; margin-bottom:10px;"></div>
+  <p style="margin-bottom:8px;">A <strong>parity block</strong> arranges several bytes in a <strong>grid</strong> with parity bits across each row <em>and</em> down each column. This can <strong>locate and correct</strong> a single flipped bit.</p>
+  <div class="grid-2">
+    <div>
+      <div class="diagram-box">
+        <table class="parity-grid">
+          <tr>
+            <td class="rhead"></td><td class="rhead">b1</td><td class="rhead">b2</td><td class="rhead">b3</td><td class="rhead">b4</td><td class="rhead">b5</td><td class="rhead">b6</td><td class="rhead">b7</td><td class="rhead">par</td>
+          </tr>
+          <tr><td class="rhead">Row 1</td><td class="on">1</td><td class="off">0</td><td class="on">1</td><td class="on">1</td><td class="off">0</td><td class="off">0</td><td class="on">1</td><td class="par">0</td></tr>
+          <tr><td class="rhead">Row 2</td><td class="off">0</td><td class="on">1</td><td class="off">0</td><td class="on">1</td><td class="on">1</td><td class="off">0</td><td class="off">0</td><td class="par">0</td></tr>
+          <tr><td class="rhead">Row 3</td><td class="on">1</td><td class="on">1</td><td class="off">0</td><td class="err">1</td><td class="on">1</td><td class="off">0</td><td class="on">1</td><td class="err par">0</td></tr>
+          <tr><td class="rhead">Row 4</td><td class="off">0</td><td class="off">0</td><td class="on">1</td><td class="on">1</td><td class="off">0</td><td class="on">1</td><td class="on">1</td><td class="par">0</td></tr>
+          <tr><td class="rhead">par</td><td class="par">0</td><td class="par">0</td><td class="par">0</td><td class="err par">1</td><td class="par">0</td><td class="par">0</td><td class="par">1</td><td class="par">0</td></tr>
+        </table>
+        <div class="diagram-caption">Row 3 and column b4 both fail → error is at their intersection (corrected by flipping it back)</div>
+      </div>
+      <div class="callout success mt-8"><strong>Advantage:</strong> parity blocks can <strong>detect AND correct</strong> a single error — better than a single parity bit.</div>
+    </div>
+    <div>
+      <h4>🔍 How It Works</h4>
+      <ol class="step-list">
+        <li>Data is arranged in rows of bytes, each with a <strong>row parity bit</strong>.</li>
+        <li>A final <strong>column parity</strong> row is calculated down each column.</li>
+        <li>On receipt, both are <strong>recalculated</strong>.</li>
+        <li>A failing row <strong>and</strong> a failing column cross at the <strong>error cell</strong>.</li>
+        <li>The bit is <strong>flipped back</strong> — the error is corrected.</li>
+      </ol>
+      <div class="worked-example mt-8">
+        <h4>📝 Example above</h4>
+        <p style="font-size:0.9rem;">Row 3 parity fails and column b4 parity fails &rarr; the error is at <span class="inline-code">(Row 3, b4)</span>. Flip that bit: <span class="inline-code">1 → 0</span>, and the data is correct again.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="section-label">2.2 Error Detection</span><span class="slide-number">13 / 24</span></div>
+</div>
+
+<!-- ============ SLIDE 14 – CHECKSUM ============ -->
+<div class="slide" data-slide="14">
+  <div class="section-badge sec-22">2.2 &middot; Error Detection</div>
+  <h2>Checksum</h2>
+  <div style="width:60px; height:3px; background:#4a9ee8; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="grid-2">
+    <div>
+      <div class="card">
+        <h4>🧮 What Is a Checksum?</h4>
+        <p>A <strong>checksum</strong> is a value calculated from a <strong>block of data</strong> using an algorithm, before transmission. It is sent <strong>with</strong> the data.</p>
+      </div>
+      <div class="card mt-8">
+        <h4>⚙️ How It Works</h4>
+        <ol class="step-list">
+          <li>Sender calculates checksum from the data.</li>
+          <li>Data + checksum are sent together.</li>
+          <li>Receiver <strong>recalculates</strong> the checksum from the data it received.</li>
+          <li>If it <strong>matches</strong> → no error.</li>
+          <li>If it <strong>doesn't match</strong> → error → <strong>retransmission requested</strong>.</li>
+        </ol>
+      </div>
+    </div>
+    <div>
+      <div class="diagram-box">
+        <svg viewBox="0 0 460 240" style="width:100%; max-width:460px;">
+          <defs>
+            <marker id="arrC1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7ee8da"/></marker>
+            <marker id="arrC2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#f4a360"/></marker>
+          </defs>
+          <rect x="10" y="30" width="140" height="60" rx="8" fill="#0f2830" stroke="#14b8a6"/>
+          <text x="80" y="52" fill="#8ee6d8" font-size="11" text-anchor="middle" font-family="sans-serif">Sender</text>
+          <text x="80" y="70" fill="#9fc8d8" font-size="9" text-anchor="middle" font-family="monospace">data + checksum</text>
+          <rect x="310" y="30" width="140" height="60" rx="8" fill="#0f2830" stroke="#8bc34a"/>
+          <text x="380" y="52" fill="#c3e88d" font-size="11" text-anchor="middle" font-family="sans-serif">Receiver</text>
+          <text x="380" y="70" fill="#9fc8d8" font-size="9" text-anchor="middle" font-family="monospace">recalculates checksum</text>
+          <line x1="150" y1="50" x2="308" y2="50" stroke="#7ee8da" stroke-width="2.5" marker-end="url(#arrC1)"/>
+          <text x="229" y="40" fill="#7ee8da" font-size="10" text-anchor="middle" font-family="sans-serif">1. send data + checksum</text>
+          <!-- match / mismatch -->
+          <rect x="120" y="130" width="220" height="44" rx="8" fill="rgba(139,195,74,0.1)" stroke="#8bc34a"/>
+          <text x="230" y="158" fill="#c3e88d" font-size="10" text-anchor="middle" font-family="sans-serif">Match → no error ✓</text>
+          <rect x="120" y="185" width="220" height="44" rx="8" fill="rgba(244,106,106,0.1)" stroke="#f46a6a"/>
+          <text x="230" y="201" fill="#ff9c9c" font-size="10" text-anchor="middle" font-family="sans-serif">Mismatch → error!</text>
+          <text x="230" y="215" fill="#ff9c9c" font-size="9" text-anchor="middle" font-family="sans-serif">→ request retransmission</text>
+          <text x="230" y="105" fill="#6a8a94" font-size="10" text-anchor="middle" font-family="sans-serif">2. Receiver compares both values</text>
+        </svg>
+        <div class="diagram-caption">Checksum: compare calculated vs received → match = OK, mismatch = resend</div>
+      </div>
+      <div class="callout info mt-8"><strong>Note:</strong> checksums detect errors in a <strong>block of data</strong>; they are used in protocols like TCP/IP.</div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="section-label">2.2 Error Detection</span><span class="slide-number">14 / 24</span></div>
+</div>
+
+<!-- ============ SLIDE 15 – ECHO CHECK ============ -->
+<div class="slide" data-slide="15">
+  <div class="section-badge sec-22">2.2 &middot; Error Detection</div>
+  <h2>Echo Check</h2>
+  <div style="width:60px; height:3px; background:#4a9ee8; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="grid-2">
+    <div>
+      <div class="card">
+        <h4>🔁 How It Works</h4>
+        <ol class="step-list">
+          <li>Data is <strong>sent</strong> to the receiver.</li>
+          <li>The receiver immediately <strong>echoes</strong> the data back to the sender.</li>
+          <li>The sender <strong>compares</strong> the echoed data with the original.</li>
+          <li>If they <strong>differ</strong> → an error occurred → resend.</li>
+        </ol>
+      </div>
+      <div class="callout warn mt-8"><strong>Drawback:</strong> if an error is found, the sender doesn't know whether it happened <strong>on the way there</strong> or <strong>on the way back</strong>.</div>
+    </div>
+    <div>
+      <div class="diagram-box">
+        <svg viewBox="0 0 440 190" style="width:100%; max-width:440px;">
+          <defs>
+            <marker id="arrE1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7ee8da"/></marker>
+            <marker id="arrE2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#4a9ee8"/></marker>
+          </defs>
+          <rect x="20" y="75" width="120" height="50" rx="8" fill="#0f2830" stroke="#14b8a6"/>
+          <text x="80" y="100" fill="#8ee6d8" font-size="11" text-anchor="middle" font-family="sans-serif">Sender</text>
+          <text x="80" y="116" fill="#9fc8d8" font-size="9" text-anchor="middle" font-family="sans-serif">compares</text>
+          <rect x="300" y="75" width="120" height="50" rx="8" fill="#0f2830" stroke="#4a9ee8"/>
+          <text x="360" y="100" fill="#9fc8e8" font-size="11" text-anchor="middle" font-family="sans-serif">Receiver</text>
+          <text x="360" y="116" fill="#9fc8d8" font-size="9" text-anchor="middle" font-family="sans-serif">echoes data back</text>
+          <line x1="140" y1="90" x2="298" y2="90" stroke="#7ee8da" stroke-width="2.5" marker-end="url(#arrE1)"/>
+          <text x="219" y="82" fill="#7ee8da" font-size="10" text-anchor="middle" font-family="sans-serif">1. send data</text>
+          <line x1="298" y1="110" x2="140" y2="110" stroke="#4a9ee8" stroke-width="2.5" marker-end="url(#arrE2)"/>
+          <text x="219" y="130" fill="#4a9ee8" font-size="10" text-anchor="middle" font-family="sans-serif">2. echo data back</text>
+          <text x="220" y="170" fill="#6a8a94" font-size="9" text-anchor="middle" font-family="sans-serif">3. compare — different? → error → resend</text>
+        </svg>
+        <div class="diagram-caption">The receiver echoes the data so the sender can check it</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="section-label">2.2 Error Detection</span><span class="slide-number">15 / 24</span></div>
+</div>
+
+<!-- ============ SLIDE 16 – CHECK DIGITS ============ -->
+<div class="slide" data-slide="16">
+  <div class="section-badge sec-22">2.2 &middot; Error Detection</div>
+  <h2>Check Digits</h2>
+  <div style="width:60px; height:3px; background:#4a9ee8; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="callout info"><strong>Important:</strong> check digits detect <strong>human data-entry errors</strong> (typing mistakes), not transmission errors. They are used in <strong>barcodes</strong> and <strong>ISBNs</strong>.</div>
+  <div class="grid-2">
+    <div>
+      <div class="card">
+        <h4>📊 How It Works</h4>
+        <ol class="step-list">
+          <li>The final digit is <strong>calculated</strong> from the previous digits using an algorithm (e.g. <strong>Modulo 11</strong> or <strong>Modulo 10</strong>).</li>
+          <li>When the number is entered, the check digit is <strong>recalculated</strong>.</li>
+          <li>If it <strong>doesn't match</strong> the entered one → the entry is <strong>rejected</strong>.</li>
+        </ol>
+      </div>
+      <div class="card mt-8">
+        <h4>📦 Where They're Used</h4>
+        <ul>
+          <li><strong>ISBN</strong> — book numbers (Modulo 11)</li>
+          <li><strong>Barcodes</strong> — products in shops (Modulo 10)</li>
+          <li>Credit card numbers</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div class="worked-example">
+        <div class="we-label">Worked Example — catch a typo</div>
+        <h4>ISBN: 978-0-521-88418-3</h4>
+        <div class="code-block" style="font-size:0.84rem;">
+          <span class="comment">// digits + check digit</span>
+          9 7 8 0 5 2 1 8 8 4 1 8 &nbsp;<span class="hl">3</span>
+          <span class="comment">// algorithm recalculates the last digit</span>
+          <span class="comment">// typed 9780521884187 → check fails → rejected</span>
+          calculated check digit = <span class="hl-green">3</span>
+          entered check digit&nbsp;&nbsp;&nbsp;&nbsp;= <span class="hl">7</span> &nbsp;❌ mismatch
+        </div>
+        <p style="font-size:0.85rem; color:#f48a8a; text-align:center;">A wrong check digit means the number was entered incorrectly</p>
+      </div>
+      <div class="exam-tip">
+        <span class="tip-icon">💡</span>
+        <div class="tip-text"><strong>Exam Tip:</strong> check digit → detects <em>human entry errors</em>. Checksum → detects <em>transmission errors</em>. Don't mix them up!</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="section-label">2.2 Error Detection</span><span class="slide-number">16 / 24</span></div>
+</div>
+
+<!-- ============ SLIDE 17 – ARQ ============ -->
+<div class="slide" data-slide="17">
+  <div class="section-badge sec-22">2.2 &middot; Error Detection</div>
+  <h2>Automatic Repeat Query (ARQ)</h2>
+  <div style="width:60px; height:3px; background:#4a9ee8; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="grid-2">
+    <div>
+      <div class="card">
+        <h4>✅ Acknowledgements</h4>
+        <ul>
+          <li><strong>Positive ACK</strong> — data received OK, no need to resend.</li>
+          <li><strong>Negative ACK (NAK)</strong> — error detected, <strong>request resend</strong>.</li>
+        </ul>
+      </div>
+      <div class="card mt-8">
+        <h4>⏱️ Timeout</h4>
+        <p>If the sender doesn't receive an acknowledgement within a <strong>set time</strong>, it <strong>automatically resends</strong> the data.</p>
+      </div>
+    </div>
+    <div>
+      <div class="diagram-box">
+        <svg viewBox="0 0 460 240" style="width:100%; max-width:460px;">
+          <defs>
+            <marker id="arrQ1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7ee8da"/></marker>
+            <marker id="arrQ2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#f4a360"/></marker>
+            <marker id="arrQ3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#4a9ee8"/></marker>
+          </defs>
+          <rect x="20" y="80" width="120" height="50" rx="8" fill="#0f2830" stroke="#14b8a6"/>
+          <text x="80" y="100" fill="#8ee6d8" font-size="11" text-anchor="middle" font-family="sans-serif">Sender</text>
+          <text x="80" y="118" fill="#9fc8d8" font-size="9" text-anchor="middle" font-family="sans-serif">waits for ACK</text>
+          <rect x="320" y="80" width="120" height="50" rx="8" fill="#0f2830" stroke="#8bc34a"/>
+          <text x="380" y="100" fill="#c3e88d" font-size="11" text-anchor="middle" font-family="sans-serif">Receiver</text>
+          <text x="380" y="118" fill="#9fc8d8" font-size="9" text-anchor="middle" font-family="sans-serif">checks data</text>
+          <line x1="140" y1="92" x2="318" y2="92" stroke="#7ee8da" stroke-width="2.5" marker-end="url(#arrQ1)"/>
+          <text x="229" y="84" fill="#7ee8da" font-size="10" text-anchor="middle" font-family="sans-serif">1. send data</text>
+          <line x1="318" y1="118" x2="140" y2="118" stroke="#f4a360" stroke-width="2.5" marker-end="url(#arrQ2)"/>
+          <text x="229" y="140" fill="#f4a360" font-size="10" text-anchor="middle" font-family="sans-serif">2. ACK ✓ / NAK ✗</text>
+          <!-- timeout loop -->
+          <path d="M 80 130 C 20 160, 20 200, 80 205" fill="none" stroke="#4a9ee8" stroke-width="2" marker-end="url(#arrQ3)"/>
+          <text x="90" y="180" fill="#4a9ee8" font-size="10" font-family="sans-serif">timeout → resend</text>
+          <text x="230" y="225" fill="#6a8a94" font-size="9" text-anchor="middle" font-family="sans-serif">No ACK in time → sender automatically retransmits</text>
+        </svg>
+        <div class="diagram-caption">ARQ: ACK / NAK + timeout → automatic retransmission</div>
+      </div>
+      <div class="callout info mt-8"><strong>Combination:</strong> ARQ is often used <strong>with</strong> other error-detection methods (parity, checksum) that trigger the NAK.</div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="section-label">2.2 Error Detection</span><span class="slide-number">17 / 24</span></div>
+</div>
+
+<!-- ============ SLIDE 18 – RECAP 2.2 ============ -->
+<div class="slide" data-slide="18">
+  <div class="section-badge quiz">2.2 &middot; Quick Check</div>
+  <h2>Recap — Practice Questions</h2>
+  <div style="width:60px; height:3px; background:#ffd54f; border-radius:2px; margin-bottom:10px;"></div>
+  <p style="margin-bottom:10px;">Try each question, then reveal the answer.</p>
+  <div class="grid-2">
+    <div class="card" style="margin-bottom:10px;">
+      <h4>📝 Q1. Calculate the even parity bit for <span class="inline-code">1100110</span></h4>
+      <div class="reveal-container">
+        <button class="reveal-btn" data-target="q4">📌 Reveal Answer</button>
+        <div class="reveal-answer" id="q4">
+          <p><span class="inline-code">1100110</span> has <strong>four 1s</strong> — already even → parity bit = <span class="inline-code">0</span>. Sent as <span class="inline-code">1100110 0</span>.</p>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:10px;">
+      <h4>📝 Q2. Explain the difference between a check digit and a checksum</h4>
+      <div class="reveal-container">
+        <button class="reveal-btn" data-target="q5">📌 Reveal Answer</button>
+        <div class="reveal-answer" id="q5">
+          <p>A <strong>check digit</strong> is a single value calculated from the digits of a number to catch <strong>human entry errors</strong> (ISBN, barcodes). A <strong>checksum</strong> is calculated from a <strong>block of transmitted data</strong> to catch <strong>transmission errors</strong>.</p>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:10px;">
+      <h4>📝 Q3. What does ARQ stand for and what happens on a timeout?</h4>
+      <div class="reveal-container">
+        <button class="reveal-btn" data-target="q6">📌 Reveal Answer</button>
+        <div class="reveal-answer" id="q6">
+          <p><strong>Automatic Repeat Query</strong>. If no acknowledgement (ACK) is received within the set time, the sender <strong>automatically resends</strong> the data.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="callout success mt-8"><strong>📖 Revision tip:</strong> know which method catches what — parity = single-bit flips, checksum = block errors, echo = sends data back, ARQ = resends on no-ACK.</div>
+  <div class="slide-footer"><span class="section-label">2.2 Error Detection</span><span class="slide-number">18 / 24</span></div>
+</div>
+
+<!-- ============ SLIDE 19 – LEARNING OBJECTIVES 2.3 ============ -->
+<div class="slide" data-slide="19">
+  <div class="section-badge sec-23">Section 2.3 &middot; Encryption</div>
+  <h1>Learning Objectives</h1>
+  <div style="width:60px; height:3px; background:#14b8a6; border-radius:2px; margin-bottom:14px;"></div>
+  <p style="margin-bottom:12px;">By the end of this section you will be able to:</p>
+  <ul class="objectives-list" style="max-width:720px;">
+    <li>Understand the <strong>need for and purpose</strong> of encryption</li>
+    <li>Understand <strong>symmetric encryption</strong></li>
+    <li>Understand <strong>asymmetric encryption</strong> — public and private keys</li>
+  </ul>
+  <div class="callout info mt-8"><strong>Syllabus reference:</strong> IGCSE 0478 / 0984 / 0418 &middot; Section 2.3 — Encryption.</div>
+  <div class="slide-footer"><span class="section-label">2.3 Encryption</span><span class="slide-number">19 / 24</span></div>
+</div>
+
+<!-- ============ SLIDE 20 – NEED FOR ENCRYPTION ============ -->
+<div class="slide" data-slide="20">
+  <div class="section-badge sec-23">2.3 &middot; Encryption</div>
+  <h2>The Need for Encryption</h2>
+  <div style="width:60px; height:3px; background:#14b8a6; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="grid-2">
+    <div>
+      <div class="card">
+        <h4>🔒 Why Encrypt?</h4>
+        <p>Encryption <strong>scrambles</strong> data into an unreadable format called <strong>ciphertext</strong>, so that if it is <strong>intercepted</strong> during transmission, unauthorized users cannot understand it.</p>
+        <ul>
+          <li>Protects <strong>passwords</strong>, card numbers, personal data</li>
+          <li>Keeps data safe <strong>even if</strong> a hacker intercepts it</li>
+          <li>Essential for <strong>online banking, shopping, messaging</strong></li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div class="grid-2" style="gap:10px;">
+        <div class="card" style="border-color:#8bc34a;">
+          <h4>📄 Plaintext</h4>
+          <p style="font-size:0.85rem;">The <strong>original, readable</strong> data before encryption.</p>
+          <div class="code-block" style="font-size:0.8rem; text-align:center;">Hello! Secret: 1234</div>
+        </div>
+        <div class="card" style="border-color:#f46a6a;">
+          <h4>🔐 Ciphertext</h4>
+          <p style="font-size:0.85rem;">The <strong>encrypted, unreadable</strong> data after encryption.</p>
+          <div class="code-block" style="font-size:0.8rem; text-align:center;">X8k$#9Lm@2!qQz</div>
+        </div>
+      </div>
+      <div class="diagram-box mt-8">
+        <svg viewBox="0 0 440 90" style="width:100%; max-width:440px;">
+          <defs>
+            <marker id="arrN1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7ee8da"/></marker>
+          </defs>
+          <rect x="10" y="25" width="110" height="40" rx="8" fill="rgba(139,195,74,0.12)" stroke="#8bc34a"/>
+          <text x="65" y="49" fill="#c3e88d" font-size="10" text-anchor="middle" font-family="sans-serif">Plaintext</text>
+          <line x1="120" y1="45" x2="180" y2="45" stroke="#7ee8da" stroke-width="2.5" marker-end="url(#arrN1)"/>
+          <text x="150" y="36" fill="#7ee8da" font-size="9" text-anchor="middle" font-family="sans-serif">encrypt</text>
+          <rect x="182" y="25" width="110" height="40" rx="8" fill="rgba(244,106,106,0.12)" stroke="#f46a6a"/>
+          <text x="237" y="49" fill="#ff9c9c" font-size="10" text-anchor="middle" font-family="sans-serif">Ciphertext</text>
+          <line x1="292" y1="45" x2="352" y2="45" stroke="#7ee8da" stroke-width="2.5" marker-end="url(#arrN1)"/>
+          <text x="322" y="36" fill="#7ee8da" font-size="9" text-anchor="middle" font-family="sans-serif">decrypt</text>
+          <rect x="354" y="25" width="76" height="40" rx="8" fill="rgba(139,195,74,0.12)" stroke="#8bc34a"/>
+          <text x="392" y="49" fill="#c3e88d" font-size="10" text-anchor="middle" font-family="sans-serif">Plaintext</text>
+        </svg>
+        <div class="diagram-caption">Plaintext → encrypt → ciphertext → transmit → decrypt → plaintext</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="section-label">2.3 Encryption</span><span class="slide-number">20 / 24</span></div>
+</div>
+
+<!-- ============ SLIDE 21 – SYMMETRIC ENCRYPTION ============ -->
+<div class="slide" data-slide="21">
+  <div class="section-badge sec-23">2.3 &middot; Encryption</div>
+  <h2>Symmetric Encryption</h2>
+  <div style="width:60px; height:3px; background:#14b8a6; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="grid-2">
+    <div>
+      <div class="card">
+        <h4>🗝️ Same Key Both Ways</h4>
+        <p><strong>Symmetric encryption</strong> uses the <strong>same secret key</strong> to <strong>encrypt and decrypt</strong> the data.</p>
+      </div>
+      <div class="card mt-8" style="border-color:#f4a360;">
+        <h4>⚠ The Problem</h4>
+        <p>The key itself must be <strong>shared securely</strong> between sender and receiver. If the key is <strong>intercepted</strong>, the security is <strong>compromised</strong> — anyone with the key can decrypt the data.</p>
+      </div>
+      <div class="callout info mt-8"><strong>Example:</strong> Wi-Fi networks (WPA2), file encryption — fast, but key-sharing is the weak point.</div>
+    </div>
+    <div>
+      <div class="diagram-box">
+        <svg viewBox="0 0 460 230" style="width:100%; max-width:460px;">
+          <defs>
+            <marker id="arrY1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7ee8da"/></marker>
+          </defs>
+          <rect x="10" y="20" width="110" height="40" rx="8" fill="rgba(139,195,74,0.12)" stroke="#8bc34a"/>
+          <text x="65" y="44" fill="#c3e88d" font-size="10" text-anchor="middle" font-family="sans-serif">Plaintext</text>
+          <rect x="160" y="20" width="110" height="40" rx="8" fill="rgba(244,106,106,0.12)" stroke="#f46a6a"/>
+          <text x="215" y="44" fill="#ff9c9c" font-size="10" text-anchor="middle" font-family="sans-serif">Ciphertext</text>
+          <rect x="340" y="20" width="110" height="40" rx="8" fill="rgba(139,195,74,0.12)" stroke="#8bc34a"/>
+          <text x="395" y="44" fill="#c3e88d" font-size="10" text-anchor="middle" font-family="sans-serif">Plaintext</text>
+          <line x1="120" y1="40" x2="158" y2="40" stroke="#7ee8da" stroke-width="2.5" marker-end="url(#arrY1)"/>
+          <line x1="270" y1="40" x2="338" y2="40" stroke="#7ee8da" stroke-width="2.5" marker-end="url(#arrY1)"/>
+          <!-- key chips -->
+          <rect x="70" y="85" width="150" height="34" rx="17" fill="#0f2830" stroke="#14b8a6"/>
+          <text x="145" y="106" fill="#8ee6d8" font-size="10" text-anchor="middle" font-family="monospace">SAME KEY</text>
+          <line x1="100" y1="60" x2="135" y2="85" stroke="#14b8a6" stroke-width="1.5" stroke-dasharray="3 3"/>
+          <line x1="300" y1="60" x2="220" y2="85" stroke="#14b8a6" stroke-width="1.5" stroke-dasharray="3 3"/>
+          <text x="70" y="140" fill="#c3e88d" font-size="10" text-anchor="middle" font-family="sans-serif">encrypt</text>
+          <text x="390" y="140" fill="#c3e88d" font-size="10" text-anchor="middle" font-family="sans-serif">decrypt</text>
+          <text x="230" y="180" fill="#6a8a94" font-size="10" text-anchor="middle" font-family="sans-serif">Same key encrypts AND decrypts</text>
+          <text x="230" y="200" fill="#f48a8a" font-size="10" text-anchor="middle" font-family="sans-serif">Key must be shared securely first</text>
+          <text x="230" y="218" fill="#6a8a94" font-size="9" text-anchor="middle" font-family="sans-serif">Key intercepted → data compromised</text>
+        </svg>
+        <div class="diagram-caption">Symmetric: one key does both jobs</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="section-label">2.3 Encryption</span><span class="slide-number">21 / 24</span></div>
+</div>
+
+<!-- ============ SLIDE 22 – ASYMMETRIC ENCRYPTION ============ -->
+<div class="slide" data-slide="22">
+  <div class="section-badge sec-23">2.3 &middot; Encryption</div>
+  <h2>Asymmetric Encryption</h2>
+  <div style="width:60px; height:3px; background:#14b8a6; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="grid-2">
+    <div>
+      <div class="card">
+        <h4>🔑 A Key Pair</h4>
+        <p>Asymmetric encryption uses a <strong>mathematically linked key pair</strong>:</p>
+        <ul>
+          <li><strong>Public Key</strong> — kept open, known to everyone</li>
+          <li><strong>Private Key</strong> — kept secret, only the owner knows it</li>
+        </ul>
+      </div>
+      <div class="card mt-8">
+        <h4>🛡️ The Process</h4>
+        <ol class="step-list">
+          <li>The <strong>sender encrypts</strong> data using the <strong>receiver's public key</strong>.</li>
+          <li>The data is transmitted as <strong>ciphertext</strong>.</li>
+          <li>Only the receiver's <strong>private key</strong> can decrypt it.</li>
+        </ol>
+      </div>
+      <div class="callout success mt-8"><strong>Why secure:</strong> the private key is <strong>never shared or transmitted</strong> — it cannot be intercepted.</div>
+    </div>
+    <div>
+      <div class="diagram-box">
+        <svg viewBox="0 0 460 250" style="width:100%; max-width:460px;">
+          <defs>
+            <marker id="arrA1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7ee8da"/></marker>
+          </defs>
+          <!-- sender -->
+          <rect x="10" y="100" width="110" height="44" rx="8" fill="#0f2830" stroke="#14b8a6"/>
+          <text x="65" y="123" fill="#8ee6d8" font-size="11" text-anchor="middle" font-family="sans-serif">Sender</text>
+          <text x="65" y="138" fill="#9fc8d8" font-size="8" text-anchor="middle" font-family="sans-serif">encrypts</text>
+          <!-- public key chip -->
+          <rect x="30" y="160" width="120" height="30" rx="15" fill="#0f2830" stroke="#8bc34a"/>
+          <text x="90" y="179" fill="#c3e88d" font-size="9" text-anchor="middle" font-family="monospace">Public Key</text>
+          <line x1="85" y1="144" x2="85" y2="158" stroke="#8bc34a" stroke-width="1.5" stroke-dasharray="3 3"/>
+          <text x="170" y="50" fill="#6a8a94" font-size="9" text-anchor="middle" font-family="sans-serif">ciphertext travels the network</text>
+          <!-- ciphertext -->
+          <rect x="160" y="110" width="130" height="34" rx="8" fill="rgba(244,106,106,0.12)" stroke="#f46a6a"/>
+          <text x="225" y="132" fill="#ff9c9c" font-size="10" text-anchor="middle" font-family="monospace">Ciphertext</text>
+          <!-- receiver -->
+          <rect x="340" y="100" width="110" height="44" rx="8" fill="#0f2830" stroke="#8bc34a"/>
+          <text x="395" y="123" fill="#c3e88d" font-size="11" text-anchor="middle" font-family="sans-serif">Receiver</text>
+          <text x="395" y="138" fill="#9fc8d8" font-size="8" text-anchor="middle" font-family="sans-serif">decrypts</text>
+          <!-- private key chip -->
+          <rect x="330" y="160" width="130" height="30" rx="15" fill="#0f2830" stroke="#f4a360"/>
+          <text x="395" y="179" fill="#ffd3a8" font-size="9" text-anchor="middle" font-family="monospace">Private Key</text>
+          <line x1="395" y1="144" x2="395" y2="158" stroke="#f4a360" stroke-width="1.5" stroke-dasharray="3 3"/>
+          <line x1="120" y1="122" x2="158" y2="122" stroke="#7ee8da" stroke-width="2.5" marker-end="url(#arrA1)"/>
+          <line x1="290" y1="127" x2="338" y2="122" stroke="#7ee8da" stroke-width="2.5" marker-end="url(#arrA1)"/>
+          <text x="225" y="90" fill="#7ee8da" font-size="9" text-anchor="middle" font-family="sans-serif">receiver's public key</text>
+          <text x="225" y="210" fill="#9fc8d8" font-size="10" text-anchor="middle" font-family="sans-serif">Public key encrypts…</text>
+          <text x="225" y="228" fill="#c3e88d" font-size="10" text-anchor="middle" font-family="sans-serif">…only private key decrypts</text>
+          <text x="225" y="246" fill="#6a8a94" font-size="9" text-anchor="middle" font-family="sans-serif">private key never transmitted → safe</text>
+        </svg>
+        <div class="diagram-caption">Asymmetric: encrypt with receiver's public key, decrypt with receiver's private key</div>
+      </div>
+    </div>
+  </div>
+  <h3 style="margin-top:10px;">Symmetric vs Asymmetric — Comparison</h3>
+  <table>
+    <thead>
+      <tr><th>Feature</th><th>Symmetric</th><th>Asymmetric</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Keys used</strong></td><td>One <strong>shared</strong> secret key</td><td>A <strong>pair</strong>: public key + private key</td></tr>
+      <tr><td><strong>Encryption</strong></td><td>Same key encrypts &amp; decrypts</td><td>Public key encrypts</td></tr>
+      <tr><td><strong>Decryption</strong></td><td>Same key decrypts</td><td>Private key decrypts</td></tr>
+      <tr><td><strong>Key sharing</strong></td><td class="comparison-bad">Key must be shared securely first</td><td class="comparison-good">Public key is shared openly; private key never shared</td></tr>
+      <tr><td><strong>Main risk</strong></td><td class="comparison-bad">Key interception → data compromised</td><td class="comparison-good">Private key never transmitted → very secure</td></tr>
+      <tr><td><strong>Typical use</strong></td><td class="mono">Wi-Fi (WPA2), file encryption</td><td class="mono">HTTPS / TLS, email encryption</td></tr>
+    </tbody>
+  </table>
+  <div class="slide-footer"><span class="section-label">2.3 Encryption</span><span class="slide-number">22 / 24</span></div>
+</div>
+
+<!-- ============ SLIDE 23 – RECAP 2.3 ============ -->
+<div class="slide" data-slide="23">
+  <div class="section-badge quiz">2.3 &middot; Quick Check</div>
+  <h2>Recap — Practice Questions</h2>
+  <div style="width:60px; height:3px; background:#ffd54f; border-radius:2px; margin-bottom:10px;"></div>
+  <p style="margin-bottom:10px;">Try each question, then reveal the answer.</p>
+  <div class="grid-2">
+    <div class="card" style="margin-bottom:10px;">
+      <h4>📝 Q1. Why is asymmetric encryption more secure than symmetric?</h4>
+      <div class="reveal-container">
+        <button class="reveal-btn" data-target="q7">📌 Reveal Answer</button>
+        <div class="reveal-answer" id="q7">
+          <p>In asymmetric encryption the <strong>private key is never shared or transmitted</strong> — it cannot be intercepted. Symmetric encryption requires the <strong>single secret key to be shared</strong>, which is the weak point.</p>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:10px;">
+      <h4>📝 Q2. Define plaintext and ciphertext</h4>
+      <div class="reveal-container">
+        <button class="reveal-btn" data-target="q8">📌 Reveal Answer</button>
+        <div class="reveal-answer" id="q8">
+          <p><strong>Plaintext</strong> = the original, readable data. <strong>Ciphertext</strong> = the encrypted, unreadable data produced by encryption.</p>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:10px;">
+      <h4>📝 Q3. In asymmetric encryption, which key does the sender use to encrypt?</h4>
+      <div class="reveal-container">
+        <button class="reveal-btn" data-target="q9">📌 Reveal Answer</button>
+        <div class="reveal-answer" id="q9">
+          <p>The <strong>receiver's public key</strong>. Only the receiver's <strong>private key</strong> can decrypt the data.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="callout success mt-8"><strong>📖 Revision tip:</strong> remember the golden rule — <em>public key encrypts, private key decrypts, and the private key is never shared</em>.</div>
+  <div class="slide-footer"><span class="section-label">2.3 Encryption</span><span class="slide-number">23 / 24</span></div>
+</div>
+
+<!-- ============ SLIDE 24 – TOPIC 2 SUMMARY ============ -->
+<div class="slide" data-slide="24">
+  <div class="section-badge quiz" style="background:linear-gradient(135deg,#103a33,#14574a); border-color:#1f8a70; color:#7ae0c8;">Topic 2 &middot; Summary</div>
+  <h2>Topic 2 — The Big Picture</h2>
+  <div style="width:60px; height:3px; background:#14b8a6; border-radius:2px; margin-bottom:10px;"></div>
+  <div class="diagram-box" style="padding:20px;">
+    <svg viewBox="0 0 760 280" style="width:100%; max-width:760px;">
+      <defs>
+        <marker id="arrM" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#14b8a6"/></marker>
+      </defs>
+      <!-- Box 1: transmission methods -->
+      <rect x="20" y="60" width="210" height="150" rx="10" fill="#0e181c" stroke="#1f5a62" stroke-width="1.5"/>
+      <text x="125" y="85" fill="#f4a360" font-size="12" font-weight="bold" text-anchor="middle" font-family="sans-serif">2.1 Transmission Methods</text>
+      <text x="125" y="108" fill="#8ee6d8" font-size="10" text-anchor="middle" font-family="sans-serif">Packets · Packet switching</text>
+      <text x="125" y="128" fill="#9fc8d8" font-size="10" text-anchor="middle" font-family="sans-serif">Serial vs parallel</text>
+      <text x="125" y="148" fill="#9fc8d8" font-size="10" text-anchor="middle" font-family="sans-serif">Simplex / half / full duplex</text>
+      <text x="125" y="168" fill="#9fc8d8" font-size="10" text-anchor="middle" font-family="sans-serif">USB</text>
+      <text x="125" y="195" fill="#6a8a94" font-size="9" text-anchor="middle" font-family="sans-serif">→ how data is sent</text>
+      <!-- Box 2: error detection -->
+      <rect x="275" y="60" width="210" height="150" rx="10" fill="#0e181c" stroke="#1f6a8a" stroke-width="1.5"/>
+      <text x="380" y="85" fill="#7ab8e8" font-size="12" font-weight="bold" text-anchor="middle" font-family="sans-serif">2.2 Error Detection</text>
+      <text x="380" y="108" fill="#9fc8e8" font-size="10" text-anchor="middle" font-family="sans-serif">Parity (odd / even / blocks)</text>
+      <text x="380" y="128" fill="#9fc8d8" font-size="10" text-anchor="middle" font-family="sans-serif">Checksum · Echo check</text>
+      <text x="380" y="148" fill="#9fc8d8" font-size="10" text-anchor="middle" font-family="sans-serif">Check digits (ISBN/barcode)</text>
+      <text x="380" y="168" fill="#9fc8d8" font-size="10" text-anchor="middle" font-family="sans-serif">ARQ (ACK / NAK / timeout)</text>
+      <text x="380" y="195" fill="#6a8a94" font-size="9" text-anchor="middle" font-family="sans-serif">→ catch corrupted data</text>
+      <!-- Box 3: encryption -->
+      <rect x="530" y="60" width="210" height="150" rx="10" fill="#0e181c" stroke="#1f8a70" stroke-width="1.5"/>
+      <text x="635" y="85" fill="#7ae0c8" font-size="12" font-weight="bold" text-anchor="middle" font-family="sans-serif">2.3 Encryption</text>
+      <text x="635" y="108" fill="#8ee6d8" font-size="10" text-anchor="middle" font-family="sans-serif">Plaintext → ciphertext</text>
+      <text x="635" y="128" fill="#9fc8d8" font-size="10" text-anchor="middle" font-family="sans-serif">Symmetric (one key)</text>
+      <text x="635" y="148" fill="#9fc8d8" font-size="10" text-anchor="middle" font-family="sans-serif">Asymmetric (public/private)</text>
+      <text x="635" y="168" fill="#9fc8d8" font-size="10" text-anchor="middle" font-family="sans-serif">Private key never shared</text>
+      <text x="635" y="195" fill="#6a8a94" font-size="9" text-anchor="middle" font-family="sans-serif">→ protect data in transit</text>
+      <!-- arrows -->
+      <line x1="230" y1="135" x2="273" y2="135" stroke="#14b8a6" stroke-width="2" marker-end="url(#arrM)"/>
+      <line x1="485" y1="135" x2="528" y2="135" stroke="#14b8a6" stroke-width="2" marker-end="url(#arrM)"/>
+      <!-- bottom banner -->
+      <rect x="140" y="235" width="480" height="34" rx="8" fill="#0f2830" stroke="#14b8a6"/>
+      <text x="380" y="256" fill="#8ee6d8" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">Send data safely → check for errors → keep it secret</text>
+    </svg>
+    <div class="diagram-caption">Mind map: methods of sending data → detecting errors → protecting with encryption</div>
+  </div>
+  <div class="grid-3 mt-8">
+    <div class="card"><h4 style="color:#f4a360;">📦 Send</h4><p style="font-size:0.85rem;">Packets, serial/parallel, duplex modes, USB — the "how" of transmission.</p></div>
+    <div class="card"><h4 style="color:#7ab8e8;">🔎 Check</h4><p style="font-size:0.85rem;">Parity, checksums, echo, check digits, ARQ — catch errors and resend.</p></div>
+    <div class="card"><h4 style="color:#7ae0c8;">🔐 Protect</h4><p style="font-size:0.85rem;">Symmetric &amp; asymmetric encryption — keep data secret in transit.</p></div>
+  </div>
+  <div class="callout success mt-8"><strong>Well done!</strong> You have completed Topic 2: Data Transmission. Move on to Topic 3 — Hardware!</div>
+  <div class="slide-footer"><span class="section-label">Topic 2 &middot; Summary</span><span class="slide-number">24 / 24</span></div>
+</div>
+
+</div>
+
+<div class="nav-bar" id="navBar">
+  <button id="prevBtn" onclick="changeSlide(-1)">◀ Prev</button>
+  <div class="progress-dots" id="progressDots"></div>
+  <span class="slide-counter" id="slideCounter">1 / 24</span>
+  <button id="nextBtn" onclick="changeSlide(1)">Next ▶</button>
+</div>
+<div class="kbd-hint">← → keys to navigate</div>
+
+<script>
+  (function() {
+    const TOTAL = 24;
+    let current = 0;
+    function renderDots() {
+      const container = document.getElementById('progressDots');
+      container.innerHTML = '';
+      for (let i = 0; i < TOTAL; i++) {
+        const dot = document.createElement('button');
+        dot.className = 'dot' + (i === current ? ' active' : '');
+        dot.setAttribute('aria-label', 'Go to slide ' + (i+1));
+        dot.onclick = function() { goToSlide(i); };
+        container.appendChild(dot);
+      }
+    }
+    function goToSlide(idx) {
+      document.querySelectorAll('.slide').forEach((s, i) => s.classList.toggle('active', i === idx));
+      current = idx;
+      updateUI();
+      const active = document.querySelector('.slide.active');
+      if (active) active.scrollTop = 0;
+    }
+    function changeSlide(delta) {
+      const next = current + delta;
+      if (next < 0 || next >= TOTAL) return;
+      goToSlide(next);
+    }
+    function updateUI() {
+      document.getElementById('prevBtn').disabled = (current === 0);
+      document.getElementById('nextBtn').disabled = (current === TOTAL - 1);
+      document.getElementById('slideCounter').textContent = (current + 1) + ' / ' + TOTAL;
+      document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
+    }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown') { changeSlide(1); e.preventDefault(); }
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') { changeSlide(-1); e.preventDefault(); }
+      else if (e.key === 'Home') { goToSlide(0); e.preventDefault(); }
+      else if (e.key === 'End') { goToSlide(TOTAL - 1); e.preventDefault(); }
+    });
+    renderDots();
+    updateUI();
+    window.changeSlide = changeSlide;
+    window.goToSlide = goToSlide;
+    document.querySelectorAll('.reveal-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const el = document.getElementById(this.getAttribute('data-target'));
+        if (el) {
+          el.classList.toggle('visible');
+          this.textContent = el.classList.contains('visible') ? '🙈 Hide Answer' : '📌 Reveal Answer';
+        }
+      });
+    });
+  })();
+</script>
+</body>
+</html>

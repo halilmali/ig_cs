@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topic 4 Test — IGCSE 0478 Computer Science</title>
+<link rel="stylesheet" href="css/test-common.css">
+</head>
+<body>
+<div class="bg-grid"></div>
+<header class="header">
+  <a class="back" href="index.html">← Back to all topics</a>
+  <h1><span class="num">Topic 4</span> — Software</h1>
+  <p>Exam-style practice test • instant feedback • explanations for every answer</p>
+  <span class="chapter-tag">💿 System vs application &bull; OS functions &bull; Interrupts &bull; High vs low-level languages &bull; Assembler &bull; Compilers vs interpreters &bull; IDE features</span>
+</header>
+<div id="progressBarContainer"><div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div></div>
+<div class="main">
+  <div id="setupScreen">
+    <div class="setup-card">
+      <h2>⚙️ Test Settings</h2>
+      <div class="quiz-options">
+        <label>Questions: <select id="numQuestions"><option value="5">5</option><option value="10" selected>10</option><option value="14">14</option><option value="0">All</option></select></label>
+        <label>Type: <select id="questionType"><option value="all" selected>Mixed</option><option value="mcq">Multiple Choice</option><option value="truefalse">True / False</option></select></label>
+      </div>
+    </div>
+    <div class="center"><button class="btn-primary" onclick="startTest()">🚀 Start Test</button></div>
+  </div>
+  <div id="quizScreen" style="display:none;">
+    <div class="quiz-header">
+      <span class="quiz-progress">Question <strong id="currentQ">1</strong> of <strong id="totalQ">10</strong></span>
+      <span class="quiz-score">✅ <span id="scoreDisplay">0</span>/<span id="totalCorrect">0</span></span>
+    </div>
+    <div class="question-card">
+      <div class="question-number" id="qNum">Q1</div>
+      <div class="question-text" id="qText">Loading question...</div>
+      <div class="options-list" id="optionsList"></div>
+      <div class="feedback-area" id="feedbackArea"></div>
+      <div class="question-actions"><button class="btn-secondary" id="nextBtn" style="display:none;" onclick="nextQuestion()">Next →</button></div>
+    </div>
+  </div>
+  <div id="resultsScreen" style="display:none;">
+    <div class="results-card">
+      <div class="results-score" id="finalScore">0%</div>
+      <div class="results-label">Final Score</div>
+      <div class="results-details">
+        <div class="results-stat"><span class="num" id="rCorrect">0</span><div class="desc">Correct</div></div>
+        <div class="results-stat"><span class="num" id="rIncorrect">0</span><div class="desc">Incorrect</div></div>
+        <div class="results-stat"><span class="num" id="rTotal">0</span><div class="desc">Total</div></div>
+      </div>
+      <div class="results-msg" id="resultsMsg">Great job!</div>
+      <div class="review-list" id="reviewList"></div>
+      <div class="results-actions">
+        <button class="btn-primary" onclick="resetTest()">🔄 Try Again</button>
+        <button class="btn-secondary" onclick="showSetup()">⚙️ New Settings</button>
+        <button class="btn-secondary" onclick="location.href='index.html'">🌐 All Topics</button>
+      </div>
+    </div>
+  </div>
+</div>
+<footer class="footer">IGCSE 0478 Computer Science • 2026–2028 Syllabus • Topic 4 Practice Test</footer>
+<script>
+  var QUESTION_BANK = [{"q":"Which of the following is system software?","options":["Microsoft Word","Chrome browser","Windows Operating System","Adobe Photoshop"],"correct":2,"explain":"The operating system manages the computer itself. Word, Chrome and Photoshop are application software."},{"q":"Which OS function allows several programs to appear to run at the same time?","options":["File management","Multitasking","User accounts","Security"],"correct":1,"explain":"Multitasking rapidly shares CPU time between programs so they seem simultaneous."},{"q":"What is an interrupt?","options":["A programming error","A signal that stops the CPU to handle an urgent event","A network disconnection","A hardware failure"],"correct":1,"explain":"An interrupt is a signal that temporarily suspends the current FDE cycle so a higher-priority task is handled."},{"q":"When an interrupt is triggered, what does the CPU do first?","options":["Deletes the current program","Saves its current state to a stack","Reboots the computer","Increases the clock speed"],"correct":1,"explain":"The CPU saves its registers and PC to a stack, runs the Interrupt Service Routine, then restores the state and resumes."},{"q":"Which translator converts one line of code at a time and stops at the first error?","options":["Compiler","Interpreter","Assembler","Linker"],"correct":1,"explain":"An interpreter translates and executes line by line, stopping immediately at the first error."},{"q":"Which translator produces a standalone executable file?","options":["Compiler","Interpreter","Assembler","Editor"],"correct":0,"explain":"A compiler translates the whole source program at once into machine code, producing a standalone executable."},{"q":"What does an assembler do?","options":["Converts high-level code to machine code","Converts assembly language (mnemonics) to machine code","Converts bytecode to machine code","Runs the program"],"correct":1,"explain":"An assembler translates assembly mnemonics into machine code — a 1-to-1 mapping."},{"q":"Assembly language is best described as:","options":["A high-level language","A low-level language using mnemonics","A visual programming language","A scripting language"],"correct":1,"explain":"Assembly is low-level — it uses mnemonics like LDA and ADD that map 1-to-1 to machine code."},{"q":"Which IDE feature suggests possible completions as the programmer types?","options":["Prettyprint","Auto-completion","Syntax highlighting","Debugger"],"correct":1,"explain":"Auto-completion suggests variable names, keywords and function names while typing."},{"q":"Which of these is NOT a function of an operating system?","options":["Managing files","Handling interrupts","Editing photos","Managing user accounts"],"correct":2,"explain":"Editing photos is application software. Managing files, interrupts and users are OS functions."},{"q":"What does “prettyprint” do in an IDE?","options":["Prints code on paper","Automatically formats and indents code","Converts code to a PDF","Creates a user interface"],"correct":1,"explain":"Prettyprint automatically indents and formats code to make it readable and easier to debug."},{"q":"What is the role of the bootloader (firmware in ROM)?","options":["Loads the operating system into RAM at start-up","Compiles application programs","Manages file permissions","Provides the user interface"],"correct":0,"explain":"The bootloader runs before the OS exists — it checks hardware and loads the OS from disk into RAM."},{"q":"A utility program is:","options":["Application software for users","System software that performs maintenance tasks","A type of hardware","A programming language"],"correct":1,"explain":"Utilities (antivirus, disk defragmenter, compression) are system software that maintain the computer."},{"q":"Which is a feature of a high-level language?","options":["Written for one specific processor","Uses binary directly","Portable and machine-independent","Cannot be debugged"],"correct":2,"explain":"High-level languages use English-like keywords and can run on different machines (portable)."},{"tf":true,"q":"A compiler must fix all errors before the program can run at all.","correct":true,"explain":"The compiler scans the whole program first; all errors must be fixed before it produces an executable."},{"tf":true,"q":"An interpreter produces a saved executable file that runs without the interpreter.","correct":false,"explain":"Interpreters do not produce an executable — the interpreter itself must be present every time the program runs."},{"tf":true,"q":"A hardware interrupt can be caused by a key press or a printer running out of paper.","correct":true,"explain":"Hardware interrupts come from physical devices. Software interrupts come from running programs (e.g. division by zero)."}];
+  var state = { questions: [], currentIndex: 0, score: 0, answers: [], answered: false };
+  function startTest() {
+    var pool = QUESTION_BANK.slice();
+    var typeFilter = document.getElementById('questionType').value;
+    if (typeFilter !== 'all') { pool = pool.filter(function(q) { return q.type === typeFilter; }); }
+    if (pool.length === 0) { alert('No questions of this type available.'); return; }
+    for (var i = pool.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = pool[i]; pool[i] = pool[j]; pool[j] = t; }
+    var numQ = parseInt(document.getElementById('numQuestions').value);
+    if (numQ === 0 || numQ > pool.length) numQ = pool.length;
+    state.questions = pool.slice(0, numQ);
+    state.currentIndex = 0; state.score = 0; state.answers = []; state.answered = false;
+    showScreen('quizScreen'); renderQuestion();
+  }
+  function renderQuestion() {
+    var q = state.questions[state.currentIndex];
+    var total = state.questions.length; var idx = state.currentIndex;
+    document.getElementById('currentQ').textContent = idx + 1;
+    document.getElementById('totalQ').textContent = total;
+    document.getElementById('scoreDisplay').textContent = state.score;
+    document.getElementById('totalCorrect').textContent = total;
+    document.getElementById('progressFill').style.width = (idx / total * 100) + '%';
+    document.getElementById('qText').textContent = q.q;
+    document.getElementById('qNum').textContent = 'Q' + (idx + 1) + (q.tf ? ' (True / False)' : '');
+    var container = document.getElementById('optionsList'); container.innerHTML = '';
+    var options = q.tf ? ['True', 'False'] : q.options;
+    options.forEach(function(text, i) {
+      var btn = document.createElement('button');
+      btn.className = 'option-btn';
+      btn.setAttribute('data-index', i);
+      var letter = document.createElement('span');
+      letter.className = 'option-letter';
+      letter.textContent = q.tf ? (i === 0 ? 'T' : 'F') : ['A','B','C','D'][i];
+      btn.appendChild(letter);
+      btn.appendChild(document.createTextNode(text));
+      btn.addEventListener('click', function() { selectAnswer(i); });
+      container.appendChild(btn);
+    });
+    var fb = document.getElementById('feedbackArea');
+    fb.className = 'feedback-area'; fb.innerHTML = '';
+    document.getElementById('nextBtn').style.display = 'none';
+    state.answered = false;
+  }
+  function selectAnswer(index) {
+    if (state.answered) return;
+    state.answered = true;
+    var q = state.questions[state.currentIndex];
+    var correctIndex = q.tf ? (q.correct ? 0 : 1) : q.correct;
+    var isCorrect = (index === correctIndex);
+    var buttons = document.querySelectorAll('.option-btn');
+    buttons.forEach(function(btn, i) {
+      btn.classList.add('disabled');
+      if (i === correctIndex) btn.classList.add('correct');
+      if (i === index && !isCorrect) btn.classList.add('incorrect');
+      if (i === index) btn.classList.add('selected');
+    });
+    if (isCorrect) state.score++;
+    var fb = document.getElementById('feedbackArea');
+    fb.className = 'feedback-area ' + (isCorrect ? 'correct' : 'incorrect');
+    fb.innerHTML = '<span class="fb-label">' + (isCorrect ? '✅ Correct!' : '❌ Incorrect.') + '</span> ' + q.explain;
+    state.answers.push({ selected: index, correct: correctIndex, question: q, wasCorrect: isCorrect });
+    document.getElementById('scoreDisplay').textContent = state.score;
+    var nb = document.getElementById('nextBtn');
+    nb.style.display = 'inline-flex';
+    nb.textContent = (state.currentIndex === state.questions.length - 1) ? '📊 See Results' : 'Next →';
+  }
+  function nextQuestion() {
+    if (state.currentIndex >= state.questions.length - 1) { showResults(); return; }
+    state.currentIndex++; renderQuestion();
+  }
+  function showResults() {
+    showScreen('resultsScreen');
+    var total = state.questions.length; var correct = state.score; var pct = total > 0 ? Math.round(correct / total * 100) : 0;
+    document.getElementById('finalScore').textContent = pct + '%';
+    document.getElementById('rCorrect').textContent = correct;
+    document.getElementById('rIncorrect').textContent = total - correct;
+    document.getElementById('rTotal').textContent = total;
+    var msg = document.getElementById('resultsMsg');
+    msg.className = 'results-msg';
+    if (pct === 100) { msg.textContent = '🏆 Perfect score! You are a Computer Science master!'; msg.classList.add('perfect'); }
+    else if (pct >= 80) { msg.textContent = '🌟 Excellent! Strong understanding of this topic.'; msg.classList.add('great'); }
+    else if (pct >= 60) { msg.textContent = '👍 Good effort! Review the incorrect answers.'; msg.classList.add('good'); }
+    else { msg.textContent = '📚 Keep studying! Re-read the slides and try again.'; msg.classList.add('retry'); }
+    var rl = document.getElementById('reviewList');
+    rl.innerHTML = '<h3 style="font-size:0.95rem;color:#b8d4ff;margin-bottom:8px;">📋 Review Answers</h3>';
+    state.answers.forEach(function(a, i) {
+      var item = document.createElement('div');
+      item.className = 'review-item ' + (a.wasCorrect ? 'correct-review' : 'incorrect-review');
+      var q = a.question;
+      var letters = ['A','B','C','D'];
+      var yourAns = q.tf ? (a.selected === 0 ? 'True' : 'False') : letters[a.selected];
+      var corrAns = q.tf ? (a.correct === 0 ? 'True' : 'False') : letters[a.correct];
+      item.innerHTML = '<div class="review-q">' + (i+1) + '. ' + q.q + '</div>' +
+        '<div class="review-a">' + (a.wasCorrect ? '<span class="correct-answer">✅ Correct</span>' : '<span class="your-answer">❌ Your answer: ' + yourAns + '</span> — <span class="correct-answer">Correct: ' + corrAns + '</span>') + '</div>' +
+        '<div style="color:#7a9abd;font-size:0.78rem;margin-top:4px;">' + q.explain + '</div>';
+      rl.appendChild(item);
+    });
+  }
+  function resetTest() {
+    state.currentIndex = 0; state.score = 0; state.answers = []; state.answered = false;
+    var pool = state.questions;
+    for (var i = pool.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = pool[i]; pool[i] = pool[j]; pool[j] = t; }
+    showScreen('quizScreen'); renderQuestion();
+  }
+  function showSetup() { showScreen('setupScreen'); }
+  function showScreen(id) {
+    var screens = ['setupScreen', 'quizScreen', 'resultsScreen'];
+    screens.forEach(function(s) { document.getElementById(s).style.display = (s === id) ? 'block' : 'none'; });
+    document.getElementById('progressBarContainer').style.display = (id === 'quizScreen') ? 'block' : 'none';
+  }
+  showScreen('setupScreen');
+</script>
+</body>
+</html>

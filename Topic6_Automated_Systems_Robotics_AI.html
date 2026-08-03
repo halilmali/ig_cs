@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topic 6: Automated Systems, Robotics and AI — Cambridge IGCSE Computer Science</title>
+<link rel="stylesheet" href="css/topic-common.css">
+<style>
+/* ===== Topic-specific CSS ===== */
+
+
+  
+  .nn-strip {
+    position: fixed;
+    top: 0; right: 0; bottom: 0;
+    width: 190px;
+    font-family: 'JetBrains Mono', 'Cascadia Code', monospace;
+    font-size: 12px;
+    line-height: 1.9;
+    color: rgba(59, 130, 246, 0.13);
+    padding: 24px 16px;
+    white-space: pre;
+    pointer-events: none;
+    z-index: 0;
+    user-select: none;
+    text-align: right;
+  }
+
+
+  .bg-glow-2 {
+    position: fixed; bottom: -20%; right: -10%; width: 55%; height: 55%;
+    background: radial-gradient(circle, rgba(37, 99, 235, 0.11) 0%, transparent 70%);
+    z-index: 0; pointer-events: none;
+    animation: glowFloat 18s ease-in-out infinite alternate-reverse;
+  }
+
+
+  td.mono, th.mono { font-family: 'JetBrains Mono', Consolas, monospace; }
+
+
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+
+
+  .section-badge.sec-62 { background: linear-gradient(135deg, #9a3412, #ea580c); border-color: #f97316; color: #fed7aa; }
+
+
+  .section-badge.sec-63 { background: linear-gradient(135deg, #7c2d12, #c2410c); border-color: #ea580c; color: #fed7aa; }
+
+
+  .section-badge.quiz { background: linear-gradient(135deg, #4a3a1a, #6a522a); border-color: #8a723a; color: #ffd54f; }
+
+
+  .callout.success { border-left-color: #8bc34a; }
+
+
+
+  
+  .step-list { list-style: none; padding: 0; counter-reset: step; }
+
+
+  .step-list li { counter-increment: step; padding: 5px 10px 5px 30px; position: relative; margin-bottom: 3px; }
+
+
+  .step-list li::before { content: counter(step) "."; position: absolute; left: 4px; color: #f97316; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+
+
+    .grid-2, .grid-4 { grid-template-columns: 1fr; }
+
+
+    .nn-strip { display: none; }
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+<div class="bg-glow-2"></div>
+<div class="nn-strip">
+◦ ─ ◦ ─ ◦
+│   │   │
+◦ ─ ◦ ─ ◦
+│   │   │
+◦ ─ ◦ ─ ◦
+sensor · input
+processor · decide
+actuator · output
+◦ ─ ◦ ─ ◦
+learn · adapt
+</div>
+
+<div class="presentation">
+
+<!-- ============ SLIDE 1 – TITLE ============ -->
+<div class="slide active" data-slide="1">
+  <div style="text-align:center; margin-top:11vh;">
+    <div class="section-badge">Topic 6</div>
+    <h1 style="font-size:2.9rem;">Automated Systems,<br>Robotics and AI</h1>
+    <p style="color:#8a93a6; font-size:1.1rem; margin-top:4px;">Cambridge IGCSE Computer Science · 0478 / 0984 / 0418</p>
+    <div class="grid-4" style="margin:40px auto 0; max-width:780px;">
+      <div class="icon-tile"><span class="ico">📡</span><span class="ico-label">Sensor</span><span class="ico-sub">input · detects</span></div>
+      <div class="icon-tile"><span class="ico">🤖</span><span class="ico-label">Robotics</span><span class="ico-sub">automation</span></div>
+      <div class="icon-tile"><span class="ico">🧠</span><span class="ico-label">AI</span><span class="ico-sub">intelligent behaviour</span></div>
+      <div class="icon-tile"><span class="ico">⚙️</span><span class="ico-label">Automated System</span><span class="ico-sub">sensor · μP · actuator</span></div>
+    </div>
+    <p style="color:#6a7280; font-size:0.85rem; margin-top:34px;">Automated Systems &middot; Robotics &middot; Artificial Intelligence</p>
+    <p style="color:#6a7280; font-size:0.8rem;">Press <span class="inline-code">→</span> or click the navigation to begin</p>
+  </div>
+  <div class="slide-footer"><span class="section-label">Topic 6 &middot; Overview</span><span class="slide-number">1 / 27</span></div>
+</div>
+
+<!-- ============ SLIDE 2 – LEARNING OBJECTIVES 6.1 ============ -->
+<div class="slide" data-slide="2">
+  <div class="section-badge">6.1 &middot; Automated Systems</div>
+  <h2>Learning Objectives</h2>
+  <p class="text-small">By the end of this section you should be able to:</p>
+  <ul class="objectives-list">
+    <li><strong>Describe how sensors, microprocessors,</strong> and actuators work together to create automated systems</li>
+    <li><strong>Describe the advantages and disadvantages</strong> of an automated system in a given scenario</li>
+  </ul>
+  <div class="callout info" style="margin-top:14px;"><strong>📌 Key idea:</strong> every automated system follows the same pattern: <em>sense → decide → act</em>. Learn the cycle once and apply it to any scenario.</div>
+  <div class="slide-footer"><span class="section-label">6.1 &middot; Automated Systems</span><span class="slide-number">2 / 27</span></div>
+</div>
+
+<!-- ============ SLIDE 3 – THE THREE CORE COMPONENTS ============ -->
+<div class="slide" data-slide="3">
+  <div class="section-badge">6.1 &middot; Automated Systems</div>
+  <h2>The Three Core Components</h2>
+  <p>An automated system uses the <strong>input-process-output</strong> model:</p>
+  <div class="diagram-box">
+    <svg viewBox="0 0 720 158" style="width:100%; max-width:720px;">
+      <defs>
+        <marker id="flow6" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <polygon points="0,0 7,3 0,6" fill="#fb923c"/>
+        </marker>
+      </defs>
+      <g font-family="'Inter', sans-serif">
+        <text x="120" y="18" text-anchor="middle" font-size="11" fill="#fb923c" font-weight="700">INPUT</text>
+        <rect x="20" y="30" width="200" height="60" rx="9" fill="#1a1f29" stroke="#f97316" stroke-width="1.6"/>
+        <text x="120" y="54" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fdf6ee">📡 Sensor</text>
+        <text x="120" y="73" text-anchor="middle" font-size="10.5" fill="#cfc9c0">collects data from the environment</text>
+        <text x="360" y="18" text-anchor="middle" font-size="11" fill="#fb923c" font-weight="700">PROCESS</text>
+        <rect x="260" y="30" width="200" height="60" rx="9" fill="#1a1f29" stroke="#f97316" stroke-width="1.6"/>
+        <text x="360" y="54" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fdf6ee">⚙️ Microprocessor</text>
+        <text x="360" y="73" text-anchor="middle" font-size="10.5" fill="#cfc9c0">compares data to pre-set values</text>
+        <text x="600" y="18" text-anchor="middle" font-size="11" fill="#fb923c" font-weight="700">OUTPUT</text>
+        <rect x="500" y="30" width="200" height="60" rx="9" fill="#1a1f29" stroke="#f97316" stroke-width="1.6"/>
+        <text x="600" y="54" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fdf6ee">🔧 Actuator</text>
+        <text x="600" y="73" text-anchor="middle" font-size="10.5" fill="#cfc9c0">causes a physical action to occur</text>
+        <line x1="220" y1="60" x2="258" y2="60" stroke="#fb923c" stroke-width="2" marker-end="url(#flow6)"/>
+        <line x1="460" y1="60" x2="498" y2="60" stroke="#fb923c" stroke-width="2" marker-end="url(#flow6)"/>
+        <text x="360" y="122" text-anchor="middle" font-size="11" fill="#8a93a6">data flows one way — the cycle then repeats continuously as conditions change</text>
+      </g>
+    </svg>
+    <div class="diagram-caption">Input (sense) → Process (decide) → Output (act).</div>
+  </div>
+  <div class="exam-tip">
+    <span class="tip-icon">📝</span>
+    <span class="tip-text"><strong>Exam Tip:</strong> Always describe the full cycle: <strong>sensor detects → microprocessor compares/decides → actuator acts</strong>. Marks are lost for skipping a stage.</span>
+  </div>
+  <div class="slide-footer"><span class="section-label">6.1 &middot; Automated Systems</span><span class="slide-number">3 / 27</span></div>
+</div>
+
+<!-- ============ SLIDE 4 – HOW COLLABORATION WORKS ============ -->
+<div class="slide" data-slide="4">
+  <div class="section-badge">6.1 &middot; Automated Systems</div>
+  <h2>How Collaboration Works — Automatic Streetlight</h2>
+  <div class="worked-example">
+    <span class="we-label">Worked example</span>
+    <h4>💡 A light-sensitive streetlight</h4>
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 178" style="width:100%; max-width:720px;">
+        <defs>
+          <marker id="loop6" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <polygon points="0,0 7,3 0,6" fill="#fb923c"/>
+          </marker>
+        </defs>
+        <g font-family="'Inter', sans-serif">
+          <rect x="20" y="22" width="330" height="48" rx="8" fill="#1a1f29" stroke="#f97316"/>
+          <text x="185" y="51" text-anchor="middle" font-size="11.5" fill="#e8e2d8">1. Light sensor monitors light level</text>
+          <rect x="370" y="22" width="330" height="48" rx="8" fill="#1a1f29" stroke="#f97316"/>
+          <text x="535" y="51" text-anchor="middle" font-size="11.5" fill="#e8e2d8">2. Sensor sends data to microprocessor</text>
+          <rect x="370" y="108" width="330" height="48" rx="8" fill="#1a1f29" stroke="#f97316"/>
+          <text x="535" y="137" text-anchor="middle" font-size="11.5" fill="#e8e2d8">3. μP compares reading to threshold value</text>
+          <rect x="20" y="108" width="330" height="48" rx="8" fill="#1a1f29" stroke="#f97316"/>
+          <text x="185" y="137" text-anchor="middle" font-size="11.5" fill="#e8e2d8">4. If dark → actuator switches light on</text>
+          <line x1="350" y1="46" x2="368" y2="46" stroke="#fb923c" stroke-width="2" marker-end="url(#loop6)"/>
+          <line x1="535" y1="70" x2="535" y2="106" stroke="#fb923c" stroke-width="2" marker-end="url(#loop6)"/>
+          <line x1="370" y1="132" x2="352" y2="132" stroke="#fb923c" stroke-width="2" marker-end="url(#loop6)"/>
+          <line x1="185" y1="108" x2="185" y2="72" stroke="#fb923c" stroke-width="2" marker-end="url(#loop6)"/>
+        </g>
+      </svg>
+      <div class="diagram-caption">A continuous loop: sense → compare → act → repeat.</div>
+    </div>
+    <ol class="step-list">
+      <li>A <strong>light sensor</strong> continuously monitors the level of light in the environment.</li>
+      <li>The sensor <strong>sends this data</strong> to the microprocessor.</li>
+      <li>The microprocessor <strong>compares the reading to a pre-set threshold</strong> stored in its memory.</li>
+      <li>If the light level is <strong>below the threshold</strong> (it is dark), it sends a signal to the actuator.</li>
+      <li>The <strong>actuator switches on the light</strong> (e.g. via a relay or motor).</li>
+      <li>This cycle <strong>repeats continuously</strong> as light levels change.</li>
+    </ol>
+  </div>
+  <div class="slide-footer"><span class="section-label">6.1 &middot; Automated Systems</span><span class="slide-number">4 / 27</span></div>
+</div>
+
+<!-- ============ SLIDE 5 – SCENARIOS PART 1 ============ -->
+<div class="slide" data-slide="5">
+  <div class="section-badge">6.1 &middot; Automated Systems</div>
+  <h2>Automated System Scenarios (Part 1)</h2>
+  <table>
+    <tr><th style="width:16%;">Area</th><th>Sensor detects…</th><th>Actuator responds…</th></tr>
+    <tr><td><strong>Industry</strong></td><td><strong>Faulty products</strong> on a production line (e.g. wrong weight)</td><td>Removes the faulty product from the line automatically</td></tr>
+    <tr><td><strong>Transport</strong></td><td><strong>Obstacles</strong> in front of a car (e.g. via radar)</td><td>Applies the <strong>automatic braking</strong> system</td></tr>
+    <tr><td><strong>Agriculture</strong></td><td><strong>Low soil moisture</strong> in the ground</td><td>Triggers the <strong>automatic irrigation</strong> system</td></tr>
+    <tr><td><strong>Weather</strong></td><td><strong>Temperature, humidity</strong> and wind speed</td><td>Updates readings in an <strong>automatic weather station</strong></td></tr>
+  </table>
+  <div class="callout"><strong>Exam trick:</strong> in any scenario question, first identify <em>what is being measured</em> (sensor), <em>what is compared</em> (microprocessor), and <em>what moves or switches</em> (actuator).</div>
+  <div class="slide-footer"><span class="section-label">6.1 &middot; Automated Systems</span><span class="slide-number">5 / 27</span></div>
+</div>
+
+<!-- ============ SLIDE 6 – SCENARIOS PART 2 ============ -->
+<div class="slide" data-slide="6">
+  <div class="section-badge">6.1 &middot; Automated Systems</div>
+  <h2>Automated System Scenarios (Part 2)</h2>
+  <table>
+    <tr><th style="width:16%;">Area</th><th>Sensor detects…</th><th>Actuator responds…</th></tr>
+    <tr><td><strong>Gaming</strong></td><td><strong>Player movement</strong> (e.g. via motion sensors)</td><td>Triggers <strong>automatic in-game responses</strong></td></tr>
+    <tr><td><strong>Lighting</strong></td><td><strong>Low light levels</strong> or motion in an area</td><td>Switches on <strong>automatic street or security lighting</strong></td></tr>
+    <tr><td><strong>Science</strong></td><td>Laboratory conditions such as <strong>temperature in a reaction</strong></td><td>Automatically <strong>monitors and logs</strong> experimental conditions</td></tr>
+  </table>
+  <div class="grid-2" style="margin-top:12px;">
+    <div class="card">
+      <h4>🎮 Gaming</h4>
+      <p style="font-size:0.9rem;">Motion-sensing controllers detect your swing and <strong>mirror it on screen</strong> instantly.</p>
+    </div>
+    <div class="card">
+      <h4>🌡 Science</h4>
+      <p style="font-size:0.9rem;">A lab rig keeps a reaction at a set temperature, <strong>logging readings automatically</strong> every second.</p>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="section-label">6.1 &middot; Automated Systems</span><span class="slide-number">6 / 27</span></div>
+</div>
+
+<!-- ============ SLIDE 7 – ADVANTAGES ============ -->
+<div class="slide" data-slide="7">
+  <div class="section-badge">6.1 &middot; Automated Systems</div>
+  <h2>Advantages of Automated Systems</h2>
+  <ul>
+    <li><strong>Increased speed and productivity</strong> — tasks are completed faster than by a human worker.</li>
+    <li><strong>Improved accuracy and consistency</strong> — fewer human errors; the same action is repeated identically.</li>
+    <li><strong>Can operate continuously</strong> — 24/7 without breaks, rest, or fatigue.</li>
+    <li><strong>Improved safety</strong> — can work in dangerous environments (e.g. extreme heat, toxic fumes).</li>
+    <li><strong>Reduced long-term staffing costs</strong> — fewer workers needed once the system is installed.</li>
+  </ul>
+  <div class="worked-example">
+    <span class="we-label">Running thread — factory line</span>
+    <p style="font-size:0.93rem;">A factory inspection line runs <strong>all night without staff</strong>, checks every product <strong>to the same standard</strong>, and never misses a shift — boosting output while cutting wage bills.</p>
+  </div>
+  <div class="callout info"><strong>Link to robots:</strong> these same advantages reappear in Section 6.2 — automation is automation, whatever the machine is called.</div>
+  <div class="slide-footer"><span class="section-label">6.1 &middot; Automated Systems</span><span class="slide-number">7 / 27</span></div>
+</div>
+
+<!-- ============ SLIDE 8 – DISADVANTAGES ============ -->
+<div class="slide" data-slide="8">
+  <div class="section-badge">6.1 &middot; Automated Systems</div>
+  <h2>Disadvantages of Automated Systems</h2>
+  <ul>
+    <li><strong>High initial setup / installation cost</strong> — sensors, processors, actuators and wiring are expensive.</li>
+    <li><strong>Requires specialist skills</strong> to maintain and repair the system.</li>
+    <li><strong>Can lead to job losses</strong> for human workers replaced by machines.</li>
+    <li><strong>Less flexible / adaptable than a human</strong> when faced with an unusual situation.</li>
+    <li><strong>System failure can halt an entire process</strong> — a single point of failure.</li>
+  </ul>
+  <div class="worked-example">
+    <span class="we-label">Running thread — factory line</span>
+    <p style="font-size:0.93rem;">The same line costs <strong>thousands to install</strong>, needs <strong>specialist engineers</strong> when it breaks, and if the conveyor sensor fails the <strong>whole production line stops</strong>.</p>
+  </div>
+  <div class="slide-footer"><span class="section-label">6.1 &middot; Automated Systems</span><span class="slide-number">8 / 27</span></div>
+</div>
+
+<!-- ============ SLIDE 9 – EXAM FOCUS ============ -->
+<div class="slide" data-slide="9">
+  <div class="section-badge">6.1 &middot; Automated Systems</div>
+  <h2>Exam Focus: Evaluating a Scenario</h2>
+  <p>Questions often ask you to <strong>"describe the advantages and disadvantages" for a <em>given</em> scenario</strong> — e.g. a hospital, a farm, or a factory.</p>
+  <div class="grid-2">
+    <div class="card">
+      <h4>✅ Do this</h4>
+      <ul style="font-size:0.92rem;">
+        <li><strong>Link every point to the context.</strong> For a hospital: discuss <em>patient safety, accuracy, and cost of care</em> — not generic points.</li>
+        <li>State the <strong>sensor → microprocessor → actuator</strong> cycle for that specific setting.</li>
+        <li>Balance your answer: give <strong>at least one advantage and one disadvantage</strong> even if only one is asked to start with.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>❌ Avoid</h4>
+      <ul style="font-size:0.92rem;">
+        <li><strong>Copy-paste answers</strong> — generic points such as "it is fast" earn few marks if not applied to the scenario.</li>
+        <li>Forgetting the <strong>context-specific detail</strong> that separates top-band answers.</li>
+        <li>Listing <strong>robotics or AI points</strong> — this section is about automated systems only.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="worked-example">
+    <span class="we-label">Model answer — hospital drug-dispensing system</span>
+    <p style="font-size:0.92rem;"><strong>Advantage:</strong> an automated dispenser measures exact doses, reducing <strong>human error that could endanger patients</strong>. <strong>Disadvantage:</strong> the <strong>equipment and staff training are costly</strong>, and a system fault could <strong>delay critical medication</strong> until repaired.</p>
+  </div>
+  <div class="slide-footer"><span class="section-label">6.1 &middot; Automated Systems</span><span class="slide-number">9 / 27</span></div>
+</div>
+
+<!-- ============ SLIDE 10 – RECAP QUIZ 6.1 ============ -->
+<div class="slide" data-slide="10">
+  <div class="section-badge quiz">6.1 &middot; Recap Quiz</div>
+  <h2>Quick Check — Automated Systems</h2>
+  <div class="card" style="margin-top:10px;">
+    <p><strong>Q1.</strong> Describe how a sensor, microprocessor, and actuator work together in an automatic greenhouse watering system.</p>
+    <div class="reveal-container">
+      <button class="reveal-btn" data-target="q1">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q1">A <strong>soil moisture sensor</strong> detects the soil is dry and sends the reading to the <strong>microprocessor</strong>. The microprocessor <strong>compares it to a pre-set threshold</strong> and, if it is too dry, sends a signal to the <strong>actuator</strong>, which opens the valve or switches on the sprinklers. The cycle repeats.</div>
+    </div>
+  </div>
+  <div class="card">
+    <p><strong>Q2.</strong> State two disadvantages of using an automated system in a factory.</p>
+    <div class="reveal-container">
+      <button class="reveal-btn" data-target="q2">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q2">Any two: high initial <strong>setup/installation cost</strong>; requires <strong>specialist skills to maintain</strong>; can cause <strong>job losses</strong>; <strong>less flexible than a human</strong> in unusual situations; a <strong>system failure can halt the whole process</strong>.</div>
+    </div>
+  </div>
+  <div class="card">
+    <p><strong>Q3.</strong> A streetlight uses a light sensor. State what the microprocessor does when the light level drops below the threshold value.</p>
+    <div class="reveal-container">
+      <button class="reveal-btn" data-target="q3">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q3">The microprocessor <strong>sends a signal to the actuator</strong> telling it to <strong>switch the light on</strong>.</div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="section-label">6.1 &middot; Automated Systems</span><span class="slide-number">10 / 27</span></div>
+</div>
+
+<!-- ============ SLIDE 11 – LEARNING OBJECTIVES 6.2 ============ -->
+<div class="slide" data-slide="11">
+  <div class="section-badge sec-62">6.2 &middot; Robotics</div>
+  <h2>Learning Objectives</h2>
+  <p class="text-small">By the end of this section you should be able to:</p>
+  <ul class="objectives-list">
+    <li><strong>Understand what is meant by robotics</strong></li>
+    <li><strong>Describe the characteristics of a robot</strong></li>
+    <li><strong>Understand the roles robots can perform,</strong> and their advantages and disadvantages</li>
+  </ul>
+  <div class="callout info" style="margin-top:14px;"><strong>📌 Key idea:</strong> a robot is an automated system you can reprogram — the sensor → microprocessor → actuator ideas from 6.1 are still at its heart.</div>
+  <div class="slide-footer"><span class="section-label">6.2 &middot; Robotics</span><span class="slide-number">11 / 27</span></div>
+</div>
+
+<!-- ============ SLIDE 12 – WHAT IS ROBOTICS ============ -->
+<div class="slide" data-slide="12">
+  <div class="section-badge sec-62">6.2 &middot; Robotics</div>
+  <h2>What is Robotics?</h2>
+  <p><strong>Robotics</strong> is a branch of computer science that incorporates the <strong>design, construction, and operation of robots</strong>.</p>
+  <div class="grid-2" style="margin-top:10px;">
+    <div class="card">
+      <h4>🏭 Factory equipment</h4>
+      <p style="font-size:0.9rem;">Industrial robotic arms that weld, paint, and assemble cars on a production line.</p>
+    </div>
+    <div class="card">
+      <h4>🏠 Domestic robots</h4>
+      <p style="font-size:0.9rem;">Robot vacuum cleaners that map a room and clean it automatically.</p>
+    </div>
+    <div class="card">
+      <h4>🛸 Drones</h4>
+      <p style="font-size:0.9rem;">Unmanned aircraft used for delivery, filming, and surveying.</p>
+    </div>
+    <div class="card">
+      <h4>🔬 And many more</h4>
+      <p style="font-size:0.9rem;">Medical assistants, bomb-disposal units, and exploration rovers are all robots.</p>
+    </div>
+  </div>
+  <div class="callout"><strong>Not every machine is a robot:</strong> a robot is <em>programmable</em> and can carry out tasks automatically — a washing machine with a fixed program is usually treated as an automated system rather than a robot.</div>
+  <div class="slide-footer"><span class="section-label">6.2 &middot; Robotics</span><span class="slide-number">12 / 27</span></div>
+</div>
+
+<!-- ============ SLIDE 13 – CHARACTERISTICS OF A ROBOT ============ -->
+<div class="slide" data-slide="13">
+  <div class="section-badge sec-62">6.2 &middot; Robotics</div>
+  <h2>Characteristics of a Robot</h2>
+  <table>
+    <tr><th style="width:30%;">Characteristic</th><th>What it means</th></tr>
+    <tr><td><strong>Mechanical structure / framework</strong></td><td>The <strong>physical body or frame</strong> of the robot — its arms, wheels, and chassis.</td></tr>
+    <tr><td><strong>Electrical components</strong></td><td>Includes <strong>sensors (input)</strong>, <strong>microprocessors (processing)</strong>, and <strong>actuators (output)</strong> — linking back to Section 6.1.</td></tr>
+    <tr><td><strong>Programmable</strong></td><td>Can be <strong>programmed and reprogrammed</strong> to carry out different tasks or sequences of instructions.</td></tr>
+  </table>
+  <div class="diagram-box">
+    <svg viewBox="0 0 720 130" style="width:100%; max-width:720px;">
+      <defs>
+        <marker id="char6" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <polygon points="0,0 7,3 0,6" fill="#fb923c"/>
+        </marker>
+      </defs>
+      <g font-family="'Inter', sans-serif">
+        <rect x="20" y="34" width="200" height="56" rx="9" fill="#1a1f29" stroke="#f97316"/>
+        <text x="120" y="58" text-anchor="middle" font-size="12" font-weight="700" fill="#fdf6ee">🦾 Mechanical</text>
+        <text x="120" y="76" text-anchor="middle" font-size="10" fill="#cfc9c0">structure / framework</text>
+        <rect x="260" y="34" width="200" height="56" rx="9" fill="#1a1f29" stroke="#f97316"/>
+        <text x="360" y="58" text-anchor="middle" font-size="12" font-weight="700" fill="#fdf6ee">🔌 Electrical</text>
+        <text x="360" y="76" text-anchor="middle" font-size="10" fill="#cfc9c0">sensors · μP · actuators</text>
+        <rect x="500" y="34" width="200" height="56" rx="9" fill="#1a1f29" stroke="#f97316"/>
+        <text x="600" y="58" text-anchor="middle" font-size="12" font-weight="700" fill="#fdf6ee">💻 Programmable</text>
+        <text x="600" y="76" text-anchor="middle" font-size="10" fill="#cfc9c0">reprogrammed for new tasks</text>
+        <line x1="220" y1="62" x2="258" y2="62" stroke="#fb923c" stroke-width="2" marker-end="url(#char6)"/>
+        <line x1="460" y1="62" x2="498" y2="62" stroke="#fb923c" stroke-width="2" marker-end="url(#char6)"/>
+        <text x="360" y="118" text-anchor="middle" font-size="11" fill="#8a93a6">a robot = a physical body + electronics + a program it can change</text>
+      </g>
+    </svg>
+  </div>
+  <div class="slide-footer"><span class="section-label">6.2 &middot; Robotics</span><span class="slide-number">13 / 27</span></div>
+</div>
+
+<!-- ============ SLIDE 14 – AREAS WHERE ROBOTS ARE USED ============ -->
+<div class="slide" data-slide="14">
+  <div class="section-badge sec-62">6.2 &middot; Robotics</div>
+  <h2>Areas Where Robots Are Used</h2>
+  <div class="grid-2">
+    <div class="card">
+      <h4>🏭 Industry</h4>
+      <p style="font-size:0.9rem;">Robotic arms on a <strong>car assembly line</strong> welding and fitting parts.</p>
+    </div>
+    <div class="card">
+      <h4>🚚 Transport</h4>
+      <p style="font-size:0.9rem;"><strong>Autonomous delivery robots</strong> carrying parcels to customers.</p>
+    </div>
+    <div class="card">
+      <h4>🌾 Agriculture</h4>
+      <p style="font-size:0.9rem;"><strong>Automated harvesting robots</strong> picking crops.</p>
+    </div>
+    <div class="card">
+      <h4>🏥 Medicine</h4>
+      <p style="font-size:0.9rem;"><strong>Robotic surgery assistance</strong> for precise operations.</p>
+    </div>
+    <div class="card">
+      <h4>🏡 Domestic settings</h4>
+      <p style="font-size:0.9rem;"><strong>Robotic vacuum cleaners</strong> and lawn mowers.</p>
+    </div>
+    <div class="card">
+      <h4>🎮 Entertainment</h4>
+      <p style="font-size:0.9rem;"><strong>Interactive toy robots</strong> and camera drones.</p>
+    </div>
+  </div>
+  <div class="callout"><strong>Remember:</strong> all six areas are in the syllabus — you may be asked to <em>name an area</em> and give an <em>example robot</em> used there.</div>
+  <div class="slide-footer"><span class="section-label">6.2 &middot; Robotics</span><span class="slide-number">14 / 27</span></div>
+</div>
+
+<!-- ============ SLIDE 15 – ADVANTAGES OF ROBOTS ============ -->
+<div class="slide" data-slide="15">
+  <div class="section-badge sec-62">6.2 &middot; Robotics</div>
+  <h2>Advantages of Using Robots</h2>
+  <ul>
+    <li><strong>Can work continuously without tiring</strong> — increasing overall output.</li>
+    <li><strong>Perform repetitive tasks</strong> with high precision and consistency.</li>
+    <li><strong>Can operate in hazardous environments</strong> unsafe for humans (e.g. bomb disposal, deep sea).</li>
+    <li><strong>Increased efficiency and productivity</strong> over time, once installed.</li>
+  </ul>
+  <div class="worked-example">
+    <span class="we-label">Applied example — surgery</span>
+    <p style="font-size:0.93rem;">A surgical robot holds a <strong>steady, precise instrument</strong> for hours without shaking, lets surgeons work through tiny incisions, and never tires — improving patient outcomes.</p>
+  </div>
+  <div class="slide-footer"><span class="section-label">6.2 &middot; Robotics</span><span class="slide-number">15 / 27</span></div>
+</div>
+
+<!-- ============ SLIDE 16 – DISADVANTAGES OF ROBOTS ============ -->
+<div class="slide" data-slide="16">
+  <div class="section-badge sec-62">6.2 &middot; Robotics</div>
+  <h2>Disadvantages of Using Robots</h2>
+  <ul>
+    <li><strong>High initial cost</strong> of purchase, setup, and programming.</li>
+    <li><strong>Requires skilled technicians</strong> for maintenance and repairs.</li>
+    <li><strong>Can lead to unemployment</strong> / loss of jobs for human workers.</li>
+    <li><strong>Lack the flexibility and adaptability</strong> of humans to solve unexpected problems.</li>
+  </ul>
+  <div class="worked-example">
+    <span class="we-label">Applied example — surgery</span>
+    <p style="font-size:0.93rem;">The same surgical robot costs <strong>millions to buy and maintain</strong>, needs <strong>highly trained staff</strong>, and <strong>cannot make judgement calls</strong> when something unexpected happens during an operation.</p>
+  </div>
+  <div class="callout warn"><strong>Notice the pattern:</strong> the advantages and disadvantages of robots mirror those of automated systems in 6.1 — examiners reward answers that are <em>specific to the robot scenario given</em>.</div>
+  <div class="slide-footer"><span class="section-label">6.2 &middot; Robotics</span><span class="slide-number">16 / 27</span></div>
+</div>
+
+<!-- ============ SLIDE 17 – RECAP QUIZ 6.2 ============ -->
+<div class="slide" data-slide="17">
+  <div class="section-badge quiz">6.2 &middot; Recap Quiz</div>
+  <h2>Quick Check — Robotics</h2>
+  <div class="card" style="margin-top:10px;">
+    <p><strong>Q4.</strong> State the three characteristics of a robot.</p>
+    <div class="reveal-container">
+      <button class="reveal-btn" data-target="q4">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q4">1) A <strong>mechanical structure / framework</strong> (physical body). 2) <strong>Electrical components</strong> — sensors, a microprocessor, and actuators. 3) It is <strong>programmable</strong>, so it can be reprogrammed to do different tasks.</div>
+    </div>
+  </div>
+  <div class="card">
+    <p><strong>Q5.</strong> Describe one advantage of using a robot to perform surgery instead of a human.</p>
+    <div class="reveal-container">
+      <button class="reveal-btn" data-target="q5">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q5">The robot offers <strong>higher precision and steadiness</strong> than a human hand, works <strong>without tiring</strong> during long operations, and can make <strong>smaller, more accurate incisions</strong>, improving patient outcomes.</div>
+    </div>
+  </div>
+  <div class="card">
+    <p><strong>Q6.</strong> Give one disadvantage of using robots in a factory.</p>
+    <div class="reveal-container">
+      <button class="reveal-btn" data-target="q6">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q6">Any one: <strong>high cost</strong> of purchase/programming; needs <strong>skilled technicians</strong> for maintenance; can cause <strong>job losses</strong>; <strong>lacks human flexibility</strong> when unexpected problems occur.</div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="section-label">6.2 &middot; Robotics</span><span class="slide-number">17 / 27</span></div>
+</div>
+
+<!-- ============ SLIDE 18 – LEARNING OBJECTIVES 6.3 ============ -->
+<div class="slide" data-slide="18">
+  <div class="section-badge sec-63">6.3 &middot; Artificial Intelligence</div>
+  <h2>Learning Objectives</h2>
+  <p class="text-small">By the end of this section you should be able to:</p>
+  <ul class="objectives-list">
+    <li><strong>Understand what is meant by artificial intelligence (AI)</strong></li>
+    <li><strong>Describe the main characteristics of AI</strong></li>
+    <li><strong>Explain the basic operation</strong> and components of AI systems</li>
+  </ul>
+  <div class="callout info" style="margin-top:14px;"><strong>📌 Key idea:</strong> the syllabus limits AI to <strong>two areas</strong> — <em>expert systems</em> and <em>machine learning</em>. Focus on those.</div>
+  <div class="slide-footer"><span class="section-label">6.3 &middot; Artificial Intelligence</span><span class="slide-number">18 / 27</span></div>
+</div>
+
+<!-- ============ SLIDE 19 – WHAT IS ARTIFICIAL INTELLIGENCE ============ -->
+<div class="slide" data-slide="19">
+  <div class="section-badge sec-63">6.3 &middot; Artificial Intelligence</div>
+  <h2>What is Artificial Intelligence?</h2>
+  <p><strong>Artificial Intelligence (AI)</strong> is a branch of computer science dealing with the <strong>simulation of intelligent behaviours by computers</strong>.</p>
+  <div class="grid-2" style="margin-top:10px;">
+    <div class="card">
+      <h4>🧠 Expert systems</h4>
+      <p style="font-size:0.9rem;">Programs that use a <strong>knowledge base and rules</strong> to solve problems like a human expert (e.g. medical diagnosis).</p>
+    </div>
+    <div class="card">
+      <h4>📈 Machine learning</h4>
+      <p style="font-size:0.9rem;">Programs that <strong>learn and adapt automatically</strong> from data, improving without being reprogrammed (e.g. image recognition).</p>
+    </div>
+  </div>
+  <div class="callout"><strong>Syllabus note:</strong> for this course, AI is <strong>only</strong> the two areas above — you do not need to study other forms of AI.</div>
+  <div class="slide-footer"><span class="section-label">6.3 &middot; Artificial Intelligence</span><span class="slide-number">19 / 27</span></div>
+</div>
+
+<!-- ============ SLIDE 20 – MAIN CHARACTERISTICS OF AI ============ -->
+<div class="slide" data-slide="20">
+  <div class="section-badge sec-63">6.3 &middot; Artificial Intelligence</div>
+  <h2>Main Characteristics of AI</h2>
+  <table>
+    <tr><th style="width:28%;">Characteristic</th><th>What it means</th></tr>
+    <tr><td><strong>Data and rules</strong></td><td>The <strong>collection of data</strong> and the <strong>pre-set rules</strong> for how that data should be used.</td></tr>
+    <tr><td><strong>Ability to reason</strong></td><td>The capacity to <strong>process information logically</strong> to reach a conclusion or decision.</td></tr>
+    <tr><td><strong>Ability to learn and adapt</strong></td><td>Some AI systems can <strong>improve their own performance over time</strong> based on new data, without being reprogrammed by a human — this is specific to <strong>machine learning</strong>.</td></tr>
+  </table>
+  <div class="diagram-box">
+    <svg viewBox="0 0 720 122" style="width:100%; max-width:720px;">
+      <defs>
+        <marker id="ai6" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <polygon points="0,0 7,3 0,6" fill="#fb923c"/>
+        </marker>
+      </defs>
+      <g font-family="'Inter', sans-serif">
+        <rect x="20" y="26" width="200" height="52" rx="9" fill="#1a1f29" stroke="#f97316"/>
+        <text x="120" y="49" text-anchor="middle" font-size="12" font-weight="700" fill="#fdf6ee">📊 Data &amp; Rules</text>
+        <text x="120" y="66" text-anchor="middle" font-size="10" fill="#cfc9c0">facts + IF-THEN rules</text>
+        <rect x="260" y="26" width="200" height="52" rx="9" fill="#1a1f29" stroke="#f97316"/>
+        <text x="360" y="49" text-anchor="middle" font-size="12" font-weight="700" fill="#fdf6ee">🧮 Reason</text>
+        <text x="360" y="66" text-anchor="middle" font-size="10" fill="#cfc9c0">process logically → conclude</text>
+        <rect x="500" y="26" width="200" height="52" rx="9" fill="#1a1f29" stroke="#f97316"/>
+        <text x="600" y="49" text-anchor="middle" font-size="12" font-weight="700" fill="#fdf6ee">📈 Learn &amp; Adapt</text>
+        <text x="600" y="66" text-anchor="middle" font-size="10" fill="#cfc9c0">improve from new data (ML)</text>
+        <line x1="220" y1="52" x2="258" y2="52" stroke="#fb923c" stroke-width="2" marker-end="url(#ai6)"/>
+        <line x1="460" y1="52" x2="498" y2="52" stroke="#fb923c" stroke-width="2" marker-end="url(#ai6)"/>
+        <text x="360" y="110" text-anchor="middle" font-size="11" fill="#8a93a6">expert systems: data + reason · machine learning: adds learn &amp; adapt</text>
+      </g>
+    </svg>
+  </div>
+  <div class="slide-footer"><span class="section-label">6.3 &middot; Artificial Intelligence</span><span class="slide-number">20 / 27</span></div>
+</div>
+
+<!-- ============ SLIDE 21 – EXPERT SYSTEMS OVERVIEW ============ -->
+<div class="slide" data-slide="21">
+  <div class="section-badge sec-63">6.3 &middot; Artificial Intelligence</div>
+  <h2>Expert Systems: Overview</h2>
+  <p>An <strong>expert system</strong> is an <strong>AI program</strong> that uses a <strong>database of knowledge and rules</strong> to solve problems in a specific field, <strong>simulating the decision-making of a human expert</strong>.</p>
+  <div class="grid-2" style="margin-top:10px;">
+    <div class="card">
+      <h4>🩺 Medical diagnosis</h4>
+      <p style="font-size:0.9rem;">Symptoms are entered, and the system suggests a <strong>likely condition</strong> — like a specialist doctor.</p>
+    </div>
+    <div class="card">
+      <h4>🐛 Fault finding</h4>
+      <p style="font-size:0.9rem;">Diagnosing why a <strong>machine or circuit has failed</strong> based on observed symptoms.</p>
+    </div>
+  </div>
+  <div class="callout info"><strong>Key phrase:</strong> the expert system <em>imitates a human expert</em> — it does not "think" the way a human does, it follows stored knowledge and rules.</div>
+  <div class="slide-footer"><span class="section-label">6.3 &middot; Artificial Intelligence</span><span class="slide-number">21 / 27</span></div>
+</div>
+
+<!-- ============ SLIDE 22 – FOUR COMPONENTS OF AN EXPERT SYSTEM ============ -->
+<div class="slide" data-slide="22">
+  <div class="section-badge sec-63">6.3 &middot; Artificial Intelligence</div>
+  <h2>The Four Components of an Expert System</h2>
+  <div class="diagram-box">
+    <svg viewBox="0 0 720 208" style="width:100%; max-width:720px;">
+      <defs>
+        <marker id="es6" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <polygon points="0,0 7,3 0,6" fill="#fb923c"/>
+        </marker>
+      </defs>
+      <g font-family="'Inter', sans-serif">
+        <rect x="20" y="30" width="130" height="56" rx="9" fill="#1a1f29" stroke="#f97316"/>
+        <text x="85" y="55" text-anchor="middle" font-size="12" font-weight="700" fill="#fdf6ee">👤 User</text>
+        <text x="85" y="72" text-anchor="middle" font-size="9.5" fill="#cfc9c0">enters symptoms</text>
+        <rect x="180" y="30" width="130" height="56" rx="9" fill="#1a1f29" stroke="#f97316"/>
+        <text x="245" y="55" text-anchor="middle" font-size="12" font-weight="700" fill="#fdf6ee">🖥 Interface</text>
+        <text x="245" y="72" text-anchor="middle" font-size="9.5" fill="#cfc9c0">input &amp; output</text>
+        <rect x="340" y="30" width="180" height="64" rx="9" fill="#1a1f29" stroke="#fb923c" stroke-width="1.8"/>
+        <text x="430" y="55" text-anchor="middle" font-size="12" font-weight="700" fill="#fdba74">⚙️ Inference Engine</text>
+        <text x="430" y="73" text-anchor="middle" font-size="9.5" fill="#cfc9c0">matches data against rules</text>
+        <rect x="550" y="30" width="150" height="56" rx="9" fill="#1a1f29" stroke="#f97316"/>
+        <text x="625" y="55" text-anchor="middle" font-size="12" font-weight="700" fill="#fdf6ee">📋 Output</text>
+        <text x="625" y="72" text-anchor="middle" font-size="9.5" fill="#cfc9c0">diagnosis / advice</text>
+        <rect x="180" y="132" width="130" height="52" rx="9" fill="#1a1f29" stroke="#f97316"/>
+        <text x="245" y="151" text-anchor="middle" font-size="11.5" font-weight="700" fill="#fdf6ee">📚 Knowledge Base</text>
+        <text x="245" y="169" text-anchor="middle" font-size="9.5" fill="#cfc9c0">facts about the subject</text>
+        <rect x="340" y="132" width="180" height="52" rx="9" fill="#1a1f29" stroke="#f97316"/>
+        <text x="430" y="151" text-anchor="middle" font-size="11.5" font-weight="700" fill="#fdf6ee">🧩 Rule Base</text>
+        <text x="430" y="169" text-anchor="middle" font-size="9.5" fill="#cfc9c0">IF-THEN rules</text>
+        <line x1="150" y1="58" x2="178" y2="58" stroke="#fb923c" stroke-width="2" marker-end="url(#es6)"/>
+        <line x1="310" y1="58" x2="338" y2="58" stroke="#fb923c" stroke-width="2" marker-end="url(#es6)"/>
+        <line x1="520" y1="62" x2="548" y2="58" stroke="#fb923c" stroke-width="2" marker-end="url(#es6)"/>
+        <line x1="430" y1="94" x2="430" y2="130" stroke="#fb923c" stroke-width="2" marker-end="url(#es6)"/>
+        <path d="M 245 130 C 245 108, 368 108, 368 97" stroke="#fb923c" stroke-width="2" fill="none" marker-end="url(#es6)"/>
+        <line x1="310" y1="158" x2="338" y2="158" stroke="#fb923c" stroke-width="2" marker-end="url(#es6)"/>
+        <text x="360" y="200" text-anchor="middle" font-size="10.5" fill="#8a93a6">inference engine uses the rule base and knowledge base to reach a decision</text>
+      </g>
+    </svg>
+    <div class="diagram-caption">User → Interface → Inference Engine → Output, drawing on the Knowledge Base and Rule Base.</div>
+  </div>
+  <table>
+    <tr><th style="width:26%;">Component</th><th>Purpose</th></tr>
+    <tr><td><strong>Knowledge base</strong></td><td>Stores all the <strong>facts and data</strong> about a specific subject area.</td></tr>
+    <tr><td><strong>Rule base</strong></td><td>Stores the <strong>set of rules</strong> (usually IF-THEN logic) used to reason with the facts.</td></tr>
+    <tr><td><strong>Inference engine</strong></td><td><strong>Compares data input by the user</strong> against the rules and knowledge base to reach a conclusion.</td></tr>
+    <tr><td><strong>Interface</strong></td><td>Allows the user to <strong>input data</strong> (e.g. symptoms) and <strong>receive the output</strong> (e.g. a diagnosis).</td></tr>
+  </table>
+  <div class="exam-tip">
+    <span class="tip-icon">📝</span>
+    <span class="tip-text"><strong>Exam Tip:</strong> A classic example is a <strong>medical diagnosis expert system</strong>: symptoms are entered via the interface, the inference engine matches them to rules, and a diagnosis is produced using the knowledge base.</span>
+  </div>
+  <div class="slide-footer"><span class="section-label">6.3 &middot; Artificial Intelligence</span><span class="slide-number">22 / 27</span></div>
+</div>
+
+<!-- ============ SLIDE 23 – MACHINE LEARNING OVERVIEW ============ -->
+<div class="slide" data-slide="23">
+  <div class="section-badge sec-63">6.3 &middot; Artificial Intelligence</div>
+  <h2>Machine Learning: Overview</h2>
+  <p><strong>Machine learning</strong> is when a program has the ability to <strong>automatically adapt its own processes and/or data</strong>, <strong>improving its performance over time</strong> — without being explicitly reprogrammed by a human.</p>
+  <div class="diagram-box">
+    <svg viewBox="0 0 720 130" style="width:100%; max-width:720px;">
+      <defs>
+        <marker id="ml6" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <polygon points="0,0 7,3 0,6" fill="#fb923c"/>
+        </marker>
+      </defs>
+      <g font-family="'Inter', sans-serif">
+        <rect x="20" y="30" width="200" height="52" rx="9" fill="#1a1f29" stroke="#f97316"/>
+        <text x="120" y="53" text-anchor="middle" font-size="12" font-weight="700" fill="#fdf6ee">🏋️ Trained on data</text>
+        <text x="120" y="70" text-anchor="middle" font-size="10" fill="#cfc9c0">examples show the pattern</text>
+        <rect x="260" y="30" width="200" height="52" rx="9" fill="#1a1f29" stroke="#f97316"/>
+        <text x="360" y="53" text-anchor="middle" font-size="12" font-weight="700" fill="#fdf6ee">🔄 Adapts processes</text>
+        <text x="360" y="70" text-anchor="middle" font-size="10" fill="#cfc9c0">self-improves over time</text>
+        <rect x="500" y="30" width="200" height="52" rx="9" fill="#1a1f29" stroke="#f97316"/>
+        <text x="600" y="53" text-anchor="middle" font-size="12" font-weight="700" fill="#fdf6ee">🎯 No reprogramming</text>
+        <text x="600" y="70" text-anchor="middle" font-size="10" fill="#cfc9c0">the human sets no new rules</text>
+        <line x1="220" y1="56" x2="258" y2="56" stroke="#fb923c" stroke-width="2" marker-end="url(#ml6)"/>
+        <line x1="460" y1="56" x2="498" y2="56" stroke="#fb923c" stroke-width="2" marker-end="url(#ml6)"/>
+        <text x="360" y="116" text-anchor="middle" font-size="11" fill="#8a93a6">more data in → better performance out, automatically</text>
+      </g>
+    </svg>
+  </div>
+  <div class="grid-2" style="margin-top:6px;">
+    <div class="card">
+      <h4>🖼 Example: image recognition</h4>
+      <p style="font-size:0.9rem;">Shown thousands of labelled cat photos, the system <strong>learns the pattern</strong> and recognises new cats it has never seen.</p>
+    </div>
+    <div class="card">
+      <h4>📧 Example: spam filters</h4>
+      <p style="font-size:0.9rem;">The filter <strong>improves with each message you mark</strong>, adapting to new spam without being reprogrammed.</p>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="section-label">6.3 &middot; Artificial Intelligence</span><span class="slide-number">23 / 27</span></div>
+</div>
+
+<!-- ============ SLIDE 24 – EXPERT SYSTEMS VS MACHINE LEARNING ============ -->
+<div class="slide" data-slide="24">
+  <div class="section-badge sec-63">6.3 &middot; Artificial Intelligence</div>
+  <h2>Expert Systems vs. Machine Learning</h2>
+  <table>
+    <tr><th style="width:24%;"></th><th>Expert Systems</th><th>Machine Learning</th></tr>
+    <tr><td><strong>How it works</strong></td><td>Relies on a <strong>fixed knowledge base and rules</strong> created by humans</td><td><strong>Learns patterns from data</strong> automatically</td></tr>
+    <tr><td><strong>Does it learn?</strong></td><td><strong>No</strong> — it does not learn automatically</td><td><strong>Yes</strong> — improves its own processes over time</td></tr>
+    <tr><td><strong>Who updates it?</strong></td><td>Humans must <strong>add new facts and rules</strong> to the knowledge/rule base</td><td>Improves <strong>without being reprogrammed</strong> by a human</td></tr>
+    <tr><td><strong>Best suited to</strong></td><td><strong>Well-defined problems</strong> (e.g. medical diagnosis, fault finding)</td><td><strong>Data-driven problems</strong> (e.g. image recognition, spam filtering)</td></tr>
+  </table>
+  <div class="callout"><strong>One-line summary:</strong> expert systems follow <em>human-written rules</em>; machine learning <em>writes its own rules from data</em>.</div>
+  <div class="slide-footer"><span class="section-label">6.3 &middot; Artificial Intelligence</span><span class="slide-number">24 / 27</span></div>
+</div>
+
+<!-- ============ SLIDE 25 – SIMULATING INTELLIGENT BEHAVIOUR ============ -->
+<div class="slide" data-slide="25">
+  <div class="section-badge sec-63">6.3 &middot; Artificial Intelligence</div>
+  <h2>Simulating Intelligent Behaviour</h2>
+  <p>Here is how the components of AI work together to produce behaviour that looks intelligent:</p>
+  <div class="diagram-box">
+    <svg viewBox="0 0 720 148" style="width:100%; max-width:720px;">
+      <defs>
+        <marker id="sim6" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <polygon points="0,0 7,3 0,6" fill="#fb923c"/>
+        </marker>
+      </defs>
+      <g font-family="'Inter', sans-serif">
+        <rect x="20" y="34" width="150" height="52" rx="9" fill="#1a1f29" stroke="#f97316"/>
+        <text x="95" y="57" text-anchor="middle" font-size="11.5" font-weight="700" fill="#fdf6ee">1. Data &amp; Rules</text>
+        <text x="95" y="73" text-anchor="middle" font-size="9.5" fill="#cfc9c0">feed into the system</text>
+        <rect x="210" y="34" width="150" height="52" rx="9" fill="#1a1f29" stroke="#f97316"/>
+        <text x="285" y="57" text-anchor="middle" font-size="11.5" font-weight="700" fill="#fdf6ee">2. Reason</text>
+        <text x="285" y="73" text-anchor="middle" font-size="9.5" fill="#cfc9c0">process the information</text>
+        <rect x="400" y="34" width="150" height="52" rx="9" fill="#1a1f29" stroke="#f97316"/>
+        <text x="475" y="57" text-anchor="middle" font-size="11.5" font-weight="700" fill="#fdf6ee">3. Learn &amp; Adapt</text>
+        <text x="475" y="73" text-anchor="middle" font-size="9.5" fill="#cfc9c0">improve (machine learning)</text>
+        <rect x="590" y="34" width="110" height="52" rx="9" fill="#262c3a" stroke="#fb923c" stroke-width="1.8"/>
+        <text x="645" y="57" text-anchor="middle" font-size="11.5" font-weight="700" fill="#fdba74">4. Output</text>
+        <text x="645" y="73" text-anchor="middle" font-size="9.5" fill="#cfc9c0">intelligent behaviour</text>
+        <line x1="170" y1="60" x2="208" y2="60" stroke="#fb923c" stroke-width="2" marker-end="url(#sim6)"/>
+        <line x1="360" y1="60" x2="398" y2="60" stroke="#fb923c" stroke-width="2" marker-end="url(#sim6)"/>
+        <line x1="550" y1="60" x2="588" y2="60" stroke="#fb923c" stroke-width="2" marker-end="url(#sim6)"/>
+        <path d="M 645 86 C 645 118, 120 118, 95 88" stroke="#fb923c" stroke-width="1.6" fill="none" marker-end="url(#sim6)" stroke-dasharray="4 3"/>
+        <text x="360" y="128" text-anchor="middle" font-size="10.5" fill="#8a93a6">machine learning feeds new data back in — the loop improves performance over time</text>
+      </g>
+    </svg>
+    <div class="diagram-caption">Data and rules are processed and (in machine learning) improved, producing intelligent output.</div>
+  </div>
+  <div class="callout info"><strong>Linking the sections:</strong> expert systems stop at step 2 (reason); machine learning adds step 3 (learn and adapt) and the feedback loop.</div>
+  <div class="slide-footer"><span class="section-label">6.3 &middot; Artificial Intelligence</span><span class="slide-number">25 / 27</span></div>
+</div>
+
+<!-- ============ SLIDE 26 – RECAP QUIZ 6.3 ============ -->
+<div class="slide" data-slide="26">
+  <div class="section-badge quiz">6.3 &middot; Recap Quiz</div>
+  <h2>Quick Check — Artificial Intelligence</h2>
+  <div class="card" style="margin-top:10px;">
+    <p><strong>Q7.</strong> State the four components of an expert system.</p>
+    <div class="reveal-container">
+      <button class="reveal-btn" data-target="q7">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q7"><strong>Knowledge base</strong>, <strong>rule base</strong>, <strong>inference engine</strong>, and <strong>interface</strong>.</div>
+    </div>
+  </div>
+  <div class="card">
+    <p><strong>Q8.</strong> Explain what is meant by machine learning.</p>
+    <div class="reveal-container">
+      <button class="reveal-btn" data-target="q8">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q8">Machine learning is when a program <strong>automatically adapts its own processes and/or data</strong>, <strong>improving its performance over time</strong> based on new data, <strong>without being explicitly reprogrammed by a human</strong>.</div>
+    </div>
+  </div>
+  <div class="card">
+    <p><strong>Q9.</strong> Describe one difference between an expert system and machine learning.</p>
+    <div class="reveal-container">
+      <button class="reveal-btn" data-target="q9">📌 Reveal Answer</button>
+      <div class="reveal-answer" id="q9">An expert system uses a <strong>fixed knowledge base and rules written by humans</strong> and does <strong>not learn automatically</strong>, whereas machine learning <strong>learns and adapts from data</strong>, improving its own processes over time without being reprogrammed.</div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="section-label">6.3 &middot; Artificial Intelligence</span><span class="slide-number">26 / 27</span></div>
+</div>
+
+<!-- ============ SLIDE 27 – TOPIC 6 SUMMARY ============ -->
+<div class="slide" data-slide="27">
+  <div class="section-badge">Topic 6</div>
+  <h2>Topic 6 Summary — Mind Map</h2>
+  <div class="diagram-box">
+    <svg viewBox="0 0 760 300" style="width:100%; max-width:760px;">
+      <defs>
+        <marker id="sum6" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <polygon points="0,0 7,3 0,6" fill="#fb923c"/>
+        </marker>
+      </defs>
+      <g font-family="'Inter', sans-serif">
+        <rect x="240" y="10" width="280" height="38" rx="19" fill="#262c3a" stroke="#f97316" stroke-width="1.6"/>
+        <text x="380" y="34" text-anchor="middle" font-size="15" font-weight="700" fill="#fdf6ee">AUTOMATION, ROBOTS &amp; AI</text>
+        <!-- Box 1: 6.1 -->
+        <rect x="20" y="72" width="220" height="150" rx="10" fill="#1a1f29" stroke="#f97316"/>
+        <text x="130" y="94" text-anchor="middle" font-size="12.5" font-weight="700" fill="#fdba74">6.1 · Automated Systems</text>
+        <g font-size="11" fill="#cfc9c0">
+          <text x="130" y="114" text-anchor="middle">Sensor → input (detects)</text>
+          <text x="130" y="131" text-anchor="middle">Microprocessor → process (decides)</text>
+          <text x="130" y="148" text-anchor="middle">Actuator → output (acts)</text>
+          <text x="130" y="165" text-anchor="middle">Scenarios: streetlights, farms…</text>
+          <text x="130" y="182" text-anchor="middle">Advantages vs disadvantages</text>
+        </g>
+        <!-- Box 2: 6.2 -->
+        <rect x="270" y="72" width="220" height="150" rx="10" fill="#1a1f29" stroke="#ea580c"/>
+        <text x="380" y="94" text-anchor="middle" font-size="12.5" font-weight="700" fill="#fdba74">6.2 · Robotics</text>
+        <g font-size="11" fill="#cfc9c0">
+          <text x="380" y="114" text-anchor="middle">Mechanical + electrical + programmable</text>
+          <text x="380" y="131" text-anchor="middle">Uses: industry, transport,</text>
+          <text x="380" y="148" text-anchor="middle">agriculture, medicine,</text>
+          <text x="380" y="165" text-anchor="middle">domestic, entertainment</text>
+          <text x="380" y="182" text-anchor="middle">Precision · cost · jobs</text>
+        </g>
+        <!-- Box 3: 6.3 -->
+        <rect x="520" y="72" width="220" height="150" rx="10" fill="#1a1f29" stroke="#c2410c"/>
+        <text x="630" y="94" text-anchor="middle" font-size="12.5" font-weight="700" fill="#fdba74">6.3 · Artificial Intelligence</text>
+        <g font-size="11" fill="#cfc9c0">
+          <text x="630" y="114" text-anchor="middle">Data &amp; rules → reason → learn</text>
+          <text x="630" y="131" text-anchor="middle">Expert systems: KB + RB + IE</text>
+          <text x="630" y="148" text-anchor="middle">+ interface (fixed rules)</text>
+          <text x="630" y="165" text-anchor="middle">Machine learning: learns from</text>
+          <text x="630" y="182" text-anchor="middle">data, no reprogramming</text>
+        </g>
+        <!-- Arrows between boxes -->
+        <line x1="240" y1="147" x2="268" y2="147" stroke="#fb923c" stroke-width="2" marker-end="url(#sum6)"/>
+        <line x1="490" y1="147" x2="518" y2="147" stroke="#fb923c" stroke-width="2" marker-end="url(#sum6)"/>
+        <rect x="230" y="240" width="300" height="40" rx="9" fill="#1a1f29" stroke="#f97316" stroke-dasharray="5 3"/>
+        <text x="380" y="259" text-anchor="middle" font-size="11" fill="#fdba74" font-weight="700">Shared theme</text>
+        <text x="380" y="274" text-anchor="middle" font-size="10.5" fill="#cfc9c0">every system weighs advantages against disadvantages</text>
+      </g>
+    </svg>
+    <div class="diagram-caption">From sensing and acting, to reprogrammable machines, to systems that reason and learn.</div>
+  </div>
+  <div class="slide-footer"><span class="section-label">Topic 6 &middot; Summary</span><span class="slide-number">27 / 27</span></div>
+</div>
+
+</div><!-- /presentation -->
+
+<div class="nav-bar">
+  <button id="prevBtn" aria-label="Previous slide" onclick="changeSlide(-1)">◀ Previous</button>
+  <div class="slide-counter" id="slideCounter">1 / 27</div>
+  <div class="progress-dots" id="progressDots"></div>
+  <button id="nextBtn" aria-label="Next slide" onclick="changeSlide(1)">Next ▶</button>
+</div>
+<div class="kbd-hint">← → arrow keys · Home / End · click dots to jump</div>
+
+<script>
+  (function() {
+    const TOTAL = 27;
+    let current = 0;
+    function renderDots() {
+      const container = document.getElementById('progressDots');
+      container.innerHTML = '';
+      for (let i = 0; i < TOTAL; i++) {
+        const dot = document.createElement('button');
+        dot.className = 'dot' + (i === current ? ' active' : '');
+        dot.setAttribute('aria-label', 'Go to slide ' + (i+1));
+        dot.onclick = function() { goToSlide(i); };
+        container.appendChild(dot);
+      }
+    }
+    function goToSlide(idx) {
+      document.querySelectorAll('.slide').forEach((s, i) => s.classList.toggle('active', i === idx));
+      current = idx;
+      updateUI();
+      const active = document.querySelector('.slide.active');
+      if (active) active.scrollTop = 0;
+    }
+    function changeSlide(delta) {
+      const next = current + delta;
+      if (next < 0 || next >= TOTAL) return;
+      goToSlide(next);
+    }
+    function updateUI() {
+      document.getElementById('prevBtn').disabled = (current === 0);
+      document.getElementById('nextBtn').disabled = (current === TOTAL - 1);
+      document.getElementById('slideCounter').textContent = (current + 1) + ' / ' + TOTAL;
+      document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
+    }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown') { changeSlide(1); e.preventDefault(); }
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') { changeSlide(-1); e.preventDefault(); }
+      else if (e.key === 'Home') { goToSlide(0); e.preventDefault(); }
+      else if (e.key === 'End') { goToSlide(TOTAL - 1); e.preventDefault(); }
+    });
+    renderDots();
+    updateUI();
+    window.changeSlide = changeSlide;
+    window.goToSlide = goToSlide;
+    document.querySelectorAll('.reveal-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const el = document.getElementById(this.getAttribute('data-target'));
+        if (el) {
+          el.classList.toggle('visible');
+          this.textContent = el.classList.contains('visible') ? '🙈 Hide Answer' : '📌 Reveal Answer';
+        }
+      });
+    });
+  })();
+</script>
+</body>
+</html>

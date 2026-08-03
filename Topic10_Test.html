@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topic 10 Test — IGCSE 0478 Computer Science</title>
+<link rel="stylesheet" href="css/test-common.css">
+</head>
+<body>
+<div class="bg-grid"></div>
+<header class="header">
+  <a class="back" href="index.html">← Back to all topics</a>
+  <h1><span class="num">Topic 10</span> — Boolean Logic</h1>
+  <p>Exam-style practice test • instant feedback • explanations for every answer</p>
+  <span class="chapter-tag">⚙ Logic gates &bull; Truth tables &bull; Logic expressions &bull; Building circuits &bull; Gate symbols</span>
+</header>
+<div id="progressBarContainer"><div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div></div>
+<div class="main">
+  <div id="setupScreen">
+    <div class="setup-card">
+      <h2>⚙️ Test Settings</h2>
+      <div class="quiz-options">
+        <label>Questions: <select id="numQuestions"><option value="5">5</option><option value="10" selected>10</option><option value="14">14</option><option value="0">All</option></select></label>
+        <label>Type: <select id="questionType"><option value="all" selected>Mixed</option><option value="mcq">Multiple Choice</option><option value="truefalse">True / False</option></select></label>
+      </div>
+    </div>
+    <div class="center"><button class="btn-primary" onclick="startTest()">🚀 Start Test</button></div>
+  </div>
+  <div id="quizScreen" style="display:none;">
+    <div class="quiz-header">
+      <span class="quiz-progress">Question <strong id="currentQ">1</strong> of <strong id="totalQ">10</strong></span>
+      <span class="quiz-score">✅ <span id="scoreDisplay">0</span>/<span id="totalCorrect">0</span></span>
+    </div>
+    <div class="question-card">
+      <div class="question-number" id="qNum">Q1</div>
+      <div class="question-text" id="qText">Loading question...</div>
+      <div class="options-list" id="optionsList"></div>
+      <div class="feedback-area" id="feedbackArea"></div>
+      <div class="question-actions"><button class="btn-secondary" id="nextBtn" style="display:none;" onclick="nextQuestion()">Next →</button></div>
+    </div>
+  </div>
+  <div id="resultsScreen" style="display:none;">
+    <div class="results-card">
+      <div class="results-score" id="finalScore">0%</div>
+      <div class="results-label">Final Score</div>
+      <div class="results-details">
+        <div class="results-stat"><span class="num" id="rCorrect">0</span><div class="desc">Correct</div></div>
+        <div class="results-stat"><span class="num" id="rIncorrect">0</span><div class="desc">Incorrect</div></div>
+        <div class="results-stat"><span class="num" id="rTotal">0</span><div class="desc">Total</div></div>
+      </div>
+      <div class="results-msg" id="resultsMsg">Great job!</div>
+      <div class="review-list" id="reviewList"></div>
+      <div class="results-actions">
+        <button class="btn-primary" onclick="resetTest()">🔄 Try Again</button>
+        <button class="btn-secondary" onclick="showSetup()">⚙️ New Settings</button>
+        <button class="btn-secondary" onclick="location.href='index.html'">🌐 All Topics</button>
+      </div>
+    </div>
+  </div>
+</div>
+<footer class="footer">IGCSE 0478 Computer Science • 2026–2028 Syllabus • Topic 10 Practice Test</footer>
+<script>
+  var QUESTION_BANK = [{"q":"Which logic gate has only a single input?","options":["AND","OR","NOT","XOR"],"correct":2,"explain":"The NOT gate takes one input and inverts it. All the others are limited to two inputs."},{"q":"An AND gate outputs 1 when:","options":["At least one input is 1","Both inputs are 1","The inputs are different","Both inputs are 0"],"correct":1,"explain":"AND is strict — output 1 only when every input is 1."},{"q":"An OR gate outputs 1 when:","options":["At least one input is 1","Both inputs are 1","Both inputs are 0","The inputs are different"],"correct":0,"explain":"OR outputs 1 whenever any input is 1 (only 0,0 gives 0)."},{"q":"A NAND gate is:","options":["The opposite of OR","The opposite of AND","The same as OR","The same as NOT"],"correct":1,"explain":"NAND = NOT (A AND B). It outputs 0 only when both inputs are 1."},{"q":"A NOR gate outputs 1 only when:","options":["Both inputs are 1","At least one input is 1","Both inputs are 0","The inputs are different"],"correct":2,"explain":"NOR = NOT (A OR B). It outputs 1 only when both inputs are 0."},{"q":"Which gate outputs 1 only when its two inputs are different?","options":["AND","OR","NAND","XOR"],"correct":3,"explain":"XOR (exclusive OR) outputs 1 when the inputs differ (0,1 or 1,0)."},{"q":"XOR is also known as:","options":["EOR","NOR","NORX","AND-OR"],"correct":0,"explain":"XOR is also called EOR (Exclusive OR)."},{"q":"How many rows are in the truth table for a circuit with 2 inputs?","options":["2","4","8","16"],"correct":1,"explain":"n inputs → 2ⁿ rows. 2 inputs → 4 rows; 3 inputs → 8 rows."},{"q":"How many rows are in the truth table for a circuit with 3 inputs?","options":["4","6","8","9"],"correct":2,"explain":"2³ = 8 rows (000 to 111 in binary-count order)."},{"q":"For Q = A AND B, what is Q when A = 1 and B = 1?","options":["0","1","Undefined","Depends on the order"],"correct":1,"explain":"AND outputs 1 only when both inputs are 1."},{"q":"Which gate symbol is an OR shape with a bubble on the output?","options":["NAND","NOR","XOR","NOT"],"correct":1,"explain":"The bubble means inversion, so an OR shape + bubble = NOR."},{"q":"Which gate symbol is an AND shape with a bubble on the output?","options":["NOR","XOR","NAND","OR"],"correct":2,"explain":"The bubble inverts the AND output, giving NAND."},{"q":"“The alarm sounds if the door is open AND the system is armed” is expressed as:","options":["Q = Door OR Armed","Q = Door AND Armed","Q = NOT Door","Q = Door XOR Armed"],"correct":1,"explain":"Both conditions must be true, so a single AND gate: Q = Door AND Armed."},{"q":"The expression Q = (T OR P) AND (NOT M) needs which gates?","options":["OR, NOT and AND","Two AND gates","AND and NOT only","Two OR gates"],"correct":0,"explain":"Brackets first (OR), then NOT M, then the final AND combines them."},{"tf":true,"q":"The bubble on a gate symbol always means inversion (NOT).","correct":true,"explain":"A bubble on the output of a gate inverts its output — e.g. AND + bubble = NAND."},{"tf":true,"q":"A NAND gate outputs 0 only when both inputs are 1.","correct":true,"explain":"NAND is NOT (A AND B): 1,1 gives 0; every other combination gives 1."},{"tf":true,"q":"A NOR gate outputs 1 when at least one input is 1.","correct":false,"explain":"NOR = NOT (A OR B), so it outputs 1 ONLY when both inputs are 0."}];
+  var state = { questions: [], currentIndex: 0, score: 0, answers: [], answered: false };
+  function startTest() {
+    var pool = QUESTION_BANK.slice();
+    var typeFilter = document.getElementById('questionType').value;
+    if (typeFilter !== 'all') { pool = pool.filter(function(q) { return q.type === typeFilter; }); }
+    if (pool.length === 0) { alert('No questions of this type available.'); return; }
+    for (var i = pool.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = pool[i]; pool[i] = pool[j]; pool[j] = t; }
+    var numQ = parseInt(document.getElementById('numQuestions').value);
+    if (numQ === 0 || numQ > pool.length) numQ = pool.length;
+    state.questions = pool.slice(0, numQ);
+    state.currentIndex = 0; state.score = 0; state.answers = []; state.answered = false;
+    showScreen('quizScreen'); renderQuestion();
+  }
+  function renderQuestion() {
+    var q = state.questions[state.currentIndex];
+    var total = state.questions.length; var idx = state.currentIndex;
+    document.getElementById('currentQ').textContent = idx + 1;
+    document.getElementById('totalQ').textContent = total;
+    document.getElementById('scoreDisplay').textContent = state.score;
+    document.getElementById('totalCorrect').textContent = total;
+    document.getElementById('progressFill').style.width = (idx / total * 100) + '%';
+    document.getElementById('qText').textContent = q.q;
+    document.getElementById('qNum').textContent = 'Q' + (idx + 1) + (q.tf ? ' (True / False)' : '');
+    var container = document.getElementById('optionsList'); container.innerHTML = '';
+    var options = q.tf ? ['True', 'False'] : q.options;
+    options.forEach(function(text, i) {
+      var btn = document.createElement('button');
+      btn.className = 'option-btn';
+      btn.setAttribute('data-index', i);
+      var letter = document.createElement('span');
+      letter.className = 'option-letter';
+      letter.textContent = q.tf ? (i === 0 ? 'T' : 'F') : ['A','B','C','D'][i];
+      btn.appendChild(letter);
+      btn.appendChild(document.createTextNode(text));
+      btn.addEventListener('click', function() { selectAnswer(i); });
+      container.appendChild(btn);
+    });
+    var fb = document.getElementById('feedbackArea');
+    fb.className = 'feedback-area'; fb.innerHTML = '';
+    document.getElementById('nextBtn').style.display = 'none';
+    state.answered = false;
+  }
+  function selectAnswer(index) {
+    if (state.answered) return;
+    state.answered = true;
+    var q = state.questions[state.currentIndex];
+    var correctIndex = q.tf ? (q.correct ? 0 : 1) : q.correct;
+    var isCorrect = (index === correctIndex);
+    var buttons = document.querySelectorAll('.option-btn');
+    buttons.forEach(function(btn, i) {
+      btn.classList.add('disabled');
+      if (i === correctIndex) btn.classList.add('correct');
+      if (i === index && !isCorrect) btn.classList.add('incorrect');
+      if (i === index) btn.classList.add('selected');
+    });
+    if (isCorrect) state.score++;
+    var fb = document.getElementById('feedbackArea');
+    fb.className = 'feedback-area ' + (isCorrect ? 'correct' : 'incorrect');
+    fb.innerHTML = '<span class="fb-label">' + (isCorrect ? '✅ Correct!' : '❌ Incorrect.') + '</span> ' + q.explain;
+    state.answers.push({ selected: index, correct: correctIndex, question: q, wasCorrect: isCorrect });
+    document.getElementById('scoreDisplay').textContent = state.score;
+    var nb = document.getElementById('nextBtn');
+    nb.style.display = 'inline-flex';
+    nb.textContent = (state.currentIndex === state.questions.length - 1) ? '📊 See Results' : 'Next →';
+  }
+  function nextQuestion() {
+    if (state.currentIndex >= state.questions.length - 1) { showResults(); return; }
+    state.currentIndex++; renderQuestion();
+  }
+  function showResults() {
+    showScreen('resultsScreen');
+    var total = state.questions.length; var correct = state.score; var pct = total > 0 ? Math.round(correct / total * 100) : 0;
+    document.getElementById('finalScore').textContent = pct + '%';
+    document.getElementById('rCorrect').textContent = correct;
+    document.getElementById('rIncorrect').textContent = total - correct;
+    document.getElementById('rTotal').textContent = total;
+    var msg = document.getElementById('resultsMsg');
+    msg.className = 'results-msg';
+    if (pct === 100) { msg.textContent = '🏆 Perfect score! You are a Computer Science master!'; msg.classList.add('perfect'); }
+    else if (pct >= 80) { msg.textContent = '🌟 Excellent! Strong understanding of this topic.'; msg.classList.add('great'); }
+    else if (pct >= 60) { msg.textContent = '👍 Good effort! Review the incorrect answers.'; msg.classList.add('good'); }
+    else { msg.textContent = '📚 Keep studying! Re-read the slides and try again.'; msg.classList.add('retry'); }
+    var rl = document.getElementById('reviewList');
+    rl.innerHTML = '<h3 style="font-size:0.95rem;color:#b8d4ff;margin-bottom:8px;">📋 Review Answers</h3>';
+    state.answers.forEach(function(a, i) {
+      var item = document.createElement('div');
+      item.className = 'review-item ' + (a.wasCorrect ? 'correct-review' : 'incorrect-review');
+      var q = a.question;
+      var letters = ['A','B','C','D'];
+      var yourAns = q.tf ? (a.selected === 0 ? 'True' : 'False') : letters[a.selected];
+      var corrAns = q.tf ? (a.correct === 0 ? 'True' : 'False') : letters[a.correct];
+      item.innerHTML = '<div class="review-q">' + (i+1) + '. ' + q.q + '</div>' +
+        '<div class="review-a">' + (a.wasCorrect ? '<span class="correct-answer">✅ Correct</span>' : '<span class="your-answer">❌ Your answer: ' + yourAns + '</span> — <span class="correct-answer">Correct: ' + corrAns + '</span>') + '</div>' +
+        '<div style="color:#7a9abd;font-size:0.78rem;margin-top:4px;">' + q.explain + '</div>';
+      rl.appendChild(item);
+    });
+  }
+  function resetTest() {
+    state.currentIndex = 0; state.score = 0; state.answers = []; state.answered = false;
+    var pool = state.questions;
+    for (var i = pool.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = pool[i]; pool[i] = pool[j]; pool[j] = t; }
+    showScreen('quizScreen'); renderQuestion();
+  }
+  function showSetup() { showScreen('setupScreen'); }
+  function showScreen(id) {
+    var screens = ['setupScreen', 'quizScreen', 'resultsScreen'];
+    screens.forEach(function(s) { document.getElementById(s).style.display = (s === id) ? 'block' : 'none'; });
+    document.getElementById('progressBarContainer').style.display = (id === 'quizScreen') ? 'block' : 'none';
+  }
+  showScreen('setupScreen');
+</script>
+</body>
+</html>
